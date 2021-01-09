@@ -1,6 +1,5 @@
 package com.example.instagram_app;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,13 +22,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
-        Intent intent;
+
         if (user != null) {
             // user is signed in
-            intent = new Intent(MainActivity.this, HomeActivity.class);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new HomeFragment())
+                    .setReorderingAllowed(true)
+                    .commit();
         } else {
-            intent = new Intent(MainActivity.this, LoginActivity.class);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new LoginFragment())
+                    .setReorderingAllowed(true)
+                    .commit();
         }
-        startActivity(intent);
     }
 }
