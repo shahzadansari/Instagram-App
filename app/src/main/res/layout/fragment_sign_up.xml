@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpActivity">
+    tools:context=".SignUpFragment">
 
     <TextView
         android:layout_width="wrap_content"
@@ -18,16 +18,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="200dp"
         android:layout_marginRight="12dp"
         android:layout_marginBottom="12dp"
         android:hint="Enter email here" />
 
     <EditText
-        android:id="@+id/edit_text_password"
+        android:id="@+id/edit_text_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/edit_text_email"
+        android:layout_margin="12dp"
+        android:hint="Enter username here" />
+
+    <EditText
+        android:id="@+id/edit_text_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_text_username"
         android:layout_margin="12dp"
         android:hint="Enter password here" />
 

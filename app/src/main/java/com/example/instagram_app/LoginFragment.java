@@ -44,36 +44,43 @@ public class LoginFragment extends Fragment {
         editTextPassword = rootView.findViewById(R.id.edit_text_password);
         textViewSignUp = rootView.findViewById(R.id.text_view_sign_up_account);
 
-        btnLogin.setOnClickListener(v -> {
-            String email = editTextEmail.getText().toString();
-            String password = editTextPassword.getText().toString();
-
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                getActivity().getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .replace(R.id.fragment_container, new HomeFragment())
-                                        .setReorderingAllowed(true)
-                                        .commit();
-                            } else {
-                                Toast.makeText(getActivity(), "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-        });
-
-        textViewSignUp.setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new SignUpFragment())
-                    .setReorderingAllowed(true)
-                    .commit();
-        });
+        btnLogin.setOnClickListener(v -> signInUser());
+        textViewSignUp.setOnClickListener(v -> openSignUpFragment());
 
         return rootView;
+    }
+
+    private void openSignUpFragment() {
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new SignUpFragment())
+                .setReorderingAllowed(true)
+                .commit();
+    }
+
+    private void signInUser() {
+        String email = editTextEmail.getText().toString();
+        String password = editTextPassword.getText().toString();
+
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            openHomeFragment();
+                        } else {
+                            Toast.makeText(getActivity(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void openHomeFragment() {
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new HomeFragment())
+                .setReorderingAllowed(true)
+                .commit();
     }
 }

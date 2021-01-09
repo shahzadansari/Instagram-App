@@ -24,18 +24,25 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
-            // user is signed in
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new HomeFragment())
-                    .setReorderingAllowed(true)
-                    .commit();
+            openHomeFragment();
         } else {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new LoginFragment())
-                    .setReorderingAllowed(true)
-                    .commit();
+            openLoginFragment();
         }
+    }
+
+    private void openLoginFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new LoginFragment())
+                .setReorderingAllowed(true)
+                .commit();
+    }
+
+    private void openHomeFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new HomeFragment())
+                .setReorderingAllowed(true)
+                .commit();
     }
 }

@@ -36,7 +36,15 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         textViewMessage = rootView.findViewById(R.id.text_view_message);
+        btnLogout = rootView.findViewById(R.id.button_log_out);
 
+        btnLogout.setOnClickListener(v -> signOut());
+        displayStatus();
+
+        return rootView;
+    }
+
+    public void displayStatus() {
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
         String message;
         if (firebaseUser != null) {
@@ -49,17 +57,14 @@ public class HomeFragment extends Fragment {
             message = "User is not signed in";
         }
         textViewMessage.setText(message);
+    }
 
-        btnLogout = rootView.findViewById(R.id.button_log_out);
-        btnLogout.setOnClickListener(v -> {
-            mAuth.signOut();
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new LoginFragment())
-                    .setReorderingAllowed(true)
-                    .commit();
-        });
-
-        return rootView;
+    private void signOut() {
+        mAuth.signOut();
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new LoginFragment())
+                .setReorderingAllowed(true)
+                .commit();
     }
 }
