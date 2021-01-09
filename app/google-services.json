@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "423232800118",
+    "firebase_url": "https://fir-realtimedatabasecloud.firebaseio.com",
+    "project_id": "fir-realtimedatabasecloud",
+    "storage_bucket": "fir-realtimedatabasecloud.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423232800118:android:a5ac518e5a96ff3467e657",
+        "android_client_info": {
+          "package_name": "com.example.instagram_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "423232800118-sp94hs203is4vofllnb5o4m4okv008ho.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgCJ9K-VVGGGs3xqsUz30iEEbfCWYmns4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "423232800118-sp94hs203is4vofllnb5o4m4okv008ho.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
