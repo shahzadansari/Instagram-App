@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private void openHomeFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, new HomeFragment())
+                .replace(R.id.fragment_container, new HostFragment())
                 .setReorderingAllowed(true)
                 .commit();
     }
