@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/page_feed"
+        android:id="@+id/page_home"
         android:enabled="true"
         android:icon="@drawable/ic_home"
         android:title="Feed" />

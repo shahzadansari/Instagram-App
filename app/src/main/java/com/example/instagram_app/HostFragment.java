@@ -22,6 +22,7 @@ public class HostFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: called");
     }
 
     @Override
@@ -32,6 +33,10 @@ public class HostFragment extends Fragment {
         bottomNavigationView = rootView.findViewById(R.id.bottom_navigation);
         initBottomNavigation();
 
+        if (savedInstanceState == null) {
+            openHomeFragment();
+        }
+
         return rootView;
     }
 
@@ -39,25 +44,33 @@ public class HostFragment extends Fragment {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             switch (id) {
-                case R.id.page_feed:
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container_home, new HomeFragment())
-                            .setReorderingAllowed(true)
-                            .commit();
+                case R.id.page_home:
+                    openHomeFragment();
                     break;
                 case R.id.page_profile:
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container_home, new ProfileFragment())
-                            .setReorderingAllowed(true)
-                            .commit();
+                    openProfileFragment();
                     break;
                 default:
                     break;
             }
             return true;
         });
+    }
+
+    private void openProfileFragment() {
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container_home, new ProfileFragment())
+                .setReorderingAllowed(true)
+                .commit();
+    }
+
+    private void openHomeFragment() {
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container_home, new HomeFragment())
+                .setReorderingAllowed(true)
+                .commit();
     }
 
     @Override
