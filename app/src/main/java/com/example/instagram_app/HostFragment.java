@@ -1,7 +1,6 @@
 package com.example.instagram_app;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class HostFragment extends Fragment {
 
     private BottomNavigationView bottomNavigationView;
-    private static final String TAG = "HomeFragment";
+    private static final String TAG = "HostFragment";
 
     public HostFragment() {
         // Required empty public constructor
@@ -22,7 +21,6 @@ public class HostFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: called");
     }
 
     @Override
@@ -71,17 +69,5 @@ public class HostFragment extends Fragment {
                 .replace(R.id.fragment_container_home, new HomeFragment())
                 .setReorderingAllowed(true)
                 .commit();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop: called");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: called");
     }
 }

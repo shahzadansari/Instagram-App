@@ -18,7 +18,7 @@ public class HomeFragment extends Fragment {
     private Button btnLogout;
     private FirebaseAuth mAuth;
     private TextView textViewMessage;
-    private static final String TAG = "FeedFragment";
+    private static final String TAG = "HomeFragment";
 
     public HomeFragment() {
         // Required empty public constructor
@@ -66,17 +66,5 @@ public class HomeFragment extends Fragment {
                 .replace(R.id.fragment_container, new LoginFragment())
                 .setReorderingAllowed(true)
                 .commit();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop: called");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: called");
     }
 }

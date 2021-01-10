@@ -1,7 +1,6 @@
 package com.example.instagram_app;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: called");
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -70,7 +68,7 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            openHomeFragment();
+                            openHostFragment();
                         } else {
                             Toast.makeText(getActivity(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
@@ -79,23 +77,11 @@ public class LoginFragment extends Fragment {
                 });
     }
 
-    private void openHomeFragment() {
+    private void openHostFragment() {
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, new HostFragment())
                 .setReorderingAllowed(true)
                 .commit();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop: called");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: called");
     }
 }
