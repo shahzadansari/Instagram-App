@@ -1,5 +1,6 @@
 package com.example.instagram_app;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
-            openHomeFragment();
+            openHostActivity();
         } else {
             openLoginFragment();
         }
@@ -44,5 +45,10 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.fragment_container, new HostFragment())
                 .setReorderingAllowed(true)
                 .commit();
+    }
+
+    public void openHostActivity(){
+        Intent intent = new Intent(this, HostActivity.class);
+        startActivity(intent);
     }
 }

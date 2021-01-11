@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.InstagramApp">
+        <activity android:name=".HostActivity"></activity>
         <activity android:name=".AccountSettingsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

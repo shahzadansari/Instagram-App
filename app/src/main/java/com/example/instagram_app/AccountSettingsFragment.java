@@ -5,9 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 public class AccountSettingsFragment extends Fragment {
+    private NavController navController;
 
     public AccountSettingsFragment() {
         // Required empty public constructor
@@ -22,10 +27,16 @@ public class AccountSettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_account_settings, container, false);
-        rootView.findViewById(R.id.button_finish).setOnClickListener(v -> {
+        return inflater.inflate(R.layout.fragment_account_settings, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+        view.findViewById(R.id.button_finish).setOnClickListener(v -> {
             //TODO: Go back
+            navController.navigate(R.id.action_accountSettingsFragment_to_profileFragment);
         });
-        return rootView;
     }
 }

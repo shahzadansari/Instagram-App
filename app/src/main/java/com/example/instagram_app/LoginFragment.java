@@ -1,5 +1,6 @@
 package com.example.instagram_app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +69,7 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            openHostFragment();
+                            openHostActivity();
                         } else {
                             Toast.makeText(getActivity(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
@@ -83,5 +84,10 @@ public class LoginFragment extends Fragment {
                 .replace(R.id.fragment_container, new HostFragment())
                 .setReorderingAllowed(true)
                 .commit();
+    }
+
+    private void openHostActivity() {
+        Intent intent = new Intent(getActivity(), HostActivity.class);
+        startActivity(intent);
     }
 }
