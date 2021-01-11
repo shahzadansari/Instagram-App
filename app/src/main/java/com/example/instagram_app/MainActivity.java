@@ -10,8 +10,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth;
     private static final String TAG = "MainActivity";
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    public void openHostActivity(){
+    public void openHostActivity() {
         Intent intent = new Intent(this, HostActivity.class);
         startActivity(intent);
     }

@@ -15,10 +15,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class HomeFragment extends Fragment {
 
+    private static final String TAG = "HomeFragment";
     private Button btnLogout;
     private FirebaseAuth mAuth;
     private TextView textViewMessage;
-    private static final String TAG = "HomeFragment";
 
     public HomeFragment() {
         // Required empty public constructor

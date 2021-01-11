@@ -20,11 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginFragment extends Fragment {
 
+    private static final String TAG = "LoginFragment";
     private Button btnLogin;
     private EditText editTextEmail, editTextPassword;
     private TextView textViewSignUp;
     private FirebaseAuth mAuth;
-    private static final String TAG = "LoginFragment";
 
     public LoginFragment() {
         // Required empty public constructor

@@ -13,9 +13,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HostActivity extends AppCompatActivity {
 
+    private static final String TAG = "HostActivity";
     private NavController navController;
     private BottomNavigationView bottomNavigationView;
-    private static final String TAG = "HostActivity";
+
+    // TODO : handle onBackPressed();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +25,10 @@ public class HostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_host);
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController);
+//        NavigationUI.setupActionBarWithNavController(this, navController);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
 
 
 //        initBottomNavigation();
@@ -62,9 +63,9 @@ public class HostActivity extends AppCompatActivity {
         navController.navigate(R.id.homeFragment);
     }
 
-    private void openHostFragment() {
-        navController.navigate(R.id.hostFragment);
-    }
+//    private void openHostFragment() {
+//        navController.navigate(R.id.hostFragment);
+//    }
 
     @Override
     protected void onStop() {
@@ -77,5 +78,10 @@ public class HostActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.onNavDestinationSelected(item, navController)
                 || super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

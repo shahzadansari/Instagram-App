@@ -28,14 +28,13 @@ import com.google.firebase.database.ValueEventListener;
 
 public class SignUpFragment extends Fragment {
 
+    private static final String TAG = "SignUpFragment";
     private Button btnSignUp;
     private EditText editTextEmail, editTextUsername, editTextPassword;
     private TextView textViewSignIn;
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
-
-    private static final String TAG = "SignUpFragment";
 
     public SignUpFragment() {
         // Required empty public constructor
