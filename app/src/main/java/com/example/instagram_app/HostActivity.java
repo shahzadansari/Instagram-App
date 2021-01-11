@@ -2,6 +2,7 @@ package com.example.instagram_app;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -25,29 +26,33 @@ public class HostActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        initBottomNavigation();
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
+
+
+//        initBottomNavigation();
 
         if (savedInstanceState == null) {
             openHomeFragment();
         }
     }
 
-    private void initBottomNavigation() {
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            switch (id) {
-                case R.id.page_home:
-                    openHomeFragment();
-                    break;
-                case R.id.page_profile:
-                    openProfileFragment();
-                    break;
-                default:
-                    break;
-            }
-            return true;
-        });
-    }
+//    private void initBottomNavigation() {
+//        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+//            int id = item.getItemId();
+//            switch (id) {
+//                case R.id.page_home:
+//                    openHomeFragment();
+//                    break;
+//                case R.id.page_profile:
+//                    openProfileFragment();
+//                    break;
+//                default:
+//                    break;
+//            }
+//            return true;
+//        });
+//    }
 
     private void openProfileFragment() {
         navController.navigate(R.id.profileFragment);
@@ -65,5 +70,12 @@ public class HostActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop: called");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return NavigationUI.onNavDestinationSelected(item, navController)
+                || super.onOptionsItemSelected(item);
     }
 }

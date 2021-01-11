@@ -36,7 +36,7 @@ public class AccountSettingsFragment extends Fragment {
         navController = Navigation.findNavController(view);
         view.findViewById(R.id.button_finish).setOnClickListener(v -> {
             //TODO: Go back
-            navController.navigate(R.id.action_accountSettingsFragment_to_profileFragment);
+            navController.popBackStack();
         });
     }
 }
