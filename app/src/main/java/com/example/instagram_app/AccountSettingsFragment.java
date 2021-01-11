@@ -12,15 +12,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 public class AccountSettingsFragment extends Fragment {
+
     private NavController navController;
 
     public AccountSettingsFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -34,9 +30,7 @@ public class AccountSettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        view.findViewById(R.id.button_finish).setOnClickListener(v -> {
-            //TODO: Go back
-            navController.popBackStack();
-        });
+
+        view.findViewById(R.id.button_finish).setOnClickListener(v -> navController.popBackStack());
     }
 }

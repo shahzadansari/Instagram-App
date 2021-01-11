@@ -13,10 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Not adding custom toolbar for now
-            <include layout="@layout/snippet_top_account_settings_toolbar"/>
-            -->
-
         </RelativeLayout>
 
         <RelativeLayout

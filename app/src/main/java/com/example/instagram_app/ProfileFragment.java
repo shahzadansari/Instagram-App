@@ -13,18 +13,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 public class ProfileFragment extends Fragment {
-    private static final String TAG = "ProfileFragment";
 
     private TextView textViewEditProfile;
     private NavController navController;
 
     public ProfileFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -45,5 +39,4 @@ public class ProfileFragment extends Fragment {
     private void openAccountSettingsFragment() {
         navController.navigate(R.id.action_profileFragment_to_accountSettingsFragment);
     }
-
 }

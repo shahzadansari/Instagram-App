@@ -10,17 +10,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginFragment extends Fragment {
 
-    private static final String TAG = "LoginFragment";
     private Button btnLogin;
     private EditText editTextEmail, editTextPassword;
     private TextView textViewSignUp;
@@ -65,29 +60,19 @@ public class LoginFragment extends Fragment {
         String password = editTextPassword.getText().toString();
 
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            openHostActivity();
-                        } else {
-                            Toast.makeText(getActivity(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(getActivity(), task -> {
+                    if (task.isSuccessful()) {
+                        openHostActivity();
+                    } else {
+                        Toast.makeText(getActivity(), "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
-
-    private void openHostFragment() {
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, new HostFragment())
-                .setReorderingAllowed(true)
-                .commit();
     }
 
     private void openHostActivity() {
         Intent intent = new Intent(getActivity(), HostActivity.class);
         startActivity(intent);
+        getActivity().finish();
     }
 }

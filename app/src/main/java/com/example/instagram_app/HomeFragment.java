@@ -1,7 +1,7 @@
 package com.example.instagram_app;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class HomeFragment extends Fragment {
 
-    private static final String TAG = "HomeFragment";
     private Button btnLogout;
     private FirebaseAuth mAuth;
     private TextView textViewMessage;
@@ -49,10 +48,6 @@ public class HomeFragment extends Fragment {
         String message;
         if (firebaseUser != null) {
             message = firebaseUser.getEmail() + " is signed in";
-
-            Log.d(TAG, "onCreate: Email: " + firebaseUser.getEmail() + "\n" +
-                    "DisplayName: " + firebaseUser.getDisplayName() + "\n" +
-                    "isEmailVerified: " + firebaseUser.isEmailVerified());
         } else {
             message = "User is not signed in";
         }
@@ -61,6 +56,8 @@ public class HomeFragment extends Fragment {
 
     private void signOut() {
         mAuth.signOut();
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
         getActivity().finish();
     }
 }
