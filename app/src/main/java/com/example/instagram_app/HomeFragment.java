@@ -61,10 +61,6 @@ public class HomeFragment extends Fragment {
 
     private void signOut() {
         mAuth.signOut();
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, new LoginFragment())
-                .setReorderingAllowed(true)
-                .commit();
+        getActivity().finish();
     }
 }

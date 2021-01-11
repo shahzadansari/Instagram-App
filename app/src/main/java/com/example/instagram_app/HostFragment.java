@@ -38,36 +38,36 @@ public class HostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        bottomNavigationView = view.findViewById(R.id.bottom_navigation);
+//        bottomNavigationView = view.findViewById(R.id.bottom_navigation);
 
-        initBottomNavigation();
+//        initBottomNavigation();
 //        if (savedInstanceState == null) {
 //            openHomeFragment();
 //        }
     }
 
-    private void initBottomNavigation() {
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            switch (id) {
-                case R.id.page_home:
-                    openHomeFragment();
-                    break;
-                case R.id.page_profile:
-                    openProfileFragment();
-                    break;
-                default:
-                    break;
-            }
-            return true;
-        });
-    }
-
-    private void openProfileFragment() {
-        navController.navigate(R.id.action_hostFragment_to_profileFragment);
-    }
-
-    private void openHomeFragment() {
-        navController.navigate(R.id.action_hostFragment_to_homeFragment);
-    }
+//    private void initBottomNavigation() {
+//        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+//            int id = item.getItemId();
+//            switch (id) {
+//                case R.id.page_home:
+//                    openHomeFragment();
+//                    break;
+//                case R.id.page_profile:
+//                    openProfileFragment();
+//                    break;
+//                default:
+//                    break;
+//            }
+//            return true;
+//        });
+//    }
+//
+//    private void openProfileFragment() {
+//        navController.navigate(R.id.action_hostFragment_to_profileFragment);
+//    }
+//
+//    private void openHomeFragment() {
+//        navController.navigate(R.id.action_hostFragment_to_homeFragment);
+//    }
 }
