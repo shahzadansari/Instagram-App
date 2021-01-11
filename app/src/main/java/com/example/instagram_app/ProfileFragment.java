@@ -36,6 +36,15 @@ public class ProfileFragment extends Fragment {
 
     private void openAccountSettingsActivity() {
         Intent intent = new Intent(getActivity(), AccountSettingsActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 6);
     }
+
+    private void openAccountSettingsFragment() {
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container_home, new AccountSettingsFragment())
+                .setReorderingAllowed(true)
+                .commit();
+    }
+
 }
