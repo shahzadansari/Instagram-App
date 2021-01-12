@@ -10,7 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InstagramApp">
         <activity android:name=".HostActivity" />
-        <activity android:name=".AccountSettingsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

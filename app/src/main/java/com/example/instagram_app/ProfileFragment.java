@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
 import com.example.instagram_app.models.User;
 import com.example.instagram_app.models.UserAccountSettings;
 import com.example.instagram_app.models.UserSettings;
@@ -26,7 +28,9 @@ import com.google.firebase.database.ValueEventListener;
 public class ProfileFragment extends Fragment {
 
     private ProgressBar progressBar;
-    private TextView textViewEditProfileBtn, textViewPosts, textViewFollowers, textViewFollowing;
+    private TextView textViewEditProfileBtn, textViewPosts, textViewFollowers, textViewFollowing,
+            textViewDisplayName, textViewDescription;
+    private ImageView imageViewProfilePhoto;
     private NavController navController;
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
@@ -43,11 +47,14 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         rootView.findViewById(R.id.text_view_display_name);
+        progressBar = rootView.findViewById(R.id.progress_bar);
         textViewEditProfileBtn = rootView.findViewById(R.id.text_view_edit_profile);
         textViewPosts = rootView.findViewById(R.id.text_view_posts_number);
         textViewFollowers = rootView.findViewById(R.id.text_view_followers_number);
         textViewFollowing = rootView.findViewById(R.id.text_view_following_numbers);
-        progressBar = rootView.findViewById(R.id.progress_bar);
+        textViewDisplayName = rootView.findViewById(R.id.text_view_display_name);
+        textViewDescription = rootView.findViewById(R.id.text_view_description);
+        imageViewProfilePhoto = rootView.findViewById(R.id.profile_image);
 
         progressBar.setVisibility(View.VISIBLE);
         textViewEditProfileBtn.setOnClickListener(v -> openAccountSettingsFragment());
@@ -85,9 +92,17 @@ public class ProfileFragment extends Fragment {
 
     private void updateUI(UserSettings userSettings) {
         progressBar.setVisibility(View.INVISIBLE);
+
         textViewPosts.setText("" + userSettings.getSettings().getPosts());
         textViewFollowers.setText("" + userSettings.getSettings().getFollowers());
         textViewFollowing.setText("" + userSettings.getSettings().getFollowing());
+
+        textViewDisplayName.setText(userSettings.getSettings().getDisplay_name());
+        textViewDescription.setText(userSettings.getSettings().getDescription());
+
+        Glide.with(this)
+                .load(userSettings.getSettings().getProfile_photo())
+                .into(imageViewProfilePhoto);
     }
 
     private UserSettings retrieveData(DataSnapshot snapshot) {

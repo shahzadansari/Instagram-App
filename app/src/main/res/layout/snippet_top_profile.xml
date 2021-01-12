@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,7 +15,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="2dp"
-            android:text="250"
+            tools:text="250"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -39,7 +40,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="2dp"
             android:layout_marginRight="8dp"
-            android:text="300"
+            tools:text="300"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintLeft_toRightOf="@+id/text_view_posts_number"
@@ -67,7 +68,7 @@
             android:layout_marginTop="2dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:text="400"
+            tools:text="400"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintRight_toRightOf="parent"

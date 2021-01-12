@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -62,7 +63,7 @@
                     android:id="@+id/text_view_display_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Shahzad"
+                    tools:text="Shahzad"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -72,7 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="Description goes here"
+                    tools:text="Description goes here"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
