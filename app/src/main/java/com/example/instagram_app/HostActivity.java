@@ -27,7 +27,7 @@ public class HostActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (destination.getId() == R.id.accountSettingsFragment) {
+            if (destination.getId() == R.id.editProfileFragment) {
                 bottomNavigationView.setVisibility(View.GONE);
             } else {
                 bottomNavigationView.setVisibility(View.VISIBLE);

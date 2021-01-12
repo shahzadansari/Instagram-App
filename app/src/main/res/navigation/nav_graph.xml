@@ -20,16 +20,16 @@
         android:name="com.example.instagram_app.ProfileFragment"
         android:label="ProfileFragment">
         <action
-            android:id="@+id/action_profileFragment_to_accountSettingsFragment"
-            app:destination="@id/accountSettingsFragment"
-            app:popUpTo="@id/profileFragment" />
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
     </fragment>
     <fragment
-        android:id="@+id/accountSettingsFragment"
-        android:name="com.example.instagram_app.AccountSettingsFragment"
-        android:label="AccountSettingsFragment">
+        android:id="@+id/editProfileFragment"
+        android:name="com.example.instagram_app.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" >
         <action
-            android:id="@+id/action_accountSettingsFragment_to_profileFragment"
+            android:id="@+id/action_editProfileFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
     </fragment>
 </navigation>

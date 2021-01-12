@@ -35,7 +35,6 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
-    private static final String TAG = "ProfileFragment";
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -57,7 +56,7 @@ public class ProfileFragment extends Fragment {
         imageViewProfilePhoto = rootView.findViewById(R.id.profile_image);
 
         progressBar.setVisibility(View.VISIBLE);
-        textViewEditProfileBtn.setOnClickListener(v -> openAccountSettingsFragment());
+        textViewEditProfileBtn.setOnClickListener(v -> openEditProfileFragment());
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -85,8 +84,8 @@ public class ProfileFragment extends Fragment {
         navController = Navigation.findNavController(view);
     }
 
-    private void openAccountSettingsFragment() {
-        navController.navigate(R.id.action_profileFragment_to_accountSettingsFragment);
+    private void openEditProfileFragment() {
+        navController.navigate(R.id.action_profileFragment_to_editProfileFragment);
     }
 
 

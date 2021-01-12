@@ -4,37 +4,29 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/relLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@+id/relative_layout_top"
+            android:id="@+id/relLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <include layout="@layout/snippet_top_edit_profile_toolbar" />
 
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/relative_layout_entire_screen"
+            android:id="@+id/relLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/relative_layout_top"
-            android:layout_marginBottom="50dp">
+            android:layout_below="@+id/relLayout1">
 
-            <include layout="@layout/layout_center_account_settings" />
+
+            <include layout="@layout/snippet_center_edit_profile" />
 
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/button_finish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="24dp"
-            android:text="Go Back" />
 
     </RelativeLayout>
 
