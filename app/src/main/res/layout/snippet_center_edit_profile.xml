@@ -213,9 +213,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@+id/relLayout6"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="15dp"
+                android:clickable="true"
+                android:focusable="true">
 
                 <ImageView
+                    android:id="@+id/image_view_sign_out"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_centerVertical="true"
@@ -228,9 +231,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="40dp"
                     android:layout_marginLeft="40dp"
-                    android:background="@null"
-                    android:inputType="textNoSuggestions"
-                    android:text="Sign Out" />
+                    android:text="Sign Out"
+                    android:textSize="18sp" />
 
             </RelativeLayout>
 
