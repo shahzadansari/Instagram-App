@@ -2,7 +2,6 @@ package com.example.instagram_app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +21,8 @@ import com.bumptech.glide.Glide;
 import com.example.instagram_app.models.User;
 import com.example.instagram_app.models.UserAccountSettings;
 import com.example.instagram_app.models.UserSettings;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,7 +33,6 @@ import com.google.firebase.database.ValueEventListener;
 public class EditProfileFragment extends Fragment implements
         ConfirmPasswordDialog.OnConfirmPasswordListener {
 
-    private static final String TAG = "EditProfileFragment";
     private ImageView imageViewProfilePhoto, imageViewBackArrow, imageViewSaveChanges;
     private TextView textViewChangePhoto;
     private EditText editTextUsername, editTextDisplayName, editTextDescription,
@@ -41,6 +42,9 @@ public class EditProfileFragment extends Fragment implements
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
+
+    private UserSettings mUserSettings;
+    private String newEmail;
 
     public EditProfileFragment() {
         // Required empty public constructor
@@ -90,8 +94,8 @@ public class EditProfileFragment extends Fragment implements
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                UserSettings userSettings = retrieveData(snapshot);
-                updateUI(userSettings);
+                mUserSettings = retrieveData(snapshot);
+                updateUI(mUserSettings);
             }
 
             @Override
@@ -110,12 +114,11 @@ public class EditProfileFragment extends Fragment implements
     }
 
     private void updateEmail() {
+        newEmail = editTextEmail.getText().toString();
 
-        initConfirmPasswordDialog();
-
-        // TODO: Step 1) Re-authenticate (confirm email and password)
-        //  Step 2) Check if the email is already registered (fetchProvidersForEmail(String email))
-        //  Step 3) Change the email (submit new email to database and authentication)
+        if (!newEmail.equals(mUserSettings.getUser().getEmail())) {
+            initConfirmPasswordDialog();
+        }
     }
 
     private void initConfirmPasswordDialog() {
@@ -126,7 +129,47 @@ public class EditProfileFragment extends Fragment implements
 
     @Override
     public void onConfirmPassword(String password) {
-        Log.d(TAG, "onConfirmPassword: Password Retrieved: " + password);
+        reAuthenticateUser(password);
+    }
+
+    private void reAuthenticateUser(String password) {
+        String currentEmail = mAuth.getCurrentUser().getEmail();
+
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(currentEmail, password);
+
+        mAuth.getCurrentUser().reauthenticate(credential)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        checkIfEmailIsAvailable();
+                    } else {
+                        Toast.makeText(getActivity(), "Authentication failed!\nTry again.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void checkIfEmailIsAvailable() {
+        mAuth.fetchSignInMethodsForEmail(newEmail).addOnCompleteListener(task -> {
+            if (task.getResult().getSignInMethods().size() == 0) {
+                updateEmailAddress();
+            } else {
+                Toast.makeText(getActivity(), "Email address is not available", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(e -> e.printStackTrace());
+    }
+
+    private void updateEmailAddress() {
+        mAuth.getCurrentUser().updateEmail(newEmail)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+
+                        Toast.makeText(getActivity(), "Email address updated", Toast.LENGTH_SHORT).show();
+                        myRef.child(getString(R.string.db_node_users))
+                                .child(mAuth.getUid())
+                                .child(getString(R.string.db_field_email))
+                                .setValue(newEmail);
+                    }
+                });
     }
 
     private void updatePhoneNumber() {

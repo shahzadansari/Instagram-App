@@ -10,7 +10,7 @@
         android:layout_centerHorizontal="true"
         android:background="@color/link_blue"
         android:gravity="center"
-        android:text="Confirm Password"
+        android:text="Confirm Changes"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold" />

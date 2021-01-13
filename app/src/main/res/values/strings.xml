@@ -9,6 +9,7 @@
 
     <!-- Firebase Realtime Database fields -->
     <string name="db_field_username">username</string>
+    <string name="db_field_email">email</string>
     <string name="db_field_description">description</string>
     <string name="db_field_display_name">display_name</string>
     <string name="db_field_phone_number">phone_number</string>
