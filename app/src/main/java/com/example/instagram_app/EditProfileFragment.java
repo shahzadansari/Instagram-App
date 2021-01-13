@@ -2,6 +2,7 @@ package com.example.instagram_app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +28,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class EditProfileFragment extends Fragment {
+public class EditProfileFragment extends Fragment implements
+        ConfirmPasswordDialog.OnConfirmPasswordListener {
 
+    private static final String TAG = "EditProfileFragment";
     private ImageView imageViewProfilePhoto, imageViewBackArrow, imageViewSaveChanges;
     private TextView textViewChangePhoto;
     private EditText editTextUsername, editTextDisplayName, editTextDescription,
@@ -103,6 +106,27 @@ public class EditProfileFragment extends Fragment {
         updateDescription();
         updateDisplayName();
         updatePhoneNumber();
+        updateEmail();
+    }
+
+    private void updateEmail() {
+
+        initConfirmPasswordDialog();
+
+        // TODO: Step 1) Re-authenticate (confirm email and password)
+        //  Step 2) Check if the email is already registered (fetchProvidersForEmail(String email))
+        //  Step 3) Change the email (submit new email to database and authentication)
+    }
+
+    private void initConfirmPasswordDialog() {
+        ConfirmPasswordDialog dialog = new ConfirmPasswordDialog();
+        dialog.show(getFragmentManager(), "EditProfileFragment");
+        dialog.setTargetFragment(EditProfileFragment.this, 1);
+    }
+
+    @Override
+    public void onConfirmPassword(String password) {
+        Log.d(TAG, "onConfirmPassword: Password Retrieved: " + password);
     }
 
     private void updatePhoneNumber() {
