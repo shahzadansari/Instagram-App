@@ -1,4 +1,4 @@
-package com.example.instagram_app;
+package com.example.instagram_app.dialogs;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import com.example.instagram_app.R;
 
 public class ConfirmPasswordDialog extends DialogFragment {
 

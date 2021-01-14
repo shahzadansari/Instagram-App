@@ -1,4 +1,4 @@
-package com.example.instagram_app;
+package com.example.instagram_app.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,9 +18,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
-import com.example.instagram_app.models.User;
-import com.example.instagram_app.models.UserAccountSettings;
-import com.example.instagram_app.models.UserSettings;
+import com.example.instagram_app.MainActivity;
+import com.example.instagram_app.R;
+import com.example.instagram_app.dialogs.ConfirmPasswordDialog;
+import com.example.instagram_app.model.User;
+import com.example.instagram_app.model.UserAccountSettings;
+import com.example.instagram_app.model.UserSettings;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;

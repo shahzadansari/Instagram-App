@@ -1,4 +1,4 @@
-package com.example.instagram_app;
+package com.example.instagram_app.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,8 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.instagram_app.models.User;
-import com.example.instagram_app.models.UserAccountSettings;
+import com.example.instagram_app.R;
+import com.example.instagram_app.model.User;
+import com.example.instagram_app.model.UserAccountSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

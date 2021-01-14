@@ -13,4 +13,14 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="MyTabStyle" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabIndicatorHeight">2.5dp</item>
+        <item name="android:elevation">2dp</item>
+        <item name="tabIconTint">@color/white</item>
+        <item name="tabSelectedTextColor">@color/white</item>
+        <item name="tabTextColor">#ccc</item>
+    </style>
+
 </resources>

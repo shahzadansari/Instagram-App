@@ -5,7 +5,14 @@
         android:id="@+id/homeFragment"
         android:enabled="true"
         android:icon="@drawable/ic_home"
-        android:title="Feed" />
+        android:title="Home" />
+
+    <item
+        android:id="@+id/shareFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_new_post"
+        android:title="Share" />
+
     <item
         android:id="@+id/profileFragment"
         android:enabled="true"

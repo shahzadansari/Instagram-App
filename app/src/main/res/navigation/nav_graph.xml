@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.instagram_app.HomeFragment"
+        android:name="com.example.instagram_app.fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.instagram_app.ProfileFragment"
+        android:name="com.example.instagram_app.fragments.ProfileFragment"
         android:label="ProfileFragment">
         <action
             android:id="@+id/action_profileFragment_to_editProfileFragment"
@@ -25,11 +25,21 @@
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.example.instagram_app.EditProfileFragment"
+        android:name="com.example.instagram_app.fragments.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile">
         <action
             android:id="@+id/action_editProfileFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shareFragment"
+        android:name="com.example.instagram_app.fragments.ShareFragment"
+        android:label="fragment_share"
+        tools:layout="@layout/fragment_share">
+        <action
+            android:id="@+id/action_shareFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/shareFragment" />
     </fragment>
 </navigation>

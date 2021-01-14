@@ -1,21 +1,19 @@
-package com.example.instagram_app;
+package com.example.instagram_app.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.instagram_app.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class HomeFragment extends Fragment {
 
-    private Button btnLogout;
     private FirebaseAuth mAuth;
     private TextView textViewMessage;
 
@@ -35,9 +33,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         textViewMessage = rootView.findViewById(R.id.text_view_message);
-        btnLogout = rootView.findViewById(R.id.button_log_out);
 
-        btnLogout.setOnClickListener(v -> signOut());
         displayStatus();
 
         return rootView;
@@ -52,12 +48,5 @@ public class HomeFragment extends Fragment {
             message = "User is not signed in";
         }
         textViewMessage.setText(message);
-    }
-
-    private void signOut() {
-        mAuth.signOut();
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivity(intent);
-        getActivity().finish();
     }
 }
