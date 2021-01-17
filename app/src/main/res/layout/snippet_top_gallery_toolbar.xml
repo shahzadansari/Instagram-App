@@ -16,7 +16,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/ivCloseShare"
+                    android:id="@+id/image_view_close"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
@@ -29,8 +29,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/ivCloseShare"
-                    android:layout_toRightOf="@+id/ivCloseShare"
+                    android:layout_toEndOf="@+id/image_view_close"
+                    android:layout_toRightOf="@+id/image_view_close"
                     android:gravity="center_vertical"
                     android:textColor="@color/black"
                     android:textSize="20sp" />

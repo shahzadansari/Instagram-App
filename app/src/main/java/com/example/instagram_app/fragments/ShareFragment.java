@@ -10,10 +10,8 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.instagram_app.R;
-import com.example.instagram_app.adapters.FragmentsAdapter;
 import com.example.instagram_app.utils.Permissions;
 import com.google.android.material.tabs.TabLayout;
 
@@ -22,7 +20,6 @@ public class ShareFragment extends Fragment {
     private static final String TAG = "ShareFragment";
     private static final int VERIFY_PERMISSIONS_REQUEST = 1;
     private TabLayout tabLayout;
-    private ViewPager viewPager;
 
     public ShareFragment() {
         // Required empty public constructor
@@ -44,16 +41,53 @@ public class ShareFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_share, container, false);
         tabLayout = rootView.findViewById(R.id.tabs);
-        viewPager = rootView.findViewById(R.id.viewpager);
 
-        initViewPager();
+        initTabs();
+        openGalleryFragment();
 
         return rootView;
     }
 
-    private void initViewPager() {
-        viewPager.setAdapter(new FragmentsAdapter(getActivity().getSupportFragmentManager()));
-        tabLayout.setupWithViewPager(viewPager);
+    private void openGalleryFragment() {
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, new GalleryFragment())
+                .setReorderingAllowed(true)
+                .commit();
+    }
+
+    private void openPhotoFragment() {
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, new PhotoFragment())
+                .setReorderingAllowed(true)
+                .commit();
+    }
+
+    private void initTabs() {
+        tabLayout.addTab(tabLayout.newTab().setText("Gallery"));
+        tabLayout.addTab(tabLayout.newTab().setText("Photo"));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 1) {
+                    openPhotoFragment();
+                } else {
+                    openGalleryFragment();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     public boolean checkPermissionsArray(String[] permissions) {
@@ -67,18 +101,11 @@ public class ShareFragment extends Fragment {
     }
 
     public boolean checkPermissions(String permission) {
-
         int permissionRequest = ActivityCompat.checkSelfPermission(getActivity(), permission);
-
-        if (permissionRequest != PackageManager.PERMISSION_GRANTED) {
-            return false;
-        } else {
-            return true;
-        }
+        return permissionRequest == PackageManager.PERMISSION_GRANTED;
     }
 
     public void verifyPermissions(String[] permissions) {
-
         ActivityCompat.requestPermissions(
                 getActivity(),
                 permissions,

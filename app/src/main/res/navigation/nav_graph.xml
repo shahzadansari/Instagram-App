@@ -42,4 +42,12 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/shareFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/galleryFragment"
+        android:name="com.example.instagram_app.fragments.GalleryFragment"
+        android:label="GalleryFragment" />
+    <fragment
+        android:id="@+id/photoFragment"
+        android:name="com.example.instagram_app.fragments.PhotoFragment"
+        android:label="PhotoFragment" />
 </navigation>

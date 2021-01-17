@@ -28,7 +28,9 @@ public class HostActivity extends AppCompatActivity {
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.editProfileFragment ||
-                    destination.getId() == R.id.shareFragment) {
+                    destination.getId() == R.id.shareFragment ||
+                    destination.getId() == R.id.galleryFragment ||
+                    destination.getId() == R.id.photoFragment) {
                 bottomNavigationView.setVisibility(View.GONE);
             } else {
                 bottomNavigationView.setVisibility(View.VISIBLE);

@@ -3,20 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            style="@style/MyTabStyle"
-            android:layout_alignParentBottom="true"
-            app:tabBackground="@color/design_default_color_primary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabGravity="fill"
-            app:tabMode="fixed" />
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewpager"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_above="@id/tabs" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
+        style="@style/MyTabStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:tabBackground="@color/design_default_color_primary"
+        app:tabGravity="fill"
+        app:tabMode="fixed" />
 
 </RelativeLayout>
