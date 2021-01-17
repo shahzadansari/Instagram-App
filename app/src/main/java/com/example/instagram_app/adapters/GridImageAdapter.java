@@ -1,6 +1,7 @@
 package com.example.instagram_app.adapters;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,7 +56,7 @@ public class GridImageAdapter extends ArrayAdapter<String> {
         Log.d(TAG, "getView: String imageUrl " + imgURL);
 
         Glide.with(mContext)
-                .load(imgURL)
+                .load(Environment.getExternalStorageDirectory().getPath() + "/Pictures/Mobile wallpapers/1526581596217.jpg")
                 .into(holder.image);
 
         return convertView;

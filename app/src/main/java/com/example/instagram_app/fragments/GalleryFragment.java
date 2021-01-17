@@ -112,5 +112,7 @@ public class GalleryFragment extends Fragment {
 
         GridImageAdapter gridImageAdapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_item, imageUrls);
         gridView.setAdapter(gridImageAdapter);
+
+        Log.d(TAG, "setupGridView: ");
     }
 }
