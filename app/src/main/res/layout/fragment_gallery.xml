@@ -39,6 +39,11 @@
 
         </RelativeLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@drawable/drawable_shadow" />
+
         <GridView
             android:id="@+id/gridView"
             android:layout_width="match_parent"
@@ -48,7 +53,6 @@
             android:gravity="center"
             android:horizontalSpacing="1.5dp"
             android:numColumns="3"
-            android:stretchMode="none"
             android:verticalSpacing="1.5dp" />
 
     </LinearLayout>

@@ -1,7 +1,6 @@
 package com.example.instagram_app.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +32,8 @@ public class GalleryFragment extends Fragment {
     private TextView textViewNext;
     private Spinner spinner;
     private GridView gridView;
-
+    private ImageView imageViewSelected;
     private ArrayList<String> directories;
-
     private NavController navController;
 
     public GalleryFragment() {
@@ -51,6 +49,7 @@ public class GalleryFragment extends Fragment {
         textViewNext = rootView.findViewById(R.id.text_view_next);
         spinner = rootView.findViewById(R.id.spinnerDirectory);
         gridView = rootView.findViewById(R.id.gridView);
+        imageViewSelected = rootView.findViewById(R.id.image_view_selected);
 
         initSpinner();
 
@@ -86,8 +85,6 @@ public class GalleryFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemSelected: " + directories.get(position));
-
                 setupGridView(directories.get(position));
             }
 
@@ -102,17 +99,11 @@ public class GalleryFragment extends Fragment {
 
         ArrayList<String> imageUrls = FileSearch.getFilePaths(selectedDirectory);
 
-        for (String imageUrl : imageUrls) {
-            Log.d(TAG, "setupGridView: " + imageUrl);
-        }
-
         int gridWidth = getResources().getDisplayMetrics().widthPixels;
         int imageWidth = gridWidth / NUM_GRID_COLUMNS;
         gridView.setColumnWidth(imageWidth);
 
-        GridImageAdapter gridImageAdapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_item, imageUrls);
-        gridView.setAdapter(gridImageAdapter);
-
-        Log.d(TAG, "setupGridView: ");
+        GridImageAdapter adapter = new GridImageAdapter(getActivity(), imageUrls);
+        gridView.setAdapter(adapter);
     }
 }

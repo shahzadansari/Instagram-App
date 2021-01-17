@@ -1,64 +1,46 @@
 package com.example.instagram_app.adapters;
 
 import android.content.Context;
-import android.os.Environment;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.bumptech.glide.Glide;
-import com.example.instagram_app.R;
 
 import java.util.ArrayList;
 
-public class GridImageAdapter extends ArrayAdapter<String> {
+public class GridImageAdapter extends BaseAdapter {
 
-    private Context mContext;
-    private LayoutInflater mInflater;
-    private int layoutResource;
-    private ArrayList<String> imgURLs;
-    private static final String TAG = "GridImageAdapter";
+    private final Context mContext;
+    private final ArrayList<String> mUrls;
 
-    public GridImageAdapter(Context context, int layoutResource, ArrayList<String> imgURLs) {
-        super(context, layoutResource, imgURLs);
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mContext = context;
-        this.layoutResource = layoutResource;
-        this.imgURLs = imgURLs;
+    public GridImageAdapter(Context context, ArrayList<String> urls) {
+        this.mContext = context;
+        this.mUrls = urls;
     }
 
-    private static class ViewHolder {
-        ImageView image;
-    }
-
-    @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-        final ViewHolder holder;
-        if (convertView == null) {
-            convertView = mInflater.inflate(layoutResource, parent, false);
-            holder = new ViewHolder();
-            holder.image = convertView.findViewById(R.id.gridImageView);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-
-        String imgURL = getItem(position);
-
-        Log.d(TAG, "getView: String imageUrl " + imgURL);
-
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ImageView imageView = new ImageView(mContext);
         Glide.with(mContext)
-                .load(Environment.getExternalStorageDirectory().getPath() + "/Pictures/Mobile wallpapers/1526581596217.jpg")
-                .into(holder.image);
+                .load(mUrls.get(position))
+                .into(imageView);
+        return imageView;
+    }
 
-        return convertView;
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public int getCount() {
+        return 0;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
     }
 }
