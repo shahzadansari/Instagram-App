@@ -9,4 +9,5 @@ public class FilePaths {
 
     public String PICTURES = ROOT_DIR + "/Pictures";
     public String CAMERA = ROOT_DIR + "/DCIM/camera";
+    public String WHATSAPP_IMAGES = ROOT_DIR + "/WhatsApp/Media/WhatsApp Images";
 }

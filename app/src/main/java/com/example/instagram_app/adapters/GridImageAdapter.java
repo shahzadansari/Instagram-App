@@ -36,7 +36,7 @@ public class GridImageAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 0;
+        return mUrls.size();
     }
 
     @Override
