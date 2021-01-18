@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
@@ -38,6 +39,8 @@ public class GalleryFragment extends Fragment {
     private ImageView imageViewSelected;
     private ArrayList<String> directories;
     private NavController navController;
+
+    private String selectedImagePath;
 
     public GalleryFragment() {
         // Required empty public constructor
@@ -67,6 +70,12 @@ public class GalleryFragment extends Fragment {
         imageViewClose.setOnClickListener(v -> {
             navController.navigateUp();
         });
+
+        textViewNext.setOnClickListener(v -> {
+            NavDirections navDirections = ShareFragmentDirections
+                    .actionShareFragmentToEditPhotoFragment(selectedImagePath);
+            navController.navigate(navDirections);
+        });
     }
 
     public void initSpinner() {
@@ -85,9 +94,6 @@ public class GalleryFragment extends Fragment {
             String updatedDirectoryName = directoryName.substring(index + 1);
             directoryNames.add(updatedDirectoryName);
         }
-
-        Log.d(TAG, "initSpinner: directoryNames: " + directoryNames.get(0));
-        Log.d(TAG, "initSpinner: directories: " + directories.get(0));
 
         /*********** To remove .thumbnails/.Gallery2 directories ***********/
         directoryNames.remove(0);
@@ -139,5 +145,8 @@ public class GalleryFragment extends Fragment {
         Glide.with(getActivity())
                 .load(imagePath)
                 .into(imageViewSelected);
+
+        selectedImagePath = imagePath;
+        Log.d(TAG, "setImage: selectedImagePath: " + selectedImagePath);
     }
 }
