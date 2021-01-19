@@ -19,6 +19,7 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.instagram_app.R;
+import com.example.instagram_app.model.Photo;
 import com.example.instagram_app.utils.FilePaths;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +36,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class EditPhotoFragment extends Fragment {
 
@@ -131,28 +136,93 @@ public class EditPhotoFragment extends Fragment {
         FilePaths filePaths = new FilePaths();
         String user_id = mAuth.getCurrentUser().getUid();
 
-        /** e.g, photos/users/user_id/photo1 */
-        StorageReference storageReference = mStorageReference
-                .child(filePaths.FIREBASE_IMAGE_STORAGE + "/" + user_id + "/photo" + (imageCount + 1));
 
         /** Case 1: New Photo */
         if (photoType.equals(getActivity().getString(R.string.new_photo))) {
             Log.d(TAG, "uploadNewPhoto: uploading a new photo");
 
+            /** e.g, photos/users/user_id/photo1 */
+            StorageReference storageReference = mStorageReference
+                    .child(filePaths.FIREBASE_IMAGE_STORAGE + "/" + user_id + "/photo" + (imageCount + 1));
+
             Bitmap bitmap = createBitmap(imageUrl);
             byte[] bytes = getBytesFromBitmap(bitmap, 100);
 
             UploadTask uploadTask = storageReference.putBytes(bytes);
-            uploadTask.addOnFailureListener(exception -> {
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                Log.d(TAG, "uploadNewPhoto: Upload successful");
 
-            }).addOnSuccessListener(taskSnapshot -> {
-                Log.d(TAG, "uploadNewPhoto: Success");
+                storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                    Log.d(TAG, "uploadNewPhoto: imageUrl: " + uri);
+
+                    String newPhotoKey = myRef.child(getActivity()
+                            .getString(R.string.db_node_user_photos))
+                            .push()
+                            .getKey();
+
+                    Photo photo = new Photo();
+                    photo.setCaption(caption);
+                    photo.setDate_created(getTimestamp());
+                    photo.setImage_path(uri.toString());
+                    photo.setPhoto_id(newPhotoKey);
+                    photo.setUser_id(user_id);
+                    photo.setTags(getTags(caption));
+
+                    /** insert into user_photos */
+                    myRef.child(getString(R.string.db_node_user_photos))
+                            .child(user_id)
+                            .child(newPhotoKey)
+                            .setValue(photo);
+
+                    /** insert into (all) photos */
+                    myRef.child(getString(R.string.db_node_photos))
+                            .child(newPhotoKey)
+                            .setValue(photo).addOnCompleteListener(task -> {
+                        navController.popBackStack(R.id.homeFragment, true);
+                    });
+
+                });
+            }).addOnFailureListener(exception -> {
+                Log.d(TAG, "uploadNewPhoto: Upload failed");
+            }).addOnProgressListener(snapshot -> {
+                double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                Log.d(TAG, "Upload is " + progress + "% done");
             });
         }
         /** Case 2: New Profile Photo */
         else if (photoType.equals(getActivity().getString(R.string.profile_photo))) {
             Log.d(TAG, "uploadNewPhoto: uploading a new profile photo");
         }
+    }
+
+    private String getTimestamp() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+        sdf.setTimeZone(TimeZone.getTimeZone("Canada/Pacific"));
+        return sdf.format(new Date());
+    }
+
+    public static String getTags(String string) {
+        if (string.indexOf("#") > 0) {
+            StringBuilder sb = new StringBuilder();
+            char[] charArray = string.toCharArray();
+            boolean foundWord = false;
+            for (char c : charArray) {
+                if (c == '#') {
+                    foundWord = true;
+                    sb.append(c);
+                } else {
+                    if (foundWord) {
+                        sb.append(c);
+                    }
+                }
+                if (c == ' ') {
+                    foundWord = false;
+                }
+            }
+            String s = sb.toString().replace(" ", "").replace("#", ",#");
+            return s.substring(1, s.length());
+        }
+        return string;
     }
 
     public Bitmap createBitmap(String imageUrl) {

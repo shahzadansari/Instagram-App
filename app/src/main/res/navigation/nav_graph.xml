@@ -59,5 +59,8 @@
         android:label="fragment_edit_photo"
         tools:layout="@layout/fragment_edit_photo" >
         <argument android:name="imagePath" />
+        <action
+            android:id="@+id/action_editPhotoFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>
