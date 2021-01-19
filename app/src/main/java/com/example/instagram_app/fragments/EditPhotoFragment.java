@@ -1,5 +1,7 @@
 package com.example.instagram_app.fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +28,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class EditPhotoFragment extends Fragment {
 
@@ -114,7 +123,7 @@ public class EditPhotoFragment extends Fragment {
             uploadNewPhoto(getActivity().getString(R.string.new_photo),
                     caption,
                     imageCount,
-                    imageUrl);
+                    imagePath);
         });
     }
 
@@ -129,10 +138,47 @@ public class EditPhotoFragment extends Fragment {
         /** Case 1: New Photo */
         if (photoType.equals(getActivity().getString(R.string.new_photo))) {
             Log.d(TAG, "uploadNewPhoto: uploading a new photo");
+
+            Bitmap bitmap = createBitmap(imageUrl);
+            byte[] bytes = getBytesFromBitmap(bitmap, 100);
+
+            UploadTask uploadTask = storageReference.putBytes(bytes);
+            uploadTask.addOnFailureListener(exception -> {
+
+            }).addOnSuccessListener(taskSnapshot -> {
+                Log.d(TAG, "uploadNewPhoto: Success");
+            });
         }
         /** Case 2: New Profile Photo */
         else if (photoType.equals(getActivity().getString(R.string.profile_photo))) {
             Log.d(TAG, "uploadNewPhoto: uploading a new profile photo");
         }
+    }
+
+    public Bitmap createBitmap(String imageUrl) {
+        Log.d(TAG, "createBitmap: imageUrl: " + imageUrl);
+
+        File imageFile = new File(imageUrl);
+        FileInputStream fis = null;
+        Bitmap bitmap = null;
+        try {
+            fis = new FileInputStream(imageFile);
+            bitmap = BitmapFactory.decodeStream(fis);
+        } catch (FileNotFoundException e) {
+            Log.e(TAG, "getBitmap: FileNotFoundException: " + e.getMessage());
+        } finally {
+            try {
+                fis.close();
+            } catch (IOException e) {
+                Log.e(TAG, "getBitmap: FileNotFoundException: " + e.getMessage());
+            }
+        }
+        return bitmap;
+    }
+
+    public byte[] getBytesFromBitmap(Bitmap bitmap, int quality) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream);
+        return stream.toByteArray();
     }
 }
