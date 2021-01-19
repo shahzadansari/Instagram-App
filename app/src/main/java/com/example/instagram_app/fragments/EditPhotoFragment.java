@@ -16,6 +16,12 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.instagram_app.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class EditPhotoFragment extends Fragment {
 
@@ -26,6 +32,12 @@ public class EditPhotoFragment extends Fragment {
     private EditText editTextCaption;
     private NavController navController;
 
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myRef;
+
+    private int imageCount;
+
     public EditPhotoFragment() {
         // Required empty public constructor
     }
@@ -34,6 +46,36 @@ public class EditPhotoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         imagePath = EditPhotoFragmentArgs.fromBundle(getArguments()).getImagePath();
+
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                imageCount = getImageCount(snapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private int getImageCount(DataSnapshot snapshot) {
+        int count = 0;
+
+        String userId = mAuth.getCurrentUser().getUid();
+        for (DataSnapshot dataSnapshot : snapshot
+                .child(getActivity().getString(R.string.db_node_user_photos))
+                .child(userId)
+                .getChildren()) {
+
+            count++;
+        }
+        return count;
     }
 
     @Override
