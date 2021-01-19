@@ -1,6 +1,7 @@
 package com.example.instagram_app.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,15 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.instagram_app.R;
+import com.example.instagram_app.utils.FilePaths;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class EditPhotoFragment extends Fragment {
 
@@ -35,8 +39,10 @@ public class EditPhotoFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
+    private StorageReference mStorageReference;
 
     private int imageCount;
+    private String imageUrl;
 
     public EditPhotoFragment() {
         // Required empty public constructor
@@ -50,6 +56,7 @@ public class EditPhotoFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
+        mStorageReference = FirebaseStorage.getInstance().getReference();
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -100,5 +107,32 @@ public class EditPhotoFragment extends Fragment {
         Glide.with(getActivity())
                 .load(imagePath)
                 .into(imageView);
+
+        textViewShare.setOnClickListener(v -> {
+            String caption = editTextCaption.getText().toString();
+
+            uploadNewPhoto(getActivity().getString(R.string.new_photo),
+                    caption,
+                    imageCount,
+                    imageUrl);
+        });
+    }
+
+    private void uploadNewPhoto(String photoType, String caption, int imageCount, String imageUrl) {
+        FilePaths filePaths = new FilePaths();
+        String user_id = mAuth.getCurrentUser().getUid();
+
+        /** e.g, photos/users/user_id/photo1 */
+        StorageReference storageReference = mStorageReference
+                .child(filePaths.FIREBASE_IMAGE_STORAGE + "/" + user_id + "/photo" + (imageCount + 1));
+
+        /** Case 1: New Photo */
+        if (photoType.equals(getActivity().getString(R.string.new_photo))) {
+            Log.d(TAG, "uploadNewPhoto: uploading a new photo");
+        }
+        /** Case 2: New Profile Photo */
+        else if (photoType.equals(getActivity().getString(R.string.profile_photo))) {
+            Log.d(TAG, "uploadNewPhoto: uploading a new profile photo");
+        }
     }
 }
