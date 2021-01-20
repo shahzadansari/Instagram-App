@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
@@ -48,6 +49,8 @@ public class EditProfileFragment extends Fragment implements
 
     private UserSettings mUserSettings;
     private String newEmail;
+
+    public static final int REQUEST_CODE = 1;
 
     public EditProfileFragment() {
         // Required empty public constructor
@@ -89,7 +92,9 @@ public class EditProfileFragment extends Fragment implements
         relativeLayoutClickable.setOnClickListener(v -> signOut());
 
         textViewChangePhoto.setOnClickListener(v -> {
-            // TODO: Grab a photo
+            NavDirections navDirections = EditProfileFragmentDirections
+                    .actionEditProfileFragmentToShareFragment4().setRequestCode(REQUEST_CODE);
+            navController.navigate(navDirections);
         });
 
         imageViewSaveChanges.setOnClickListener(v -> saveChanges());

@@ -21,6 +21,8 @@ public class ShareFragment extends Fragment {
     private static final int VERIFY_PERMISSIONS_REQUEST = 1;
     private TabLayout tabLayout;
 
+    private int requestCode;
+
     public ShareFragment() {
         // Required empty public constructor
     }
@@ -32,6 +34,14 @@ public class ShareFragment extends Fragment {
             Log.d(TAG, "onCreate: checkPermissionsArray: called");
         } else {
             verifyPermissions(Permissions.PERMISSIONS);
+        }
+
+        requestCode = ShareFragmentArgs.fromBundle(getArguments()).getRequestCode();
+
+        if (requestCode == 1) {
+            Log.d(TAG, "onCreate: fragment called for profile photo request");
+        } else {
+            Log.d(TAG, "onCreate: fragment called for share photo request");
         }
     }
 

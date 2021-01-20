@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_editProfileFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_shareFragment4"
+            app:destination="@id/shareFragment" />
     </fragment>
     <fragment
         android:id="@+id/shareFragment"
@@ -44,6 +47,10 @@
         <action
             android:id="@+id/action_shareFragment_to_editPhotoFragment"
             app:destination="@id/editPhotoFragment" />
+        <argument
+            android:name="requestCode"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/galleryFragment"
