@@ -51,6 +51,9 @@
             android:name="requestCode"
             app:argType="integer"
             android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_shareFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/galleryFragment"

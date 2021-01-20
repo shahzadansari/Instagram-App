@@ -15,6 +15,7 @@
     <string name="db_field_description">description</string>
     <string name="db_field_display_name">display_name</string>
     <string name="db_field_phone_number">phone_number</string>
+    <string name="db_field_profile_photo">profile_photo</string>
 
     <!-- photo types -->
     <string name="new_photo">new_photo</string>

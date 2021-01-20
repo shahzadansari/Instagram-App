@@ -1,5 +1,7 @@
 package com.example.instagram_app.fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,13 +27,25 @@ import com.example.instagram_app.R;
 import com.example.instagram_app.adapters.GridImageAdapter;
 import com.example.instagram_app.utils.FilePaths;
 import com.example.instagram_app.utils.FileSearch;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GalleryFragment extends Fragment {
 
     private static final String TAG = "GalleryFragment";
     private static final int NUM_GRID_COLUMNS = 3;
+    private static final int REQUEST_CODE_PROFILE_PHOTO = 1;
     private ImageView imageViewClose;
     private TextView textViewNext;
     private Spinner spinner;
@@ -41,9 +55,36 @@ public class GalleryFragment extends Fragment {
     private NavController navController;
 
     private String selectedImagePath;
+    private int requestCode;
+
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myRef;
+    private StorageReference mStorageReference;
+
+    private NavDirections navDirections;
 
     public GalleryFragment() {
         // Required empty public constructor
+    }
+
+    public GalleryFragment(int requestCode) {
+        this.requestCode = requestCode;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (requestCode == REQUEST_CODE_PROFILE_PHOTO) {
+            Log.d(TAG, "onCreate: gallery called for profile photo");
+        } else {
+            Log.d(TAG, "onCreate: gallery called to share post");
+        }
+
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
+        mStorageReference = FirebaseStorage.getInstance().getReference();
     }
 
     @Override
@@ -56,6 +97,14 @@ public class GalleryFragment extends Fragment {
         spinner = rootView.findViewById(R.id.spinnerDirectory);
         gridView = rootView.findViewById(R.id.gridView);
         imageViewSelected = rootView.findViewById(R.id.image_view_selected);
+
+        if (requestCode == REQUEST_CODE_PROFILE_PHOTO) {
+            textViewNext.setTextSize(16);
+            textViewNext.setText("Update Profile Photo");
+        } else {
+            textViewNext.setTextSize(20);
+            textViewNext.setText("Next");
+        }
 
         initSpinner();
 
@@ -72,9 +121,14 @@ public class GalleryFragment extends Fragment {
         });
 
         textViewNext.setOnClickListener(v -> {
-            NavDirections navDirections = ShareFragmentDirections
-                    .actionShareFragmentToEditPhotoFragment(selectedImagePath);
-            navController.navigate(navDirections);
+
+            if (requestCode == REQUEST_CODE_PROFILE_PHOTO) {
+                updateProfilePhoto(selectedImagePath);
+            } else {
+                navDirections = ShareFragmentDirections
+                        .actionShareFragmentToEditPhotoFragment(selectedImagePath);
+                navController.navigate(navDirections);
+            }
         });
     }
 
@@ -148,5 +202,64 @@ public class GalleryFragment extends Fragment {
 
         selectedImagePath = imagePath;
         Log.d(TAG, "setImage: selectedImagePath: " + selectedImagePath);
+    }
+
+    private void updateProfilePhoto(String imageUrl) {
+        FilePaths filePaths = new FilePaths();
+        String user_id = mAuth.getCurrentUser().getUid();
+
+        /** e.g, photos/users/user_id/profile_photo */
+        StorageReference storageReference = mStorageReference
+                .child(filePaths.FIREBASE_IMAGE_STORAGE + "/" + user_id + "/profile_photo");
+
+        Bitmap bitmap = createBitmap(imageUrl);
+        byte[] bytes = getBytesFromBitmap(bitmap, 100);
+
+        UploadTask uploadTask = storageReference.putBytes(bytes);
+        uploadTask.addOnSuccessListener(taskSnapshot -> {
+
+            storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+
+                myRef.child(getString(R.string.db_node_user_account_settings))
+                        .child(user_id)
+                        .child(getString(R.string.db_field_profile_photo))
+                        .setValue(uri.toString())
+                        .addOnSuccessListener(aVoid -> {
+                            navController.popBackStack();
+                        });
+            });
+        }).addOnFailureListener(exception -> {
+            Log.d(TAG, "uploadNewPhoto: Upload failed");
+        }).addOnProgressListener(snapshot -> {
+            double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+            Log.d(TAG, "Upload is " + progress + "% done");
+        });
+    }
+
+    public Bitmap createBitmap(String imageUrl) {
+        Log.d(TAG, "createBitmap: imageUrl: " + imageUrl);
+
+        File imageFile = new File(imageUrl);
+        FileInputStream fis = null;
+        Bitmap bitmap = null;
+        try {
+            fis = new FileInputStream(imageFile);
+            bitmap = BitmapFactory.decodeStream(fis);
+        } catch (FileNotFoundException e) {
+            Log.e(TAG, "getBitmap: FileNotFoundException: " + e.getMessage());
+        } finally {
+            try {
+                fis.close();
+            } catch (IOException e) {
+                Log.e(TAG, "getBitmap: FileNotFoundException: " + e.getMessage());
+            }
+        }
+        return bitmap;
+    }
+
+    public byte[] getBytesFromBitmap(Bitmap bitmap, int quality) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream);
+        return stream.toByteArray();
     }
 }

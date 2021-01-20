@@ -22,6 +22,7 @@ public class ShareFragment extends Fragment {
     private TabLayout tabLayout;
 
     private int requestCode;
+    private int REQUEST_CODE_PROFILE_PHOTO = 1;
 
     public ShareFragment() {
         // Required empty public constructor
@@ -38,7 +39,7 @@ public class ShareFragment extends Fragment {
 
         requestCode = ShareFragmentArgs.fromBundle(getArguments()).getRequestCode();
 
-        if (requestCode == 1) {
+        if (requestCode == REQUEST_CODE_PROFILE_PHOTO) {
             Log.d(TAG, "onCreate: fragment called for profile photo request");
         } else {
             Log.d(TAG, "onCreate: fragment called for share photo request");
@@ -59,11 +60,19 @@ public class ShareFragment extends Fragment {
     }
 
     private void openGalleryFragment() {
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentContainer, new GalleryFragment())
-                .setReorderingAllowed(true)
-                .commit();
+        if (requestCode == REQUEST_CODE_PROFILE_PHOTO) {
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, new GalleryFragment(REQUEST_CODE_PROFILE_PHOTO))
+                    .setReorderingAllowed(true)
+                    .commit();
+        } else {
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, new GalleryFragment())
+                    .setReorderingAllowed(true)
+                    .commit();
+        }
     }
 
     private void openPhotoFragment() {
