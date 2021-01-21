@@ -56,7 +56,6 @@ public class EditPhotoFragment extends Fragment {
     private StorageReference mStorageReference;
 
     private int imageCount;
-    private String imageUrl;
 
     public EditPhotoFragment() {
         // Required empty public constructor
@@ -66,6 +65,7 @@ public class EditPhotoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         imagePath = EditPhotoFragmentArgs.fromBundle(getArguments()).getImagePath();
+        Log.d(TAG, "onCreate: imagePath: " + imagePath);
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
