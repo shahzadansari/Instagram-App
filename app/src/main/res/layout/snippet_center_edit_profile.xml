@@ -1,5 +1,4 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,9 +15,7 @@
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                app:civ_border_color="@color/black"
-                app:civ_border_width="2dp" />
+                android:layout_marginTop="20dp" />
 
             <TextView
                 android:id="@+id/text_view_change_photo"

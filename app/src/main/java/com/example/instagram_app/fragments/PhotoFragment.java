@@ -3,13 +3,12 @@ package com.example.instagram_app.fragments;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,22 +18,52 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.instagram_app.R;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.example.instagram_app.utils.FilePaths;
+import com.example.instagram_app.utils.Utils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class PhotoFragment extends Fragment {
-    private static final int CAMERA_REQUEST_CODE = 1;
-    private Button buttonOpenCamera;
-    private ImageView imageViewReceivedImage;
 
+    private static final String TAG = "PhotoFragment";
+    private static final int REQUEST_CODE_PROFILE_PHOTO = 1;
+    private static final int CAMERA_REQUEST_CODE = 6;
+
+    private Button buttonOpenCamera;
     private String imagePath;
     private NavController navController;
+    private int requestCode;
+
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myRef;
+    private StorageReference mStorageReference;
 
     public PhotoFragment() {
         // Required empty public constructor
+    }
+
+    public PhotoFragment(int requestCode) {
+        this.requestCode = requestCode;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (requestCode == REQUEST_CODE_PROFILE_PHOTO) {
+            Log.d(TAG, "onCreate: photo fragment called for profile photo");
+        } else {
+            Log.d(TAG, "onCreate: photo fragment called to share post");
+        }
+
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
+        mStorageReference = FirebaseStorage.getInstance().getReference();
     }
 
     @Override
@@ -43,7 +72,6 @@ public class PhotoFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_photo, container, false);
         buttonOpenCamera = rootView.findViewById(R.id.button_open_camera);
-        imageViewReceivedImage = rootView.findViewById(R.id.image_view_received);
 
         buttonOpenCamera.setOnClickListener(v -> {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -64,36 +92,46 @@ public class PhotoFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST_CODE) {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            imagePath = savingToStorage(bitmap);
-            imageViewReceivedImage.setImageBitmap(bitmap);
+            imagePath = Utils.savingToStorage(bitmap);
 
-            NavDirections navDirections = ShareFragmentDirections
-                    .actionShareFragmentToEditPhotoFragment(imagePath);
-            navController.navigate(navDirections);
+            if (this.requestCode == REQUEST_CODE_PROFILE_PHOTO) {
+                updateProfilePhoto(bitmap);
+            } else {
+                NavDirections navDirections = ShareFragmentDirections
+                        .actionShareFragmentToEditPhotoFragment(imagePath);
+                navController.navigate(navDirections);
+            }
         }
     }
 
-    // storage/emulated/0/Pictures/Insta Clone
-    public String savingToStorage(Bitmap bitmap) {
-        String file_path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                .getAbsolutePath() + "/Insta Clone";
-        File dir = new File(file_path);
-        if (!dir.exists())
-            dir.mkdirs();
+    private void updateProfilePhoto(Bitmap bitmap) {
+        FilePaths filePaths = new FilePaths();
+        String user_id = mAuth.getCurrentUser().getUid();
 
-        String format = new SimpleDateFormat("yyyyMMddHHmmss",
-                java.util.Locale.getDefault()).format(new Date());
+        /** e.g, photos/users/user_id/profile_photo */
+        StorageReference storageReference = mStorageReference
+                .child(filePaths.FIREBASE_IMAGE_STORAGE + "/" + user_id + "/profile_photo");
 
-        File file = new File(dir, format + ".jpeg");
-        FileOutputStream fOut;
-        try {
-            fOut = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-            fOut.flush();
-            fOut.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return file.getAbsolutePath();
+        byte[] bytes = Utils.getBytesFromBitmap(bitmap, 100);
+
+        UploadTask uploadTask = storageReference.putBytes(bytes);
+        uploadTask.addOnSuccessListener(taskSnapshot -> {
+
+            storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+
+                myRef.child(getString(R.string.db_node_user_account_settings))
+                        .child(user_id)
+                        .child(getString(R.string.db_field_profile_photo))
+                        .setValue(uri.toString())
+                        .addOnSuccessListener(aVoid -> {
+                            navController.popBackStack();
+                        });
+            });
+        }).addOnFailureListener(exception -> {
+            Log.d(TAG, "uploadNewPhoto: Upload failed");
+        }).addOnProgressListener(snapshot -> {
+            double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+            Log.d(TAG, "Upload is " + progress + "% done");
+        });
     }
 }

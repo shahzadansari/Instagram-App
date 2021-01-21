@@ -19,12 +19,4 @@
         android:layout_marginTop="100dp"
         android:text="Open Camera" />
 
-    <ImageView
-        android:id="@+id/image_view_received"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_below="@id/button_open_camera"
-        android:layout_marginTop="30dp"
-        android:scaleType="centerCrop" />
-
 </RelativeLayout>

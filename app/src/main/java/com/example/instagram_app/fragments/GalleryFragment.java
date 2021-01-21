@@ -1,7 +1,6 @@
 package com.example.instagram_app.fragments;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +26,7 @@ import com.example.instagram_app.R;
 import com.example.instagram_app.adapters.GridImageAdapter;
 import com.example.instagram_app.utils.FilePaths;
 import com.example.instagram_app.utils.FileSearch;
+import com.example.instagram_app.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -34,11 +34,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class GalleryFragment extends Fragment {
@@ -116,9 +111,7 @@ public class GalleryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
 
-        imageViewClose.setOnClickListener(v -> {
-            navController.navigateUp();
-        });
+        imageViewClose.setOnClickListener(v -> navController.navigateUp());
 
         textViewNext.setOnClickListener(v -> {
 
@@ -157,9 +150,7 @@ public class GalleryFragment extends Fragment {
                 android.R.layout.simple_spinner_item,
                 directoryNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         spinner.setAdapter(adapter);
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -212,8 +203,8 @@ public class GalleryFragment extends Fragment {
         StorageReference storageReference = mStorageReference
                 .child(filePaths.FIREBASE_IMAGE_STORAGE + "/" + user_id + "/profile_photo");
 
-        Bitmap bitmap = createBitmap(imageUrl);
-        byte[] bytes = getBytesFromBitmap(bitmap, 100);
+        Bitmap bitmap = Utils.createBitmap(imageUrl);
+        byte[] bytes = Utils.getBytesFromBitmap(bitmap, 100);
 
         UploadTask uploadTask = storageReference.putBytes(bytes);
         uploadTask.addOnSuccessListener(taskSnapshot -> {
@@ -234,32 +225,5 @@ public class GalleryFragment extends Fragment {
             double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
             Log.d(TAG, "Upload is " + progress + "% done");
         });
-    }
-
-    public Bitmap createBitmap(String imageUrl) {
-        Log.d(TAG, "createBitmap: imageUrl: " + imageUrl);
-
-        File imageFile = new File(imageUrl);
-        FileInputStream fis = null;
-        Bitmap bitmap = null;
-        try {
-            fis = new FileInputStream(imageFile);
-            bitmap = BitmapFactory.decodeStream(fis);
-        } catch (FileNotFoundException e) {
-            Log.e(TAG, "getBitmap: FileNotFoundException: " + e.getMessage());
-        } finally {
-            try {
-                fis.close();
-            } catch (IOException e) {
-                Log.e(TAG, "getBitmap: FileNotFoundException: " + e.getMessage());
-            }
-        }
-        return bitmap;
-    }
-
-    public byte[] getBytesFromBitmap(Bitmap bitmap, int quality) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream);
-        return stream.toByteArray();
     }
 }

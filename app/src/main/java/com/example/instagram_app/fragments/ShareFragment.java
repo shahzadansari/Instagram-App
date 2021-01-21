@@ -76,11 +76,19 @@ public class ShareFragment extends Fragment {
     }
 
     private void openPhotoFragment() {
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentContainer, new PhotoFragment())
-                .setReorderingAllowed(true)
-                .commit();
+        if (requestCode == REQUEST_CODE_PROFILE_PHOTO) {
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, new PhotoFragment(REQUEST_CODE_PROFILE_PHOTO))
+                    .setReorderingAllowed(true)
+                    .commit();
+        } else {
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, new PhotoFragment())
+                    .setReorderingAllowed(true)
+                    .commit();
+        }
     }
 
     private void initTabs() {
