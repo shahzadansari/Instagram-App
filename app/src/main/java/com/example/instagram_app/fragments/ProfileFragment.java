@@ -109,12 +109,12 @@ public class ProfileFragment extends Fragment {
         String id = mAuth.getCurrentUser().getUid();
 
         User user = snapshot
-                .child(getString(R.string.db_node_users)) // users node
+                .child("users") // users node
                 .child(id) // user_id
                 .getValue(User.class); // data from that node
 
         UserAccountSettings userAccountSettings = snapshot
-                .child(getString(R.string.db_node_user_account_settings)) // user_account_settings node
+                .child("user_account_settings") // user_account_settings node
                 .child(id) // user_id
                 .getValue(UserAccountSettings.class); // data from that node
 

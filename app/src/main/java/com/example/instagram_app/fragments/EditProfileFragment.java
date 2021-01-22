@@ -172,7 +172,7 @@ public class EditProfileFragment extends Fragment implements
                     if (task.isSuccessful()) {
 
                         Toast.makeText(getActivity(), "Email address updated", Toast.LENGTH_SHORT).show();
-                        myRef.child(getString(R.string.db_node_users))
+                        myRef.child("users")
                                 .child(mAuth.getUid())
                                 .child(getString(R.string.db_field_email))
                                 .setValue(newEmail);
@@ -183,7 +183,7 @@ public class EditProfileFragment extends Fragment implements
     private void updatePhoneNumber() {
         long phoneNumber = Long.parseLong(editTextPhoneNumber.getText().toString());
 
-        myRef.child(getString(R.string.db_node_users))
+        myRef.child("users")
                 .child(mAuth.getUid())
                 .child(getString(R.string.db_field_phone_number))
                 .setValue(phoneNumber);
@@ -192,7 +192,7 @@ public class EditProfileFragment extends Fragment implements
     private void updateDisplayName() {
         String displayName = editTextDisplayName.getText().toString();
 
-        myRef.child(getString(R.string.db_node_user_account_settings))
+        myRef.child("user_account_settings")
                 .child(mAuth.getUid())
                 .child(getString(R.string.db_field_display_name))
                 .setValue(displayName);
@@ -201,7 +201,7 @@ public class EditProfileFragment extends Fragment implements
     private void updateDescription() {
         String description = editTextDescription.getText().toString();
 
-        myRef.child(getString(R.string.db_node_user_account_settings))
+        myRef.child("user_account_settings")
                 .child(mAuth.getUid())
                 .child(getString(R.string.db_field_description))
                 .setValue(description);
@@ -212,12 +212,12 @@ public class EditProfileFragment extends Fragment implements
 
         String username = editTextUsername.getText().toString();
 
-        myRef.child(getString(R.string.db_node_users))
+        myRef.child("users")
                 .child(mAuth.getUid())
                 .child(getString(R.string.db_field_username))
                 .setValue(username);
 
-        myRef.child(getString(R.string.db_node_user_account_settings))
+        myRef.child("user_account_settings")
                 .child(mAuth.getUid())
                 .child(getString(R.string.db_field_username))
                 .setValue(username);
@@ -240,12 +240,12 @@ public class EditProfileFragment extends Fragment implements
         String id = mAuth.getCurrentUser().getUid();
 
         User user = snapshot
-                .child(getString(R.string.db_node_users)) // users node
+                .child("users") // users node
                 .child(id) // user_id
                 .getValue(User.class); // data from that node
 
         UserAccountSettings userAccountSettings = snapshot
-                .child(getString(R.string.db_node_user_account_settings)) // user_account_settings node
+                .child("user_account_settings") // user_account_settings node
                 .child(id) // user_id
                 .getValue(UserAccountSettings.class); // data from that node
 

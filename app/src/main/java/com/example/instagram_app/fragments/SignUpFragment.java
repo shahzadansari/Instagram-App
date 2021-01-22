@@ -118,11 +118,11 @@ public class SignUpFragment extends Fragment {
                         "",
                         username);
 
-        myRef.child(getString(R.string.db_node_users))
+        myRef.child("users")
                 .child(userId)
                 .setValue(user);
 
-        myRef.child(getString(R.string.db_node_user_account_settings))
+        myRef.child("user_account_settings")
                 .child(userId)
                 .setValue(userAccountSettings);
     }
@@ -130,7 +130,7 @@ public class SignUpFragment extends Fragment {
     private boolean isUsernameAvailable(String username, DataSnapshot snapshot) {
         User user = new User();
 
-        for (DataSnapshot dataSnapshot : snapshot.child(getString(R.string.db_node_users)).getChildren()) {
+        for (DataSnapshot dataSnapshot : snapshot.child("users").getChildren()) {
             user.setUsername(dataSnapshot.getValue(User.class).getUsername());
 
             if (user.getUsername().equals(username)) {

@@ -4,10 +4,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Firebase Realtime Database nodes -->
+    <!--
     <string name="db_node_users">users</string>
     <string name="db_node_user_account_settings">user_account_settings</string>
     <string name="db_node_photos">photos</string>
-    <string name="db_node_user_photos">user_photos</string>
+    <string name="db_node_user_photos">user_photos</string> -->
 
     <!-- Firebase Realtime Database fields -->
     <string name="db_field_username">username</string>

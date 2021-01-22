@@ -54,25 +54,25 @@ public class EditPhotoFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        imagePath = EditPhotoFragmentArgs.fromBundle(getArguments()).getImagePath();
-        Log.d(TAG, "onCreate: imagePath: " + imagePath);
-
-        mAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
-        mStorageReference = FirebaseStorage.getInstance().getReference();
-
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                imageCount = getImageCount(snapshot);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+//        imagePath = EditPhotoFragmentArgs.fromBundle(getArguments()).getImagePath();
+//        Log.d(TAG, "onCreate: imagePath: " + imagePath);
+//
+//        mAuth = FirebaseAuth.getInstance();
+//        mFirebaseDatabase = FirebaseDatabase.getInstance();
+//        myRef = mFirebaseDatabase.getReference();
+//        mStorageReference = FirebaseStorage.getInstance().getReference();
+//
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                imageCount = getImageCount(snapshot);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
     }
 
     private int getImageCount(DataSnapshot snapshot) {
@@ -80,7 +80,7 @@ public class EditPhotoFragment extends Fragment {
 
         String userId = mAuth.getCurrentUser().getUid();
         for (DataSnapshot dataSnapshot : snapshot
-                .child(getActivity().getString(R.string.db_node_user_photos))
+                .child("user_photos")
                 .child(userId)
                 .getChildren()) {
 
@@ -100,6 +100,26 @@ public class EditPhotoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
+
+        imagePath = EditPhotoFragmentArgs.fromBundle(getArguments()).getImagePath();
+        Log.d(TAG, "onCreate: imagePath: " + imagePath);
+
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
+        mStorageReference = FirebaseStorage.getInstance().getReference();
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                imageCount = getImageCount(snapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         imageView = view.findViewById(R.id.image_view);
         editTextCaption = view.findViewById(R.id.edit_text_caption);
@@ -139,8 +159,7 @@ public class EditPhotoFragment extends Fragment {
             storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
                 Log.d(TAG, "uploadNewPhoto: imageUrl: " + uri);
 
-                String newPhotoKey = myRef.child(getActivity()
-                        .getString(R.string.db_node_user_photos))
+                String newPhotoKey = myRef.child("user_photos")
                         .push()
                         .getKey();
 
@@ -153,13 +172,13 @@ public class EditPhotoFragment extends Fragment {
                 photo.setTags(Utils.getTags(caption));
 
                 /** insert into user_photos */
-                myRef.child(getString(R.string.db_node_user_photos))
+                myRef.child("user_photos")
                         .child(user_id)
                         .child(newPhotoKey)
                         .setValue(photo);
 
                 /** insert into (all) photos */
-                myRef.child(getString(R.string.db_node_photos))
+                myRef.child("photos")
                         .child(newPhotoKey)
                         .setValue(photo).addOnCompleteListener(task -> {
                     navController.popBackStack(R.id.homeFragment, true);

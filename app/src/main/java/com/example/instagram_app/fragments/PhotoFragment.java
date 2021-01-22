@@ -119,7 +119,7 @@ public class PhotoFragment extends Fragment {
 
             storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
 
-                myRef.child(getString(R.string.db_node_user_account_settings))
+                myRef.child("user_account_settings")
                         .child(user_id)
                         .child(getString(R.string.db_field_profile_photo))
                         .setValue(uri.toString())

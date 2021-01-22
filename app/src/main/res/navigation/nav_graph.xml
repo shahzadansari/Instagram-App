@@ -12,8 +12,7 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_profileFragment"
-            app:destination="@id/profileFragment"
-            app:popUpTo="@id/homeFragment" />
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -49,8 +48,8 @@
             app:destination="@id/editPhotoFragment" />
         <argument
             android:name="requestCode"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
         <action
             android:id="@+id/action_shareFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
@@ -67,7 +66,7 @@
         android:id="@+id/editPhotoFragment"
         android:name="com.example.instagram_app.fragments.EditPhotoFragment"
         android:label="fragment_edit_photo"
-        tools:layout="@layout/fragment_edit_photo" >
+        tools:layout="@layout/fragment_edit_photo">
         <argument android:name="imagePath" />
         <action
             android:id="@+id/action_editPhotoFragment_to_homeFragment"
