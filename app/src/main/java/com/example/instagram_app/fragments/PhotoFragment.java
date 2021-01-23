@@ -125,6 +125,7 @@ public class PhotoFragment extends Fragment {
                         .setValue(uri.toString())
                         .addOnSuccessListener(aVoid -> {
                             navController.popBackStack();
+//                            navController.navigate(R.id.action_shareFragment_to_homeFragment);
                         });
             });
         }).addOnFailureListener(exception -> {
@@ -133,5 +134,10 @@ public class PhotoFragment extends Fragment {
             double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
             Log.d(TAG, "Upload is " + progress + "% done");
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }

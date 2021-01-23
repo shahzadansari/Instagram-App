@@ -1,7 +1,6 @@
 package com.example.instagram_app.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,7 +104,7 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserSettings userSettings = retrieveData(snapshot);
@@ -136,7 +135,7 @@ public class ProfileFragment extends Fragment {
         textViewDisplayName.setText(userSettings.getSettings().getDisplay_name());
         textViewDescription.setText(userSettings.getSettings().getDescription());
 
-        Glide.with(getContext())
+        Glide.with(getActivity())
                 .load(userSettings.getSettings().getProfile_photo())
                 .into(imageViewProfilePhoto);
     }

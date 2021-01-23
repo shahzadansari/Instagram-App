@@ -99,7 +99,20 @@ public class EditProfileFragment extends Fragment implements
 
         imageViewSaveChanges.setOnClickListener(v -> saveChanges());
 
-        myRef.addValueEventListener(new ValueEventListener() {
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                mUserSettings = retrieveData(snapshot);
+//                updateUI(mUserSettings);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 mUserSettings = retrieveData(snapshot);

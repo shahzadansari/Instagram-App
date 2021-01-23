@@ -216,7 +216,8 @@ public class GalleryFragment extends Fragment {
                         .child(getString(R.string.db_field_profile_photo))
                         .setValue(uri.toString())
                         .addOnSuccessListener(aVoid -> {
-                            navController.popBackStack();
+//                            navController.popBackStack();
+                            navController.navigate(R.id.action_shareFragment_to_homeFragment);
                         });
             });
         }).addOnFailureListener(exception -> {

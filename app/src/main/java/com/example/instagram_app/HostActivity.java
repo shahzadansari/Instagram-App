@@ -1,6 +1,8 @@
 package com.example.instagram_app;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -13,9 +15,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HostActivity extends AppCompatActivity {
 
+    private static final String TAG = "HostActivity";
     private NavController navController;
     private BottomNavigationView bottomNavigationView;
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +31,11 @@ public class HostActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            Log.d(TAG, "onCreate: called" + destination.getDisplayName());
+            if(destination.getId() == R.id.homeFragment){
+                bottomNavigationView.setVisibility(View.VISIBLE);
+            }
+
             if (destination.getId() == R.id.editProfileFragment ||
                     destination.getId() == R.id.shareFragment ||
                     destination.getId() == R.id.galleryFragment ||
