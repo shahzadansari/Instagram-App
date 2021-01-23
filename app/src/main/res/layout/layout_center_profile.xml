@@ -90,11 +90,12 @@
                     android:id="@+id/gridView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
                     android:gravity="center"
-                    android:horizontalSpacing="1dp"
+                    android:horizontalSpacing="1.5dp"
                     android:numColumns="3"
-                    android:stretchMode="columnWidth"
-                    android:verticalSpacing="1dp" />
+                    android:stretchMode="none"
+                    android:verticalSpacing="1.5dp"  />
 
             </RelativeLayout>
         </RelativeLayout>

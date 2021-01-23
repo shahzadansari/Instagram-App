@@ -1,5 +1,7 @@
 package com.example.instagram_app.model;
 
+import androidx.annotation.Nullable;
+
 public class Photo {
 
     private String caption;
@@ -79,5 +81,14 @@ public class Photo {
                 ", user_id='" + user_id + '\'' +
                 ", tags='" + tags + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj == this)
+            return true;
+
+        Photo photo = (Photo) obj;
+        return photo.getPhoto_id() == this.getPhoto_id();
     }
 }

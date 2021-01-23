@@ -1,9 +1,11 @@
 package com.example.instagram_app.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -16,6 +18,8 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.instagram_app.R;
+import com.example.instagram_app.adapters.ProfileGridImagesAdapter;
+import com.example.instagram_app.model.Photo;
 import com.example.instagram_app.model.User;
 import com.example.instagram_app.model.UserAccountSettings;
 import com.example.instagram_app.model.UserSettings;
@@ -26,8 +30,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class ProfileFragment extends Fragment {
 
+    private static final String TAG = "ProfileFragment";
+    private static final int NUM_GRID_COLUMNS = 3;
     private ProgressBar progressBar;
     private TextView textViewEditProfileBtn, textViewPosts, textViewFollowers, textViewFollowing,
             textViewDisplayName, textViewDescription;
@@ -36,6 +44,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
+    private GridView gridView;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -55,6 +64,7 @@ public class ProfileFragment extends Fragment {
         textViewDisplayName = rootView.findViewById(R.id.text_view_display_name);
         textViewDescription = rootView.findViewById(R.id.text_view_description);
         imageViewProfilePhoto = rootView.findViewById(R.id.profile_image);
+        gridView = rootView.findViewById(R.id.gridView);
 
         progressBar.setVisibility(View.VISIBLE);
         textViewEditProfileBtn.setOnClickListener(v -> openEditProfileFragment());
@@ -63,11 +73,45 @@ public class ProfileFragment extends Fragment {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
 
+        return rootView;
+    }
+
+
+    private void getUserPhotos(DataSnapshot snapshot) {
+        ArrayList<Photo> photoArrayList = new ArrayList<>();
+
+        for (DataSnapshot dataSnapshot : snapshot.child("user_photos")
+                .child(mAuth.getUid())
+                .getChildren()) {
+
+            Photo photo = dataSnapshot.getValue(Photo.class);
+            photoArrayList.add(photo);
+        }
+
+        setupGridView(photoArrayList);
+    }
+
+    private void setupGridView(ArrayList<Photo> photoArrayList) {
+        int gridWidth = getResources().getDisplayMetrics().widthPixels;
+        int imageWidth = gridWidth / NUM_GRID_COLUMNS;
+        gridView.setColumnWidth(imageWidth);
+
+        ProfileGridImagesAdapter adapter = new ProfileGridImagesAdapter(getActivity(), photoArrayList);
+        gridView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserSettings userSettings = retrieveData(snapshot);
                 updateUI(userSettings);
+
+                getUserPhotos(snapshot);
             }
 
             @Override
@@ -75,14 +119,6 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-
-        return rootView;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
     }
 
     private void openEditProfileFragment() {
@@ -100,7 +136,7 @@ public class ProfileFragment extends Fragment {
         textViewDisplayName.setText(userSettings.getSettings().getDisplay_name());
         textViewDescription.setText(userSettings.getSettings().getDescription());
 
-        Glide.with(this)
+        Glide.with(getContext())
                 .load(userSettings.getSettings().getProfile_photo())
                 .into(imageViewProfilePhoto);
     }
