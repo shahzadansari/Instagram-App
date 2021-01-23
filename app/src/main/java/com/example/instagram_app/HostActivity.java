@@ -32,7 +32,7 @@ public class HostActivity extends AppCompatActivity {
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             Log.d(TAG, "onCreate: called" + destination.getDisplayName());
-            if(destination.getId() == R.id.homeFragment){
+            if (destination.getId() == R.id.homeFragment) {
                 bottomNavigationView.setVisibility(View.VISIBLE);
             }
 
@@ -40,7 +40,8 @@ public class HostActivity extends AppCompatActivity {
                     destination.getId() == R.id.shareFragment ||
                     destination.getId() == R.id.galleryFragment ||
                     destination.getId() == R.id.photoFragment ||
-                    destination.getId() == R.id.editPhotoFragment) {
+                    destination.getId() == R.id.editPhotoFragment ||
+                    destination.getId() == R.id.viewPostFragment) {
                 bottomNavigationView.setVisibility(View.GONE);
             } else {
                 bottomNavigationView.setVisibility(View.VISIBLE);

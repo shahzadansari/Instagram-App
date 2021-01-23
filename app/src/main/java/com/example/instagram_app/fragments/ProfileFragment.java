@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
@@ -75,6 +76,26 @@ public class ProfileFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserSettings userSettings = retrieveData(snapshot);
+                updateUI(userSettings);
+
+                getUserPhotos(snapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
     private void getUserPhotos(DataSnapshot snapshot) {
         ArrayList<Photo> photoArrayList = new ArrayList<>();
@@ -97,31 +118,13 @@ public class ProfileFragment extends Fragment {
 
         ProfileGridImagesAdapter adapter = new ProfileGridImagesAdapter(getActivity(), photoArrayList);
         gridView.setAdapter(adapter);
-    }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
-
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                UserSettings userSettings = retrieveData(snapshot);
-                updateUI(userSettings);
-
-                getUserPhotos(snapshot);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+        gridView.setOnItemClickListener((parent, view, position, id) -> {
+            Photo photoData = photoArrayList.get(position);
+            NavDirections navDirections = ProfileFragmentDirections
+                    .actionProfileFragmentToViewPostFragment(photoData);
+            navController.navigate(navDirections);
         });
-    }
-
-    private void openEditProfileFragment() {
-        navController.navigate(R.id.action_profileFragment_to_editProfileFragment);
     }
 
 
@@ -154,5 +157,9 @@ public class ProfileFragment extends Fragment {
                 .getValue(UserAccountSettings.class); // data from that node
 
         return new UserSettings(user, userAccountSettings);
+    }
+
+    private void openEditProfileFragment() {
+        navController.navigate(R.id.action_profileFragment_to_editProfileFragment);
     }
 }

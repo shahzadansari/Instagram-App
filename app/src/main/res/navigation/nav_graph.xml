@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_profileFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_viewPostFragment"
+            app:destination="@id/viewPostFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
@@ -71,5 +74,13 @@
         <action
             android:id="@+id/action_editPhotoFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewPostFragment"
+        android:name="com.example.instagram_app.fragments.ViewPostFragment"
+        android:label="ViewPostFragment" >
+        <argument
+            android:name="photoData"
+            app:argType="com.example.instagram_app.model.Photo" />
     </fragment>
 </navigation>
