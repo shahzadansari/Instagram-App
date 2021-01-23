@@ -135,9 +135,4 @@ public class PhotoFragment extends Fragment {
             Log.d(TAG, "Upload is " + progress + "% done");
         });
     }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
 }

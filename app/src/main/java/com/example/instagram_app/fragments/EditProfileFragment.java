@@ -37,20 +37,19 @@ import com.google.firebase.database.ValueEventListener;
 public class EditProfileFragment extends Fragment implements
         ConfirmPasswordDialog.OnConfirmPasswordListener {
 
+    public static final int REQUEST_CODE = 1;
     private ImageView imageViewProfilePhoto, imageViewBackArrow, imageViewSaveChanges;
     private TextView textViewChangePhoto;
     private EditText editTextUsername, editTextDisplayName, editTextDescription,
             editTextEmail, editTextPhoneNumber;
     private RelativeLayout relativeLayoutClickable;
     private NavController navController;
+
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
-
     private UserSettings mUserSettings;
     private String newEmail;
-
-    public static final int REQUEST_CODE = 1;
 
     public EditProfileFragment() {
         // Required empty public constructor
@@ -98,19 +97,6 @@ public class EditProfileFragment extends Fragment implements
         });
 
         imageViewSaveChanges.setOnClickListener(v -> saveChanges());
-
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                mUserSettings = retrieveData(snapshot);
-//                updateUI(mUserSettings);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

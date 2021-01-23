@@ -44,49 +44,10 @@ public class EditPhotoFragment extends Fragment {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
     private StorageReference mStorageReference;
-
     private int imageCount;
 
     public EditPhotoFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        imagePath = EditPhotoFragmentArgs.fromBundle(getArguments()).getImagePath();
-//        Log.d(TAG, "onCreate: imagePath: " + imagePath);
-//
-//        mAuth = FirebaseAuth.getInstance();
-//        mFirebaseDatabase = FirebaseDatabase.getInstance();
-//        myRef = mFirebaseDatabase.getReference();
-//        mStorageReference = FirebaseStorage.getInstance().getReference();
-//
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                imageCount = getImageCount(snapshot);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-    }
-
-    private int getImageCount(DataSnapshot snapshot) {
-        int count = 0;
-
-        String userId = mAuth.getCurrentUser().getUid();
-        for (DataSnapshot dataSnapshot : snapshot
-                .child("user_photos")
-                .child(userId)
-                .getChildren()) {
-
-            count++;
-        }
-        return count;
     }
 
     @Override
@@ -102,14 +63,13 @@ public class EditPhotoFragment extends Fragment {
         navController = Navigation.findNavController(view);
 
         imagePath = EditPhotoFragmentArgs.fromBundle(getArguments()).getImagePath();
-        Log.d(TAG, "onCreate: imagePath: " + imagePath);
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
         mStorageReference = FirebaseStorage.getInstance().getReference();
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 imageCount = getImageCount(snapshot);
@@ -134,7 +94,6 @@ public class EditPhotoFragment extends Fragment {
 
         textViewShare.setOnClickListener(v -> {
             String caption = editTextCaption.getText().toString();
-
             uploadNewPhoto(caption,
                     imageCount,
                     imagePath);
@@ -191,5 +150,19 @@ public class EditPhotoFragment extends Fragment {
             double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
             Log.d(TAG, "Upload is " + progress + "% done");
         });
+    }
+
+    private int getImageCount(DataSnapshot snapshot) {
+        int count = 0;
+
+        String userId = mAuth.getCurrentUser().getUid();
+        for (DataSnapshot dataSnapshot : snapshot
+                .child("user_photos")
+                .child(userId)
+                .getChildren()) {
+
+            count++;
+        }
+        return count;
     }
 }

@@ -64,7 +64,6 @@
                 android:layout_below="@id/relLayout2"
                 android:background="@drawable/drawable_shadow" />
 
-
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

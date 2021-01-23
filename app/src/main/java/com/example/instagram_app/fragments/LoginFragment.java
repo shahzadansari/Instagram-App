@@ -66,8 +66,7 @@ public class LoginFragment extends Fragment {
                     if (task.isSuccessful()) {
                         openHostActivity();
                     } else {
-                        Toast.makeText(getActivity(), "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

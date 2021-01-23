@@ -1,7 +1,6 @@
 package com.example.instagram_app.fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,11 +97,9 @@ public class SignUpFragment extends Fragment {
 
                         addInitialUserData(email, username);
                         Toast.makeText(getContext(), "Sign up successful\nLogin to continue", Toast.LENGTH_SHORT).show();
-                        new Handler().postDelayed(() -> openLoginFragment(), 2000);
 
                     } else {
-                        Toast.makeText(getContext(), "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -124,7 +121,8 @@ public class SignUpFragment extends Fragment {
 
         myRef.child("user_account_settings")
                 .child(userId)
-                .setValue(userAccountSettings);
+                .setValue(userAccountSettings)
+                .addOnSuccessListener(aVoid -> openLoginFragment());
     }
 
     private boolean isUsernameAvailable(String username, DataSnapshot snapshot) {
