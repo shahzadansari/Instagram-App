@@ -33,7 +33,7 @@
 
 
                 <TextView
-                    android:id="@+id/username"
+                    android:id="@+id/text_view_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -47,7 +47,7 @@
 
 
                 <ImageView
-                    android:id="@+id/ivEllipses"
+                    android:id="@+id/image_view_ellipses"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_alignParentEnd="true"
@@ -81,7 +81,7 @@
                     android:background="@color/white">
 
                     <ImageView
-                        android:id="@+id/image_heart_red"
+                        android:id="@+id/image_view_heart_checked"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_centerInParent="true"
@@ -91,7 +91,7 @@
                         android:visibility="invisible" />
 
                     <ImageView
-                        android:id="@+id/image_heart"
+                        android:id="@+id/image_view_heart_unchecked"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_centerInParent="true"
@@ -103,7 +103,7 @@
                 </RelativeLayout>
 
                 <ImageView
-                    android:id="@+id/speech_bubble"
+                    android:id="@+id/image_view_comments"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_centerVertical="true"
@@ -126,7 +126,7 @@
                 android:padding="20dp">
 
                 <TextView
-                    android:id="@+id/image_likes"
+                    android:id="@+id/text_view_likes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Liked by shahzad and 30 others"
@@ -134,30 +134,30 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/image_caption"
+                    android:id="@+id/text_view_image_caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/image_likes"
+                    android:layout_below="@+id/text_view_likes"
                     android:layout_marginTop="15dp"
                     android:text="This will be image caption"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/image_comments_link"
+                    android:id="@+id/text_view_image_comments_link"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/image_caption"
+                    android:layout_below="@+id/text_view_image_caption"
                     android:layout_marginTop="15dp"
                     android:text="View all 3 comments"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/image_time_posted"
+                    android:id="@+id/text_view_time_post_created"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/image_comments_link"
+                    android:layout_below="@+id/text_view_image_comments_link"
                     android:layout_marginTop="15dp"
                     android:text="3 DAYS AGO"
                     android:textColor="@android:color/darker_gray"
