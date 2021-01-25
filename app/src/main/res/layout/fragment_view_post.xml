@@ -41,7 +41,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_toEndOf="@+id/profile_photo"
                     android:layout_toRightOf="@+id/profile_photo"
-                    android:text="shahzadd.ansari"
+                    tools:text="shahzadd.ansari"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
@@ -80,7 +80,7 @@
                     android:layout_height="match_parent"
                     android:background="@color/white">
 
-                    <ImageView
+                <!--    <ImageView
                         android:id="@+id/image_view_heart_checked"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
@@ -88,7 +88,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginLeft="20dp"
                         android:src="@drawable/ic_heart_checked"
-                        android:visibility="invisible" />
+                        android:visibility="invisible" /> -->
 
                     <ImageView
                         android:id="@+id/image_view_heart_unchecked"

@@ -1,11 +1,13 @@
 package com.example.instagram_app.fragments;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,7 +64,7 @@ public class ViewPostFragment extends Fragment {
         profilePhoto = rootView.findViewById(R.id.profile_photo);
         imageViewEllipses = rootView.findViewById(R.id.image_view_ellipses);
         postImage = rootView.findViewById(R.id.post_image);
-        imageViewChecked = rootView.findViewById(R.id.image_view_heart_checked);
+//        imageViewChecked = rootView.findViewById(R.id.image_view_heart_checked);
         imageViewUnchecked = rootView.findViewById(R.id.image_view_heart_unchecked);
         imageViewComments = rootView.findViewById(R.id.image_view_comments);
         textViewUsername = rootView.findViewById(R.id.text_view_username);
@@ -88,6 +90,22 @@ public class ViewPostFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        imageViewUnchecked.setOnClickListener(v -> {
+            ImageView imageView = (ImageView) v;
+            Drawable drawable = imageView.getDrawable();
+
+            if (drawable.getConstantState().equals(getResources().getDrawable(R.drawable.ic_heart_unchecked).getConstantState())) {
+
+                imageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_heart_checked));
+                Toast.makeText(getContext(), "Added to Favorites", Toast.LENGTH_SHORT).show();
+
+            } else {
+
+                imageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_heart_unchecked));
+                Toast.makeText(getContext(), "Removed from Favorites", Toast.LENGTH_SHORT).show();
             }
         });
     }
