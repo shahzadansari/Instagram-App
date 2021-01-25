@@ -5,12 +5,15 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -72,8 +75,25 @@ public class Utils {
 
     public static String getTimestamp() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
-        sdf.setTimeZone(TimeZone.getTimeZone("Canada/Pacific"));
+        sdf.setTimeZone(TimeZone.getDefault());
         return sdf.format(new Date());
+    }
+
+    public static String DateToTimeFormat(String existingStringDate) {
+
+        PrettyTime prettyTime = new PrettyTime(Locale.getDefault());
+
+        String time = null;
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",
+                    Locale.getDefault());
+            Date date = simpleDateFormat.parse(existingStringDate);
+            time = prettyTime.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return time;
     }
 
     public static String getTags(String string) {
