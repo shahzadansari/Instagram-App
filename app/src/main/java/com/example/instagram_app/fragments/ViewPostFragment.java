@@ -1,6 +1,7 @@
 package com.example.instagram_app.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -92,8 +100,15 @@ public class ViewPostFragment extends Fragment {
     }
 
     private void updateUI() {
+        String timestampDiff = getTimestampDifference();
+        if (!timestampDiff.equals("0")) {
+            textViewTimePosted.setText(timestampDiff + " days ago");
+        } else {
+            textViewTimePosted.setText("Today");
+        }
+
         textViewCaption.setText(currentPhoto.getCaption());
-        textViewTimePosted.setText(currentPhoto.getDate_created());
+
         Glide.with(this)
                 .load(currentPhoto.getImage_path())
                 .into(postImage);
@@ -112,5 +127,26 @@ public class ViewPostFragment extends Fragment {
         Glide.with(this)
                 .load(authorProfilePhotoUrl)
                 .into(profilePhoto);
+    }
+
+    private String getTimestampDifference() {
+        Log.d(TAG, "getTimestampDifference: getting timestamp difference.");
+
+        String difference = "";
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+        sdf.setTimeZone(TimeZone.getTimeZone("Canada/Pacific"));//google 'android list of timezones'
+        Date today = c.getTime();
+        sdf.format(today);
+        Date timestamp;
+        final String photoTimestamp = currentPhoto.getDate_created();
+        try {
+            timestamp = sdf.parse(photoTimestamp);
+            difference = String.valueOf(Math.round(((today.getTime() - timestamp.getTime()) / 1000 / 60 / 60 / 24)));
+        } catch (ParseException e) {
+            Log.e(TAG, "getTimestampDifference: ParseException: " + e.getMessage());
+            difference = "0";
+        }
+        return difference;
     }
 }
