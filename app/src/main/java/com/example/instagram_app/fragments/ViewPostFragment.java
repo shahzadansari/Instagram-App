@@ -2,6 +2,7 @@ package com.example.instagram_app.fragments;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ViewPostFragment extends Fragment {
@@ -32,7 +36,7 @@ public class ViewPostFragment extends Fragment {
     private static final String TAG = "ViewPostFragment";
     private CircleImageView profilePhoto;
     private ImageView postImage, imageViewEllipses,
-            imageViewChecked, imageViewUnchecked, imageViewComments;
+            imageViewUnchecked, imageViewComments;
     private TextView textViewUsername, textViewLikes, textViewCaption,
             textViewCommentsLink, textViewTimePosted;
 
@@ -64,7 +68,6 @@ public class ViewPostFragment extends Fragment {
         profilePhoto = rootView.findViewById(R.id.profile_photo);
         imageViewEllipses = rootView.findViewById(R.id.image_view_ellipses);
         postImage = rootView.findViewById(R.id.post_image);
-//        imageViewChecked = rootView.findViewById(R.id.image_view_heart_checked);
         imageViewUnchecked = rootView.findViewById(R.id.image_view_heart_unchecked);
         imageViewComments = rootView.findViewById(R.id.image_view_comments);
         textViewUsername = rootView.findViewById(R.id.text_view_username);
@@ -85,6 +88,8 @@ public class ViewPostFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 getAuthorData(snapshot);
+
+                getLikes(snapshot);
             }
 
             @Override
@@ -108,6 +113,23 @@ public class ViewPostFragment extends Fragment {
                 Toast.makeText(getContext(), "Removed from Favorites", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void getLikes(DataSnapshot snapshot) {
+
+        List<String> userIds = new ArrayList<>();
+        for (DataSnapshot dataValues : snapshot
+                .child("photos")
+                .child(currentPhoto.getPhoto_id())
+                .child("likes")
+                .getChildren()) {
+            String user_id = (String) dataValues.getValue();
+            userIds.add(user_id);
+        }
+
+        for (String user_id : userIds) {
+            Log.d(TAG, "getLikes: " + user_id);
+        }
     }
 
     private void updateUI() {

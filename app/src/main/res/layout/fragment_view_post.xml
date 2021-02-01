@@ -24,8 +24,8 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginLeft="25dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="1dp"
                     android:layout_marginTop="20dp"
                     app:civ_border_color="@color/black"
                     app:civ_border_width="0.5dp"
@@ -41,9 +41,9 @@
                     android:layout_marginLeft="10dp"
                     android:layout_toEndOf="@+id/profile_photo"
                     android:layout_toRightOf="@+id/profile_photo"
-                    tools:text="shahzadd.ansari"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    tools:text="shahzadd.ansari" />
 
 
                 <ImageView
@@ -79,16 +79,6 @@
                     android:layout_width="60dp"
                     android:layout_height="match_parent"
                     android:background="@color/white">
-
-                <!--    <ImageView
-                        android:id="@+id/image_view_heart_checked"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_centerInParent="true"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:src="@drawable/ic_heart_checked"
-                        android:visibility="invisible" /> -->
 
                     <ImageView
                         android:id="@+id/image_view_heart_unchecked"
