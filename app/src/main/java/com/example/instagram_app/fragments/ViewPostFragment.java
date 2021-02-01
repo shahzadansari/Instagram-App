@@ -2,7 +2,6 @@ package com.example.instagram_app.fragments;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.instagram_app.R;
 import com.example.instagram_app.model.Photo;
+import com.example.instagram_app.model.User;
 import com.example.instagram_app.model.UserAccountSettings;
 import com.example.instagram_app.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,9 +25,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -44,7 +41,9 @@ public class ViewPostFragment extends Fragment {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
 
+    private UserAccountSettings userAccountSettings;
     private Photo currentPhoto;
+    private Boolean isLiked;
 
     public ViewPostFragment() {
         // Required empty public constructor
@@ -88,7 +87,6 @@ public class ViewPostFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 getAuthorData(snapshot);
-
                 getLikes(snapshot);
             }
 
@@ -116,19 +114,24 @@ public class ViewPostFragment extends Fragment {
     }
 
     private void getLikes(DataSnapshot snapshot) {
+        StringBuilder mUsers = new StringBuilder();
 
-        List<String> userIds = new ArrayList<>();
-        for (DataSnapshot dataValues : snapshot
+        for (DataSnapshot userIdsSnapshot : snapshot
                 .child("photos")
                 .child(currentPhoto.getPhoto_id())
                 .child("likes")
                 .getChildren()) {
-            String user_id = (String) dataValues.getValue();
-            userIds.add(user_id);
-        }
+            String user_id = (String) userIdsSnapshot.getValue();
 
-        for (String user_id : userIds) {
-            Log.d(TAG, "getLikes: " + user_id);
+            User user = snapshot
+                    .child("users") // users node
+                    .child(user_id) // user_id
+                    .getValue(User.class); // data from that node
+
+            mUsers.append(user.getUsername());
+            mUsers.append(",");
+
+            isLiked = mUsers.toString().contains(userAccountSettings.getUsername());
         }
     }
 
@@ -144,7 +147,7 @@ public class ViewPostFragment extends Fragment {
     }
 
     public void getAuthorData(DataSnapshot snapshot) {
-        UserAccountSettings userAccountSettings = snapshot
+        userAccountSettings = snapshot
                 .child("user_account_settings") // user_account_settings node
                 .child(currentPhoto.getUser_id()) // user_id
                 .getValue(UserAccountSettings.class); // data from that node
