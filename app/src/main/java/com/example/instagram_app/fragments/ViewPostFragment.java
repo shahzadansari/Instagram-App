@@ -2,6 +2,7 @@ package com.example.instagram_app.fragments;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,23 +117,62 @@ public class ViewPostFragment extends Fragment {
     private void getLikes(DataSnapshot snapshot) {
         StringBuilder mUsers = new StringBuilder();
 
-        for (DataSnapshot userIdsSnapshot : snapshot
+        long totalLikes = snapshot
                 .child("photos")
                 .child(currentPhoto.getPhoto_id())
-                .child("likes")
-                .getChildren()) {
-            String user_id = (String) userIdsSnapshot.getValue();
+                .child("likes").getChildrenCount();
 
-            User user = snapshot
-                    .child("users") // users node
-                    .child(user_id) // user_id
-                    .getValue(User.class); // data from that node
+        Log.d(TAG, "getLikes: totalLikes: " + totalLikes);
 
-            mUsers.append(user.getUsername());
-            mUsers.append(",");
+        if (totalLikes > 0) {
+            for (DataSnapshot userIdsSnapshot : snapshot
+                    .child("photos")
+                    .child(currentPhoto.getPhoto_id())
+                    .child("likes")
+                    .getChildren()) {
 
-            isLiked = mUsers.toString().contains(userAccountSettings.getUsername());
+                String user_id = (String) userIdsSnapshot.getValue();
+
+                User user = snapshot
+                        .child("users") // users node
+                        .child(user_id) // user_id
+                        .getValue(User.class); // data from that node
+
+                mUsers.append(user.getUsername());
+                mUsers.append(",");
+                String likesString = createLikesString(mUsers);
+                textViewLikes.setText(likesString);
+                isLiked = mUsers.toString().contains(userAccountSettings.getUsername());
+            }
+        } else {
+            String likesString = createLikesString(null);
+            textViewLikes.setText(likesString);
         }
+    }
+
+
+    private String createLikesString(StringBuilder usersStringBuilder) {
+        if (usersStringBuilder == null)
+            return "No likes yet";
+
+        String likesString;
+
+        String[] splitUsers = usersStringBuilder.toString().split(",");
+        int length = splitUsers.length;
+
+        if (length == 1) {
+            likesString = "Liked by " + splitUsers[0];
+        } else if (length == 2) {
+            likesString = "Liked by " + splitUsers[0] + " and " + splitUsers[1];
+        } else if (length == 3) {
+            likesString = "Liked by " + splitUsers[0] + ", " + splitUsers[1] + " and " + splitUsers[2];
+        } else if (length >= 4) {
+            likesString = "Liked by " + splitUsers[0] + ", " + splitUsers[1] + " and " + (length - 2) + " others.";
+        } else {
+            likesString = "No likes yet";
+        }
+
+        return likesString;
     }
 
     private void updateUI() {
