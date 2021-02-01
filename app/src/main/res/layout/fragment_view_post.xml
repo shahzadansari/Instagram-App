@@ -119,7 +119,7 @@
                     android:id="@+id/text_view_likes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Liked by shahzad and 30 others"
+                    tools:text="Liked by shahzad and 30 others"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -129,7 +129,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/text_view_likes"
                     android:layout_marginTop="15dp"
-                    android:text="This will be image caption"
+                    tools:text="This will be image caption"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -139,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/text_view_image_caption"
                     android:layout_marginTop="15dp"
-                    android:text="View all 3 comments"
+                    tools:text="View all 3 comments"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="18sp" />
 
@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/text_view_image_comments_link"
                     android:layout_marginTop="15dp"
-                    android:text="3 DAYS AGO"
+                    tools:text="3 DAYS AGO"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="18sp" />
 

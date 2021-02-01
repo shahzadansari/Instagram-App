@@ -1,6 +1,5 @@
 package com.example.instagram_app.fragments;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,7 +32,7 @@ public class ViewPostFragment extends Fragment {
     private static final String TAG = "ViewPostFragment";
     private CircleImageView profilePhoto;
     private ImageView postImage, imageViewEllipses,
-            imageViewUnchecked, imageViewComments;
+            imageViewLike, imageViewComments;
     private TextView textViewUsername, textViewLikes, textViewCaption,
             textViewCommentsLink, textViewTimePosted;
 
@@ -44,7 +42,7 @@ public class ViewPostFragment extends Fragment {
 
     private UserAccountSettings userAccountSettings;
     private Photo currentPhoto;
-    private Boolean isLiked;
+    private Boolean isLiked = false;
 
     public ViewPostFragment() {
         // Required empty public constructor
@@ -68,7 +66,7 @@ public class ViewPostFragment extends Fragment {
         profilePhoto = rootView.findViewById(R.id.profile_photo);
         imageViewEllipses = rootView.findViewById(R.id.image_view_ellipses);
         postImage = rootView.findViewById(R.id.post_image);
-        imageViewUnchecked = rootView.findViewById(R.id.image_view_heart_unchecked);
+        imageViewLike = rootView.findViewById(R.id.image_view_heart_unchecked);
         imageViewComments = rootView.findViewById(R.id.image_view_comments);
         textViewUsername = rootView.findViewById(R.id.text_view_username);
         textViewLikes = rootView.findViewById(R.id.text_view_likes);
@@ -97,19 +95,28 @@ public class ViewPostFragment extends Fragment {
             }
         });
 
-        imageViewUnchecked.setOnClickListener(v -> {
-            ImageView imageView = (ImageView) v;
-            Drawable drawable = imageView.getDrawable();
+        imageViewLike.setOnClickListener(v -> {
 
-            if (drawable.getConstantState().equals(getResources().getDrawable(R.drawable.ic_heart_unchecked).getConstantState())) {
+            if (isLiked) {
 
-                imageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_heart_checked));
-                Toast.makeText(getContext(), "Added to Favorites", Toast.LENGTH_SHORT).show();
+                imageViewLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_heart_unchecked));
+                myRef.child("photos")
+                        .child(currentPhoto.getPhoto_id())
+                        .child("likes")
+                        .child(mAuth.getCurrentUser().getUid())
+                        .removeValue();
+                isLiked = false;
 
             } else {
 
-                imageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_heart_unchecked));
-                Toast.makeText(getContext(), "Removed from Favorites", Toast.LENGTH_SHORT).show();
+                imageViewLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_heart_checked));
+                myRef.child("photos")
+                        .child(currentPhoto.getPhoto_id())
+                        .child("likes")
+                        .child(mAuth.getCurrentUser().getUid())
+                        .setValue(mAuth.getUid());
+                isLiked = true;
+
             }
         });
     }
@@ -120,7 +127,8 @@ public class ViewPostFragment extends Fragment {
         long totalLikes = snapshot
                 .child("photos")
                 .child(currentPhoto.getPhoto_id())
-                .child("likes").getChildrenCount();
+                .child("likes")
+                .getChildrenCount();
 
         Log.d(TAG, "getLikes: totalLikes: " + totalLikes);
 
@@ -143,6 +151,12 @@ public class ViewPostFragment extends Fragment {
                 String likesString = createLikesString(mUsers);
                 textViewLikes.setText(likesString);
                 isLiked = mUsers.toString().contains(userAccountSettings.getUsername());
+
+                if (isLiked) {
+                    imageViewLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_heart_checked));
+                } else {
+                    imageViewLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_heart_unchecked));
+                }
             }
         } else {
             String likesString = createLikesString(null);
