@@ -31,6 +31,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProfileFragment extends Fragment {
 
@@ -104,7 +106,15 @@ public class ProfileFragment extends Fragment {
                 .child(mAuth.getUid())
                 .getChildren()) {
 
-            Photo photo = dataSnapshot.getValue(Photo.class);
+            Photo photo = new Photo();
+            Map<String, Object> objectMap = (HashMap<String, Object>) dataSnapshot.getValue();
+            photo.setCaption(objectMap.get("caption").toString());
+            photo.setDate_created(objectMap.get("date_created").toString());
+            photo.setImage_path(objectMap.get("image_path").toString());
+            photo.setPhoto_id(objectMap.get("photo_id").toString());
+            photo.setUser_id(objectMap.get("user_id").toString());
+            photo.setTags(objectMap.get("tags").toString());
+
             photoArrayList.add(photo);
         }
 

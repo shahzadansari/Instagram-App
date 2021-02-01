@@ -1,7 +1,6 @@
 package com.example.instagram_app.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,12 +104,27 @@ public class ViewPostFragment extends Fragment {
                         .child("likes")
                         .child(mAuth.getCurrentUser().getUid())
                         .removeValue();
+
+                myRef.child("user_photos")
+                        .child(mAuth.getCurrentUser().getUid())
+                        .child(currentPhoto.getPhoto_id())
+                        .child("likes")
+                        .child(mAuth.getCurrentUser().getUid())
+                        .removeValue();
                 isLiked = false;
 
             } else {
 
                 imageViewLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_heart_checked));
+
                 myRef.child("photos")
+                        .child(currentPhoto.getPhoto_id())
+                        .child("likes")
+                        .child(mAuth.getCurrentUser().getUid())
+                        .setValue(mAuth.getUid());
+
+                myRef.child("user_photos")
+                        .child(mAuth.getCurrentUser().getUid())
                         .child(currentPhoto.getPhoto_id())
                         .child("likes")
                         .child(mAuth.getCurrentUser().getUid())
@@ -130,8 +144,6 @@ public class ViewPostFragment extends Fragment {
                 .child("likes")
                 .getChildrenCount();
 
-        Log.d(TAG, "getLikes: totalLikes: " + totalLikes);
-
         if (totalLikes > 0) {
             for (DataSnapshot userIdsSnapshot : snapshot
                     .child("photos")
@@ -150,7 +162,9 @@ public class ViewPostFragment extends Fragment {
                 mUsers.append(",");
                 String likesString = createLikesString(mUsers);
                 textViewLikes.setText(likesString);
-                isLiked = mUsers.toString().contains(userAccountSettings.getUsername());
+
+                /** fix "match found" bug e.g. shahzad & shahzadansari06 etc */
+                isLiked = mUsers.toString().contains(userAccountSettings.getUsername() + "");
 
                 if (isLiked) {
                     imageViewLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_heart_checked));
