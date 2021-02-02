@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.instagram_app.R;
 import com.example.instagram_app.adapters.CommentsAdapter;
 import com.example.instagram_app.model.Comment;
+import com.example.instagram_app.model.Photo;
+import com.example.instagram_app.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,10 +35,8 @@ import java.util.Map;
 public class ViewCommentsFragment extends Fragment {
 
     private static final String TAG = "ViewCommentsFragment";
-    private String caption;
     private String authorUsername;
     private String authorProfilePhotoUrl;
-    private String photoId;
 
     private RecyclerView recyclerViewComments;
     private CommentsAdapter adapter;
@@ -44,6 +46,11 @@ public class ViewCommentsFragment extends Fragment {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
 
+    private Photo currentPhoto;
+
+    private EditText editTextComment;
+    private ImageView imageViewCheck;
+
     public ViewCommentsFragment() {
         // Required empty public constructor
     }
@@ -51,10 +58,9 @@ public class ViewCommentsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        caption = ViewCommentsFragmentArgs.fromBundle(getArguments()).getCaption();
         authorUsername = ViewCommentsFragmentArgs.fromBundle(getArguments()).getAuthorUsername();
         authorProfilePhotoUrl = ViewCommentsFragmentArgs.fromBundle(getArguments()).getAuthorProfilePhotoUrl();
-        photoId = ViewCommentsFragmentArgs.fromBundle(getArguments()).getPhotoId();
+        currentPhoto = ViewCommentsFragmentArgs.fromBundle(getArguments()).getPhoto();
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -69,6 +75,10 @@ public class ViewCommentsFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_view_comments, container, false);
         recyclerViewComments = rootView.findViewById(R.id.recycler_view_comments);
+        imageViewCheck = rootView.findViewById(R.id.image_view_check);
+        editTextComment = rootView.findViewById(R.id.edit_text_comment);
+
+        imageViewCheck.setOnClickListener(v -> addComment(editTextComment.getText().toString()));
 
         initEmptyRecyclerView();
 
@@ -79,10 +89,11 @@ public class ViewCommentsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 getComments(snapshot);
+                recyclerViewComments.smoothScrollToPosition(adapter.getItemCount());
             }
 
             @Override
@@ -106,16 +117,23 @@ public class ViewCommentsFragment extends Fragment {
 
         List<Comment> comments = new ArrayList<>();
 
+        comments.add(new Comment(currentPhoto.getCaption(),
+                currentPhoto.getDate_created(),
+                currentPhoto.getUser_id(),
+                currentPhoto.getLikes()));
+
+        adapter.submitList(comments);
+
         long totalComments = snapshot
                 .child("photos")
-                .child(photoId)
+                .child(currentPhoto.getPhoto_id())
                 .child("comments")
                 .getChildrenCount();
 
         if (totalComments > 0) {
             for (DataSnapshot userIdsSnapshot : snapshot
                     .child("photos")
-                    .child(photoId)
+                    .child(currentPhoto.getPhoto_id())
                     .child("comments")
                     .getChildren()) {
 
@@ -123,26 +141,35 @@ public class ViewCommentsFragment extends Fragment {
                 Map<String, Object> objectMap = (HashMap<String, Object>) userIdsSnapshot.getValue();
                 comment.setComment(objectMap.get("comment").toString());
                 comment.setDate_created(objectMap.get("date_created").toString());
-                comment.setUser_id(objectMap.get("user_id").toString());
-//                comment.setLikes((List<Like>) objectMap.get("likes"));
+                comment.setUser_id((String) objectMap.get("user_id"));
                 comments.add(comment);
 
                 adapter.submitList(comments);
-
-//                UserAccountSettings userAccountSettings = snapshot
-//                        .child("user_account_settings") // users node
-//                        .child(user_id) // user_id
-//                        .getValue(UserAccountSettings.class); // data from that node
-//
-//                String username = userAccountSettings.getUsername();
-//                String profilePhotoUrl = userAccountSettings.getProfile_photo();
             }
         } else {
             Log.d(TAG, "getComments: No comments");
         }
+    }
 
-        for(Comment comment: comments){
-            Log.d(TAG, "getComments: " + comment.getComment());
-        }
+    public void addComment(String commentText) {
+        Comment comment = new Comment();
+        comment.setComment(commentText);
+        comment.setDate_created(Utils.getTimestamp());
+        comment.setUser_id(mAuth.getUid());
+
+        String commentId = myRef.push().getKey();
+
+        myRef.child("photos")
+                .child(currentPhoto.getPhoto_id())
+                .child("comments")
+                .child(commentId)
+                .setValue(comment);
+
+        myRef.child("user_photos")
+                .child(mAuth.getCurrentUser().getUid())
+                .child(currentPhoto.getPhoto_id())
+                .child("comments")
+                .child(commentId)
+                .setValue(comment);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.instagram_app.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,14 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.instagram_app.R;
 import com.example.instagram_app.model.Comment;
+import com.example.instagram_app.model.UserAccountSettings;
 import com.example.instagram_app.utils.Utils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -23,22 +29,28 @@ public class CommentsAdapter extends ListAdapter<Comment, CommentsAdapter.ViewHo
     private static final String TAG = "QuotesAdapter";
     private Context mContext;
 
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myRef;
+
     private static final DiffUtil.ItemCallback<Comment> DIFF_CALLBACK = new DiffUtil.ItemCallback<Comment>() {
         @Override
         public boolean areItemsTheSame(Comment oldItem, Comment newItem) {
-            return oldItem.getComment().equals(newItem.getComment());
+            return oldItem.equals(newItem);
         }
 
         @Override
         public boolean areContentsTheSame(Comment oldItem, @NonNull Comment newItem) {
-            return oldItem.equals(newItem);
+            return oldItem.getDate_created().equals(newItem.getDate_created());
         }
     };
-
 
     public CommentsAdapter(Context context) {
         super(DIFF_CALLBACK);
         mContext = context;
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
     }
 
     @NonNull
@@ -52,6 +64,26 @@ public class CommentsAdapter extends ListAdapter<Comment, CommentsAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Comment currentComment = getItem(position);
+        String userId = currentComment.getUser_id();
+
+        if (position == 0) {
+            holder.imageViewCommentHeart.setVisibility(View.INVISIBLE);
+            holder.textViewCommentLikes.setVisibility(View.INVISIBLE);
+            holder.textViewCommentReply.setVisibility(View.INVISIBLE);
+        }
+
+        myRef.child("user_account_settings")
+                .child(userId)
+                .get()
+                .addOnSuccessListener(dataSnapshot -> {
+                    UserAccountSettings userAccountSettings = dataSnapshot.getValue(UserAccountSettings.class);
+                    holder.textViewUsername.setText(userAccountSettings.getUsername());
+                    Glide.with(mContext)
+                            .load(userAccountSettings.getProfile_photo())
+                            .into(holder.imageViewProfilePhoto);
+                });
+
+        Log.d(TAG, "onBindViewHolder: userId: " + userId);
 
         holder.textViewComment.setText(currentComment.getComment());
         holder.textViewCommentTimePosted.setText(currentComment.getDate_created());

@@ -101,10 +101,6 @@
         android:label="fragment_view_comments"
         tools:layout="@layout/fragment_view_comments" >
         <argument
-            android:name="caption"
-            app:argType="string"
-            android:defaultValue="this arg contains post caption" />
-        <argument
             android:name="authorUsername"
             app:argType="string"
             android:defaultValue="author username" />
@@ -112,8 +108,7 @@
             android:name="authorProfilePhotoUrl"
             android:defaultValue="url goes here" />
         <argument
-            android:name="photoId"
-            app:argType="string"
-            android:defaultValue="photo_id" />
+            android:name="photo"
+            app:argType="com.example.instagram_app.model.Photo" />
     </fragment>
 </navigation>
