@@ -95,7 +95,7 @@
                     android:horizontalSpacing="1.5dp"
                     android:numColumns="3"
                     android:stretchMode="none"
-                    android:verticalSpacing="1.5dp"  />
+                    android:verticalSpacing="1.5dp" />
 
             </RelativeLayout>
         </RelativeLayout>

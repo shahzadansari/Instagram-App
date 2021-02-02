@@ -9,6 +9,17 @@ import java.util.List;
 
 public class Photo implements Parcelable {
 
+    public static final Creator<Photo> CREATOR = new Creator<Photo>() {
+        @Override
+        public Photo createFromParcel(Parcel in) {
+            return new Photo(in);
+        }
+
+        @Override
+        public Photo[] newArray(int size) {
+            return new Photo[size];
+        }
+    };
     private String caption;
     private String date_created;
     private String image_path;
@@ -38,18 +49,6 @@ public class Photo implements Parcelable {
         user_id = in.readString();
         tags = in.readString();
     }
-
-    public static final Creator<Photo> CREATOR = new Creator<Photo>() {
-        @Override
-        public Photo createFromParcel(Parcel in) {
-            return new Photo(in);
-        }
-
-        @Override
-        public Photo[] newArray(int size) {
-            return new Photo[size];
-        }
-    };
 
     public String getCaption() {
         return caption;

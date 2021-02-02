@@ -10,6 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.instagram_app.R;
@@ -35,6 +38,7 @@ public class ViewPostFragment extends Fragment {
     private TextView textViewUsername, textViewLikes, textViewCaption,
             textViewCommentsLink, textViewTimePosted;
 
+    private NavController navController;
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
@@ -80,6 +84,7 @@ public class ViewPostFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -92,6 +97,12 @@ public class ViewPostFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+        });
+
+        textViewCommentsLink.setOnClickListener(v -> {
+            NavDirections navDirections = ViewPostFragmentDirections
+                    .actionViewPostFragmentToViewCommentsFragment().setCaption(currentPhoto.getCaption());
+            navController.navigate(navDirections);
         });
 
         imageViewLike.setOnClickListener(v -> {

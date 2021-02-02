@@ -78,18 +78,31 @@
     <fragment
         android:id="@+id/viewPostFragment"
         android:name="com.example.instagram_app.fragments.ViewPostFragment"
-        android:label="ViewPostFragment" >
+        android:label="ViewPostFragment">
         <argument
             android:name="photoData"
             app:argType="com.example.instagram_app.model.Photo" />
+        <action
+            android:id="@+id/action_viewPostFragment_to_viewCommentsFragment"
+            app:destination="@id/viewCommentsFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.instagram_app.fragments.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" >
+        tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewCommentsFragment"
+        android:name="com.example.instagram_app.fragments.ViewCommentsFragment"
+        android:label="fragment_view_comments"
+        tools:layout="@layout/fragment_view_comments" >
+        <argument
+            android:name="caption"
+            app:argType="string"
+            android:defaultValue="this arg contains post caption" />
     </fragment>
 </navigation>

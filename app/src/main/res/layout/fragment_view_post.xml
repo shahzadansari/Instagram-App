@@ -119,9 +119,9 @@
                     android:id="@+id/text_view_likes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="Liked by shahzad and 30 others"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:text="Liked by shahzad and 30 others" />
 
                 <TextView
                     android:id="@+id/text_view_image_caption"
@@ -129,9 +129,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/text_view_likes"
                     android:layout_marginTop="15dp"
-                    tools:text="This will be image caption"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:text="This will be image caption" />
 
                 <TextView
                     android:id="@+id/text_view_image_comments_link"
@@ -139,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/text_view_image_caption"
                     android:layout_marginTop="15dp"
-                    tools:text="View all 3 comments"
+                    android:text="View all comments"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="18sp" />
 
@@ -149,9 +149,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/text_view_image_comments_link"
                     android:layout_marginTop="15dp"
-                    tools:text="3 DAYS AGO"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:text="3 DAYS AGO" />
 
             </RelativeLayout>
 

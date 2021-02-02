@@ -1,0 +1,36 @@
+package com.example.instagram_app.fragments;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.example.instagram_app.R;
+
+public class ViewCommentsFragment extends Fragment {
+
+    private static final String TAG = "ViewCommentsFragment";
+    private String caption;
+
+    public ViewCommentsFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        caption = ViewCommentsFragmentArgs.fromBundle(getArguments()).getCaption();
+        Log.d(TAG, "onCreate: caption: " + caption);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_view_comments, container, false);
+    }
+}
