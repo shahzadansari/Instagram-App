@@ -43,7 +43,7 @@ public class ViewPostFragment extends Fragment {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
 
-    private UserAccountSettings userAccountSettings;
+    private UserAccountSettings authorData;
     private Photo currentPhoto;
     private Boolean isLiked = false;
 
@@ -101,7 +101,10 @@ public class ViewPostFragment extends Fragment {
 
         textViewCommentsLink.setOnClickListener(v -> {
             NavDirections navDirections = ViewPostFragmentDirections
-                    .actionViewPostFragmentToViewCommentsFragment().setCaption(currentPhoto.getCaption());
+                    .actionViewPostFragmentToViewCommentsFragment()
+                    .setCaption(currentPhoto.getCaption())
+                    .setAuthorUsername(authorData.getUsername())
+                    .setAuthorProfilePhotoUrl(authorData.getProfile_photo());
             navController.navigate(navDirections);
         });
 
@@ -175,7 +178,7 @@ public class ViewPostFragment extends Fragment {
                 textViewLikes.setText(likesString);
 
                 /** fix "match found" bug e.g. shahzad & shahzadansari06 etc */
-                isLiked = mUsers.toString().contains(userAccountSettings.getUsername() + "");
+                isLiked = mUsers.toString().contains(authorData.getUsername() + "");
 
                 if (isLiked) {
                     imageViewLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_heart_checked));
@@ -226,13 +229,13 @@ public class ViewPostFragment extends Fragment {
     }
 
     public void getAuthorData(DataSnapshot snapshot) {
-        userAccountSettings = snapshot
+        authorData = snapshot
                 .child("user_account_settings") // user_account_settings node
                 .child(currentPhoto.getUser_id()) // user_id
                 .getValue(UserAccountSettings.class); // data from that node
 
-        String authorUsername = userAccountSettings.getUsername();
-        String authorProfilePhotoUrl = userAccountSettings.getProfile_photo();
+        String authorUsername = authorData.getUsername();
+        String authorProfilePhotoUrl = authorData.getProfile_photo();
 
         textViewUsername.setText(authorUsername);
         Glide.with(this)

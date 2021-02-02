@@ -1,7 +1,6 @@
 package com.example.instagram_app.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,8 @@ public class ViewCommentsFragment extends Fragment {
 
     private static final String TAG = "ViewCommentsFragment";
     private String caption;
+    private String authorUsername;
+    private String authorProfilePhotoUrl;
 
     public ViewCommentsFragment() {
         // Required empty public constructor
@@ -24,7 +25,8 @@ public class ViewCommentsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         caption = ViewCommentsFragmentArgs.fromBundle(getArguments()).getCaption();
-        Log.d(TAG, "onCreate: caption: " + caption);
+        authorUsername = ViewCommentsFragmentArgs.fromBundle(getArguments()).getAuthorUsername();
+        authorProfilePhotoUrl = ViewCommentsFragmentArgs.fromBundle(getArguments()).getAuthorProfilePhotoUrl();
     }
 
     @Override

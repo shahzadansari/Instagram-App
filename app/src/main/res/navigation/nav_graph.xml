@@ -104,5 +104,12 @@
             android:name="caption"
             app:argType="string"
             android:defaultValue="this arg contains post caption" />
+        <argument
+            android:name="authorUsername"
+            app:argType="string"
+            android:defaultValue="author username" />
+        <argument
+            android:name="authorProfilePhotoUrl"
+            android:defaultValue="url goes here" />
     </fragment>
 </navigation>
