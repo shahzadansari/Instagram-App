@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -14,8 +14,6 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="15dp"
         android:src="@mipmap/ic_launcher_round"
-        app:civ_border_color="@color/black"
-        app:civ_border_width="0.5dp"
         tools:src="@mipmap/ic_launcher_round" />
 
     <RelativeLayout
@@ -45,7 +43,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/text_view_comment_body"
+                android:id="@+id/text_view_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -60,7 +58,7 @@
                 android:id="@+id/text_view_comment_time_posted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/text_view_comment_body"
+                android:layout_below="@+id/text_view_comment"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
@@ -72,7 +70,7 @@
                 android:id="@+id/text_view_comment_likes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/text_view_comment_body"
+                android:layout_below="@+id/text_view_comment"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
@@ -87,7 +85,7 @@
                 android:id="@+id/text_view_comment_reply"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/text_view_comment_body"
+                android:layout_below="@+id/text_view_comment"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"

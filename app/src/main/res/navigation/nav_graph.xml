@@ -111,5 +111,9 @@
         <argument
             android:name="authorProfilePhotoUrl"
             android:defaultValue="url goes here" />
+        <argument
+            android:name="photoId"
+            app:argType="string"
+            android:defaultValue="photo_id" />
     </fragment>
 </navigation>

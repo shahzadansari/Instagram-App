@@ -102,6 +102,7 @@ public class ViewPostFragment extends Fragment {
         textViewCommentsLink.setOnClickListener(v -> {
             NavDirections navDirections = ViewPostFragmentDirections
                     .actionViewPostFragmentToViewCommentsFragment()
+                    .setPhotoId(currentPhoto.getPhoto_id())
                     .setCaption(currentPhoto.getCaption())
                     .setAuthorUsername(authorData.getUsername())
                     .setAuthorProfilePhotoUrl(authorData.getProfile_photo());
