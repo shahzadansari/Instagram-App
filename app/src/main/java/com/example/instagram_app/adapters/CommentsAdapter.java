@@ -1,7 +1,6 @@
 package com.example.instagram_app.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,13 +25,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CommentsAdapter extends ListAdapter<Comment, CommentsAdapter.ViewHolder> {
 
-    private static final String TAG = "QuotesAdapter";
-    private Context mContext;
-
-    private FirebaseAuth mAuth;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myRef;
-
     private static final DiffUtil.ItemCallback<Comment> DIFF_CALLBACK = new DiffUtil.ItemCallback<Comment>() {
         @Override
         public boolean areItemsTheSame(Comment oldItem, Comment newItem) {
@@ -44,6 +36,10 @@ public class CommentsAdapter extends ListAdapter<Comment, CommentsAdapter.ViewHo
             return oldItem.getDate_created().equals(newItem.getDate_created());
         }
     };
+    private Context mContext;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myRef;
 
     public CommentsAdapter(Context context) {
         super(DIFF_CALLBACK);
@@ -83,8 +79,6 @@ public class CommentsAdapter extends ListAdapter<Comment, CommentsAdapter.ViewHo
                             .into(holder.imageViewProfilePhoto);
                 });
 
-        Log.d(TAG, "onBindViewHolder: userId: " + userId);
-
         holder.textViewComment.setText(currentComment.getComment());
         holder.textViewCommentTimePosted.setText(currentComment.getDate_created());
 
@@ -92,6 +86,7 @@ public class CommentsAdapter extends ListAdapter<Comment, CommentsAdapter.ViewHo
         holder.textViewCommentTimePosted.setText(dateToTimeFormat);
     }
 
+    // TODO: add a field "commentId" in Comment model, to delete comments with.
     public Comment getCommentAt(int position) {
         return getItem(position);
     }

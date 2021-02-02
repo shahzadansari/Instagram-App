@@ -99,11 +99,11 @@
         android:id="@+id/viewCommentsFragment"
         android:name="com.example.instagram_app.fragments.ViewCommentsFragment"
         android:label="fragment_view_comments"
-        tools:layout="@layout/fragment_view_comments" >
+        tools:layout="@layout/fragment_view_comments">
         <argument
             android:name="authorUsername"
-            app:argType="string"
-            android:defaultValue="author username" />
+            android:defaultValue="author username"
+            app:argType="string" />
         <argument
             android:name="authorProfilePhotoUrl"
             android:defaultValue="url goes here" />

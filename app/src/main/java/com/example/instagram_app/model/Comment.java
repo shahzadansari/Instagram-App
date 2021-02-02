@@ -9,6 +9,17 @@ import java.util.List;
 
 public class Comment implements Parcelable {
 
+    public static final Creator<Comment> CREATOR = new Creator<Comment>() {
+        @Override
+        public Comment createFromParcel(Parcel in) {
+            return new Comment(in);
+        }
+
+        @Override
+        public Comment[] newArray(int size) {
+            return new Comment[size];
+        }
+    };
     private String comment;
     private String date_created;
     private String user_id;
@@ -29,18 +40,6 @@ public class Comment implements Parcelable {
         date_created = in.readString();
         user_id = in.readString();
     }
-
-    public static final Creator<Comment> CREATOR = new Creator<Comment>() {
-        @Override
-        public Comment createFromParcel(Parcel in) {
-            return new Comment(in);
-        }
-
-        @Override
-        public Comment[] newArray(int size) {
-            return new Comment[size];
-        }
-    };
 
     public String getComment() {
         return comment;

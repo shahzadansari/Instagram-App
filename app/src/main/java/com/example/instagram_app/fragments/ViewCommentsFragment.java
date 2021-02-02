@@ -78,7 +78,12 @@ public class ViewCommentsFragment extends Fragment {
         imageViewCheck = rootView.findViewById(R.id.image_view_check);
         editTextComment = rootView.findViewById(R.id.edit_text_comment);
 
-        imageViewCheck.setOnClickListener(v -> addComment(editTextComment.getText().toString()));
+        imageViewCheck.setOnClickListener(v -> {
+            Utils.hideKeyboard(getActivity());
+            addComment(editTextComment.getText().toString());
+            editTextComment.setText("");
+            editTextComment.clearFocus();
+        });
 
         initEmptyRecyclerView();
 

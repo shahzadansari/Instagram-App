@@ -47,6 +47,8 @@ public class ViewPostFragment extends Fragment {
     private Photo currentPhoto;
     private Boolean isLiked = false;
 
+    private ValueEventListener valueEventListener;
+
     public ViewPostFragment() {
         // Required empty public constructor
     }
@@ -82,6 +84,12 @@ public class ViewPostFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        myRef.addValueEventListener(valueEventListener);
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
@@ -91,6 +99,7 @@ public class ViewPostFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 getAuthorData(snapshot);
                 getLikes(snapshot);
+                getComments(snapshot);
             }
 
             @Override
@@ -99,7 +108,29 @@ public class ViewPostFragment extends Fragment {
             }
         });
 
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                getLikes(snapshot);
+                getComments(snapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+
         textViewCommentsLink.setOnClickListener(v -> {
+            NavDirections navDirections = ViewPostFragmentDirections
+                    .actionViewPostFragmentToViewCommentsFragment(currentPhoto)
+                    .setAuthorUsername(authorData.getUsername())
+                    .setAuthorProfilePhotoUrl(authorData.getProfile_photo());
+            navController.navigate(navDirections);
+        });
+
+        imageViewComments.setOnClickListener(v -> {
             NavDirections navDirections = ViewPostFragmentDirections
                     .actionViewPostFragmentToViewCommentsFragment(currentPhoto)
                     .setAuthorUsername(authorData.getUsername())
@@ -148,7 +179,23 @@ public class ViewPostFragment extends Fragment {
         });
     }
 
+    private void getComments(DataSnapshot snapshot) {
+
+        long totalComments = snapshot
+                .child("photos")
+                .child(currentPhoto.getPhoto_id())
+                .child("comments")
+                .getChildrenCount();
+
+        if (totalComments > 1) {
+            textViewCommentsLink.setText("View all " + totalComments + " comments");
+        } else {
+            textViewCommentsLink.setText("View all comments");
+        }
+    }
+
     private void getLikes(DataSnapshot snapshot) {
+
         StringBuilder mUsers = new StringBuilder();
 
         long totalLikes = snapshot
@@ -240,5 +287,11 @@ public class ViewPostFragment extends Fragment {
         Glide.with(this)
                 .load(authorProfilePhotoUrl)
                 .into(profilePhoto);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        myRef.removeEventListener(valueEventListener);
     }
 }
