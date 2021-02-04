@@ -18,7 +18,7 @@
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_comments"
+            android:id="@+id/recycler_view_search_results"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/relLayout1">
@@ -26,5 +26,4 @@
         </androidx.recyclerview.widget.RecyclerView>
 
     </RelativeLayout>
-
 </RelativeLayout>

@@ -2,49 +2,60 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="12dp">
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/search_result_image"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        tools:src="@mipmap/ic_launcher" />
+    android:layout_height="wrap_content">
 
     <RelativeLayout
+        android:id="@+id/layout_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_toEndOf="@id/search_result_image"
-        android:layout_toRightOf="@id/search_result_image">
+        android:padding="12dp">
 
-        <TextView
-            android:id="@+id/search_result_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/black"
-            android:textSize="22sp"
-            tools:text="shahzadd.ansari" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/search_result_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            tools:src="@mipmap/ic_launcher" />
 
-        <TextView
-            android:id="@+id/search_result_email"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/search_result_username"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="15sp"
-            tools:text="shahzadansari03@outlook.com" />
+            android:layout_toEndOf="@id/search_result_image"
+            android:layout_toRightOf="@id/search_result_image">
 
+            <TextView
+                android:id="@+id/search_result_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                tools:text="shahzadd.ansari" />
+
+            <TextView
+                android:id="@+id/search_result_display_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/search_result_username"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="15sp"
+                tools:text="shahzadansari03@outlook.com" />
+
+        </RelativeLayout>
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_below="@id/layout_root"
+        android:background="@drawable/drawable_shadow" />
+
 </RelativeLayout>
+

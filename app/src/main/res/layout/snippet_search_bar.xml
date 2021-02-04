@@ -14,7 +14,7 @@
                 android:layout_height="match_parent">
 
                 <EditText
-                    android:id="@+id/search"
+                    android:id="@+id/edit_text_search"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
