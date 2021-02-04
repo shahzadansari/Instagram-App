@@ -2,10 +2,14 @@ package com.example.instagram_app.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +34,8 @@ import java.util.List;
 
 public class SearchFragment extends Fragment {
 
+    private static final String TAG = "SearchFragment";
+    private TextView textViewEmptyState;
     private EditText editText;
     private RecyclerView recyclerViewSearchResults;
     private SearchUsersAdapter adapter;
@@ -64,6 +70,7 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
         recyclerViewSearchResults = rootView.findViewById(R.id.recycler_view_search_results);
+        textViewEmptyState = rootView.findViewById(R.id.text_view_empty_state);
         editText = rootView.findViewById(R.id.edit_text_search);
 
         initEmptyRecyclerView();
@@ -86,6 +93,40 @@ public class SearchFragment extends Fragment {
 
             }
         });
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
+    }
+
+    private void filter(String text) {
+        List<UserSettings> filteredList = new ArrayList<>();
+        for (UserSettings userSettings : usersSettingsList) {
+            if (userSettings.getUser().getUsername().toLowerCase().contains(text.toLowerCase()) ||
+                    userSettings.getSettings().getDisplay_name().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(userSettings);
+            }
+        }
+        adapter.submitList(filteredList);
+
+        if (filteredList.isEmpty()) {
+            textViewEmptyState.setVisibility(View.VISIBLE);
+        } else {
+            textViewEmptyState.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void initEmptyRecyclerView() {
@@ -96,6 +137,13 @@ public class SearchFragment extends Fragment {
                 (mContext, LinearLayoutManager.VERTICAL, false);
 
         recyclerViewSearchResults.setLayoutManager(linearLayoutManager);
+
+        adapter.setOnItemClickListener(position -> {
+            // TODO: open user profile
+            Log.d(TAG, "initEmptyRecyclerView: username: " + usersSettingsList.get(position)
+                    .getSettings()
+                    .getUsername());
+        });
     }
 
     private void getUsersSettings(DataSnapshot snapshot) {

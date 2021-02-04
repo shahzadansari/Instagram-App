@@ -21,6 +21,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SearchUsersAdapter extends ListAdapter<UserSettings, SearchUsersAdapter.ViewHolder> {
 
+    private Context mContext;
+    private OnItemClickListener listener;
+
     private static final DiffUtil.ItemCallback<UserSettings> DIFF_CALLBACK = new DiffUtil.ItemCallback<UserSettings>() {
         @Override
         public boolean areItemsTheSame(UserSettings oldItem, UserSettings newItem) {
@@ -32,7 +35,6 @@ public class SearchUsersAdapter extends ListAdapter<UserSettings, SearchUsersAda
             return oldItem.getUser().getUser_id().equals(newItem.getUser().getUser_id());
         }
     };
-    private Context mContext;
 
     public SearchUsersAdapter(Context context) {
         super(DIFF_CALLBACK);
@@ -77,6 +79,16 @@ public class SearchUsersAdapter extends ListAdapter<UserSettings, SearchUsersAda
             imageViewProfilePhoto = itemView.findViewById(R.id.search_result_image);
             textViewUsername = itemView.findViewById(R.id.search_result_username);
             textViewDisplayName = itemView.findViewById(R.id.search_result_display_name);
+
+            itemView.setOnClickListener(v -> listener.onItemClick(getAdapterPosition()));
         }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
     }
 }
