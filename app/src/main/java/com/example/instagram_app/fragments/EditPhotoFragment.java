@@ -86,7 +86,9 @@ public class EditPhotoFragment extends Fragment {
         imageViewBackArrow = view.findViewById(R.id.image_view_back_arrow);
         textViewShare = view.findViewById(R.id.text_view_share);
 
-        imageViewBackArrow.setOnClickListener(v -> navController.navigateUp());
+        imageViewBackArrow.setOnClickListener(v -> {
+            navController.popBackStack(R.id.shareFragment, false);
+        });
 
         Glide.with(getActivity())
                 .load(imagePath)
@@ -140,7 +142,7 @@ public class EditPhotoFragment extends Fragment {
                 myRef.child("photos")
                         .child(newPhotoKey)
                         .setValue(photo).addOnCompleteListener(task -> {
-                    navController.popBackStack(R.id.homeFragment, true);
+                    navController.navigate(R.id.action_editPhotoFragment_to_homeFragment);
                 });
 
             });

@@ -118,7 +118,7 @@ public class Utils {
                 }
             }
             String s = sb.toString().replace(" ", "").replace("#", ",#");
-            return s.substring(1, s.length());
+            return s.substring(1);
         }
         return string;
     }

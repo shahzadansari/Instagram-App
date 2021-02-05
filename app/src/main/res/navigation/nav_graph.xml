@@ -45,7 +45,8 @@
         <action
             android:id="@+id/action_shareFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/shareFragment" />
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_shareFragment_to_editPhotoFragment"
             app:destination="@id/editPhotoFragment" />
@@ -73,7 +74,9 @@
         <argument android:name="imagePath" />
         <action
             android:id="@+id/action_editPhotoFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/viewPostFragment"

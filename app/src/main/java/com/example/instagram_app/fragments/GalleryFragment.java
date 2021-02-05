@@ -111,7 +111,7 @@ public class GalleryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
 
-        imageViewClose.setOnClickListener(v -> navController.navigateUp());
+        imageViewClose.setOnClickListener(v -> navController.navigate(R.id.action_shareFragment_to_homeFragment));
 
         textViewNext.setOnClickListener(v -> {
 

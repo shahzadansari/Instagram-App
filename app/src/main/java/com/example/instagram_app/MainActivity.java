@@ -81,10 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
         int permissionRequest = ActivityCompat.checkSelfPermission(this, permission);
 
-        if (permissionRequest != PackageManager.PERMISSION_GRANTED) {
-            return false;
-        } else {
-            return true;
-        }
+        return permissionRequest == PackageManager.PERMISSION_GRANTED;
     }
 }

@@ -19,10 +19,9 @@ public class ShareFragment extends Fragment {
 
     private static final String TAG = "ShareFragment";
     private static final int VERIFY_PERMISSIONS_REQUEST = 1;
+    private final int REQUEST_CODE_PROFILE_PHOTO = 1;
     private TabLayout tabLayout;
-
     private int requestCode;
-    private int REQUEST_CODE_PROFILE_PHOTO = 1;
 
     public ShareFragment() {
         // Required empty public constructor

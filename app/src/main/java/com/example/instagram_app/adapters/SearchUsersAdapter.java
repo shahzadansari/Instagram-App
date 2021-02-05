@@ -32,7 +32,7 @@ public class SearchUsersAdapter extends ListAdapter<UserSettings, SearchUsersAda
             return oldItem.getUser().getUser_id().equals(newItem.getUser().getUser_id());
         }
     };
-    private Context mContext;
+    private final Context mContext;
     private OnItemClickListener listener;
 
     public SearchUsersAdapter(Context context) {

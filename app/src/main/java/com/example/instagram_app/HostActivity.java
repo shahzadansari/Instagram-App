@@ -51,9 +51,9 @@ public class HostActivity extends AppCompatActivity {
             }
         });
 
-        if (savedInstanceState == null) {
-            openHomeFragment();
-        }
+//        if (savedInstanceState == null) {
+//            openHomeFragment();
+//        }
     }
 
     private void openHomeFragment() {
@@ -65,5 +65,23 @@ public class HostActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.onNavDestinationSelected(item, navController)
                 || super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: called");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: called");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: called");
     }
 }

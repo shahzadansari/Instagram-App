@@ -36,10 +36,10 @@ public class CommentsAdapter extends ListAdapter<Comment, CommentsAdapter.ViewHo
             return oldItem.getDate_created().equals(newItem.getDate_created());
         }
     };
-    private Context mContext;
-    private FirebaseAuth mAuth;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myRef;
+    private final Context mContext;
+    private final FirebaseAuth mAuth;
+    private final FirebaseDatabase mFirebaseDatabase;
+    private final DatabaseReference myRef;
 
     public CommentsAdapter(Context context) {
         super(DIFF_CALLBACK);
