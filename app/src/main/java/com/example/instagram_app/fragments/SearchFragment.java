@@ -36,25 +36,21 @@ import java.util.List;
 
 public class SearchFragment extends Fragment {
 
+    public static final int USER_TYPE_PERSONAL = 0;
+    public static final int USER_TYPE_VISITOR = 1;
     private static final String TAG = "SearchFragment";
     private TextView textViewEmptyState;
     private EditText editText;
     private RecyclerView recyclerViewSearchResults;
     private SearchUsersAdapter adapter;
-
     private Context mContext;
-
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
     private NavController navController;
-
     private List<User> usersList = new ArrayList<>();
     private List<UserAccountSettings> userAccountSettingsList = new ArrayList<>();
     private List<UserSettings> usersSettingsList = new ArrayList<>();
-
-    public static final int USER_TYPE_PERSONAL = 0;
-    public static final int USER_TYPE_VISITOR = 1;
     private int userCode;
 
     public SearchFragment() {

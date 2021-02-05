@@ -150,10 +150,15 @@ public class ProfileFragment extends Fragment {
 
     private UserSettings retrieveData(DataSnapshot snapshot) {
 
+        Log.d(TAG, "retrieveData: called");
+        Log.d(TAG, "retrieveData: userId 1: " + userId);
+
         User user = snapshot
                 .child("users") // users node
                 .child(userId) // user_id
                 .getValue(User.class); // data from that node
+
+        Log.d(TAG, "retrieveData: userId 2: " + userId);
 
         UserAccountSettings userAccountSettings = snapshot
                 .child("user_account_settings") // user_account_settings node

@@ -152,7 +152,7 @@ public class ViewPostFragment extends Fragment {
                         .removeValue();
 
                 myRef.child("user_photos")
-                        .child(mAuth.getCurrentUser().getUid())
+                        .child(currentPhoto.getUser_id())
                         .child(currentPhoto.getPhoto_id())
                         .child("likes")
                         .child(mAuth.getCurrentUser().getUid())
@@ -170,7 +170,7 @@ public class ViewPostFragment extends Fragment {
                         .setValue(mAuth.getUid());
 
                 myRef.child("user_photos")
-                        .child(mAuth.getCurrentUser().getUid())
+                        .child(currentPhoto.getUser_id())
                         .child(currentPhoto.getPhoto_id())
                         .child("likes")
                         .child(mAuth.getCurrentUser().getUid())

@@ -43,7 +43,8 @@ public class HostActivity extends AppCompatActivity {
                     destination.getId() == R.id.editPhotoFragment ||
                     destination.getId() == R.id.viewPostFragment ||
                     destination.getId() == R.id.viewCommentsFragment ||
-                    destination.getId() == R.id.searchFragment) {
+                    destination.getId() == R.id.searchFragment ||
+                    destination.getId() == R.id.viewProfileFragment) {
                 bottomNavigationView.setVisibility(View.GONE);
             } else {
                 bottomNavigationView.setVisibility(View.VISIBLE);

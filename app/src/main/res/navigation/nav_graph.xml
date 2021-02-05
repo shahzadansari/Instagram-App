@@ -90,7 +90,7 @@
         android:id="@+id/searchFragment"
         android:name="com.example.instagram_app.fragments.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" >
+        tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
@@ -117,11 +117,11 @@
     <fragment
         android:id="@+id/viewProfileFragment"
         android:name="com.example.instagram_app.fragments.ViewProfileFragment"
-        android:label="ViewProfileFragment" >
+        android:label="ViewProfileFragment">
         <argument
             android:name="userId"
-            app:argType="string"
-            android:defaultValue="user_id_goes_here" />
+            android:defaultValue="user_id_goes_here"
+            app:argType="string" />
         <action
             android:id="@+id/action_viewProfileFragment_to_viewPostFragment"
             app:destination="@id/viewPostFragment" />

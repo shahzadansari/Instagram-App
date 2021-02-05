@@ -171,7 +171,7 @@ public class ViewCommentsFragment extends Fragment {
                 .setValue(comment);
 
         myRef.child("user_photos")
-                .child(mAuth.getCurrentUser().getUid())
+                .child(currentPhoto.getUser_id())
                 .child(currentPhoto.getPhoto_id())
                 .child("comments")
                 .child(commentId)
