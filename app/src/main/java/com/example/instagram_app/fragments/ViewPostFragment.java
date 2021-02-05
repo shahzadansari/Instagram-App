@@ -44,6 +44,7 @@ public class ViewPostFragment extends Fragment {
     private DatabaseReference myRef;
 
     private UserAccountSettings authorData;
+    private UserAccountSettings currentUserData;
     private Photo currentPhoto;
     private Boolean isLiked = false;
 
@@ -98,6 +99,7 @@ public class ViewPostFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 getAuthorData(snapshot);
+                getCurrentUserData(snapshot);
                 getLikes(snapshot);
                 getComments(snapshot);
             }
@@ -224,7 +226,7 @@ public class ViewPostFragment extends Fragment {
                 textViewLikes.setText(likesString);
 
                 /** fix "match found" bug e.g. shahzad & shahzadansari06 etc */
-                isLiked = mUsers.toString().contains(authorData.getUsername() + "");
+                isLiked = mUsers.toString().contains(currentUserData.getUsername() + "");
 
                 if (isLiked) {
                     imageViewLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_heart_checked));
@@ -287,6 +289,13 @@ public class ViewPostFragment extends Fragment {
         Glide.with(this)
                 .load(authorProfilePhotoUrl)
                 .into(profilePhoto);
+    }
+
+    public void getCurrentUserData(DataSnapshot snapshot) {
+        currentUserData = snapshot
+                .child("user_account_settings") // user_account_settings node
+                .child(mAuth.getUid()) // user_id
+                .getValue(UserAccountSettings.class); // data from that node
     }
 
     @Override
