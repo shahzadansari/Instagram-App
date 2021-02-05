@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,10 +47,15 @@ public class SearchFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
+    private NavController navController;
 
     private List<User> usersList = new ArrayList<>();
     private List<UserAccountSettings> userAccountSettingsList = new ArrayList<>();
     private List<UserSettings> usersSettingsList = new ArrayList<>();
+
+    public static final int USER_TYPE_PERSONAL = 0;
+    public static final int USER_TYPE_VISITOR = 1;
+    private int userCode;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -81,6 +88,8 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        navController = Navigation.findNavController(view);
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -139,10 +148,19 @@ public class SearchFragment extends Fragment {
         recyclerViewSearchResults.setLayoutManager(linearLayoutManager);
 
         adapter.setOnItemClickListener(position -> {
-            // TODO: open user profile
-            Log.d(TAG, "initEmptyRecyclerView: username: " + usersSettingsList.get(position)
-                    .getSettings()
-                    .getUsername());
+
+            String selectedUserId = usersSettingsList.get(position)
+                    .getUser()
+                    .getUser_id();
+
+            if (selectedUserId.equals(mAuth.getUid())) {
+                navController.navigate(R.id.action_searchFragment_to_profileFragment);
+            } else {
+                NavDirections navDirections = SearchFragmentDirections
+                        .actionSearchFragmentToViewProfileFragment()
+                        .setUserId(selectedUserId);
+                navController.navigate(navDirections);
+            }
         });
     }
 

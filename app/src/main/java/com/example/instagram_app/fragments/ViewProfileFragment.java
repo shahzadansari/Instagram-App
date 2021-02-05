@@ -35,9 +35,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProfileFragment extends Fragment {
+public class ViewProfileFragment extends Fragment {
 
-    private static final String TAG = "ProfileFragment";
+    private static final String TAG = "ViewProfileFragment";
     private static final int NUM_GRID_COLUMNS = 3;
     private ProgressBar progressBar;
     private TextView textViewEditProfileBtn, textViewPosts, textViewFollowers, textViewFollowing,
@@ -51,7 +51,7 @@ public class ProfileFragment extends Fragment {
 
     private String userId;
 
-    public ProfileFragment() {
+    public ViewProfileFragment() {
         // Required empty public constructor
     }
 
@@ -63,7 +63,7 @@ public class ProfileFragment extends Fragment {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
 
-        userId = mAuth.getCurrentUser().getUid();
+        userId = ViewProfileFragmentArgs.fromBundle(getArguments()).getUserId();
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ProfileFragment extends Fragment {
         gridView = rootView.findViewById(R.id.gridView);
 
         progressBar.setVisibility(View.VISIBLE);
-        textViewEditProfileBtn.setOnClickListener(v -> openEditProfileFragment());
+//        textViewEditProfileBtn.setOnClickListener(v -> openEditProfileFragment());
 
         return rootView;
     }
@@ -102,6 +102,7 @@ public class ProfileFragment extends Fragment {
                 .getChildren()) {
 
             Photo photo = new Photo();
+
             Map<String, Object> objectMap = (HashMap<String, Object>) dataSnapshot.getValue();
             photo.setCaption(objectMap.get("caption").toString());
             photo.setDate_created(objectMap.get("date_created").toString());
@@ -126,8 +127,8 @@ public class ProfileFragment extends Fragment {
 
         gridView.setOnItemClickListener((parent, view, position, id) -> {
             Photo photoData = photoArrayList.get(position);
-            NavDirections navDirections = ProfileFragmentDirections
-                    .actionProfileFragmentToViewPostFragment(photoData);
+            NavDirections navDirections = ViewProfileFragmentDirections
+                    .actionViewProfileFragmentToViewPostFragment(photoData);
             navController.navigate(navDirections);
         });
     }

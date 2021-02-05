@@ -90,7 +90,14 @@
         android:id="@+id/searchFragment"
         android:name="com.example.instagram_app.fragments.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search"/>
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_viewProfileFragment"
+            app:destination="@id/viewProfileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/viewCommentsFragment"
         android:name="com.example.instagram_app.fragments.ViewCommentsFragment"
@@ -106,5 +113,17 @@
         <argument
             android:name="photo"
             app:argType="com.example.instagram_app.model.Photo" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewProfileFragment"
+        android:name="com.example.instagram_app.fragments.ViewProfileFragment"
+        android:label="ViewProfileFragment" >
+        <argument
+            android:name="userId"
+            app:argType="string"
+            android:defaultValue="user_id_goes_here" />
+        <action
+            android:id="@+id/action_viewProfileFragment_to_viewPostFragment"
+            app:destination="@id/viewPostFragment" />
     </fragment>
 </navigation>
