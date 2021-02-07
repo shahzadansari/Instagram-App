@@ -162,6 +162,8 @@ public class ViewCommentsFragment extends Fragment {
         comment.setDate_created(Utils.getTimestamp());
         comment.setUser_id(mAuth.getUid());
 
+        /** TODO: update comment structure on remote and include user_id. Pt. 88(reference) */
+
         String commentId = myRef.push().getKey();
 
         myRef.child("photos")

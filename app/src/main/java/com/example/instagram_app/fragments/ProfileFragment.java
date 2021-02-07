@@ -168,6 +168,48 @@ public class ProfileFragment extends Fragment {
         return new UserSettings(user, userAccountSettings);
     }
 
+    public void getPostsCount(DataSnapshot dataSnapshot) {
+
+        long posts = dataSnapshot
+                .child("user_photos")
+                .child(userId)
+                .getChildrenCount();
+
+        if (posts > 0) {
+            textViewPosts.setText("" + posts);
+        } else {
+            textViewPosts.setText("" + 0);
+        }
+    }
+
+    public void getFollowers(DataSnapshot dataSnapshot) {
+
+        long followers = dataSnapshot
+                .child("followers")
+                .child(userId)
+                .getChildrenCount();
+
+        if (followers > 0) {
+            textViewFollowers.setText("" + followers);
+        } else {
+            textViewFollowers.setText("" + 0);
+        }
+    }
+
+    public void getFollowing(DataSnapshot dataSnapshot) {
+
+        long following = dataSnapshot
+                .child("following")
+                .child(userId)
+                .getChildrenCount();
+
+        if (following > 0) {
+            textViewFollowing.setText("" + following);
+        } else {
+            textViewFollowing.setText("" + 0);
+        }
+    }
+
     private void openEditProfileFragment() {
         navController.navigate(R.id.action_profileFragment_to_editProfileFragment);
     }
@@ -182,7 +224,9 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserSettings userSettings = retrieveData(snapshot);
                 updateUI(userSettings);
-
+                getPostsCount(snapshot);
+                getFollowers(snapshot);
+                getFollowing(snapshot);
                 getUserPhotos(snapshot);
             }
 
@@ -191,23 +235,5 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause: called");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop: called");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: called");
     }
 }
