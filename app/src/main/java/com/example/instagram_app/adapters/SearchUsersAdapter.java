@@ -62,7 +62,6 @@ public class SearchUsersAdapter extends ListAdapter<UserSettings, SearchUsersAda
         holder.textViewDisplayName.setText(userAccountSettings.getDisplay_name());
     }
 
-    // TODO: add a field "commentId" in Comment model, to delete comments with.
     public UserSettings getUserSettingsAt(int position) {
         return getItem(position);
     }
