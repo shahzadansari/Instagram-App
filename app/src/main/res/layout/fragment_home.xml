@@ -21,8 +21,8 @@
         android:layout_below="@id/textViewTitle"
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
-        android:textSize="20sp"
-        tools:text="Message goes here" />
+        android:textSize="14sp"
+        tools:text="shahzadansari03@outlook.com is signed in" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_comments"

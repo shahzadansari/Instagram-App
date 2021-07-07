@@ -31,7 +31,6 @@
                     app:civ_border_width="0.5dp"
                     tools:src="@drawable/sample_img" />
 
-
                 <TextView
                     android:id="@+id/text_view_username"
                     android:layout_width="wrap_content"
@@ -44,7 +43,6 @@
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     tools:text="shahzadd.ansari" />
-
 
                 <ImageView
                     android:id="@+id/image_view_ellipses"

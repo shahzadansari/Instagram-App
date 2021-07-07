@@ -57,7 +57,8 @@ public class ViewPostFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currentPhoto = ViewPostFragmentArgs.fromBundle(getArguments()).getPhotoData();
+        currentPhoto = ViewPostFragmentArgs
+                .fromBundle(getArguments()).getPhotoData();
 
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -226,7 +227,8 @@ public class ViewPostFragment extends Fragment {
                 textViewLikes.setText(likesString);
 
                 /** fix "match found" bug e.g. shahzad & shahzadansari06 etc */
-                isLiked = mUsers.toString().contains(currentUserData.getUsername() + "");
+                isLiked = mUsers.toString()
+                        .contains(currentUserData.getUsername() + "");
 
                 if (isLiked) {
                     imageViewLike.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_heart_checked));

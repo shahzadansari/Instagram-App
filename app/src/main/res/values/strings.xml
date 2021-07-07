@@ -17,5 +17,9 @@
     <string name="db_field_display_name">display_name</string>
     <string name="db_field_phone_number">phone_number</string>
     <string name="db_field_profile_photo">profile_photo</string>
+    <string name="db_field_user_id">user_id</string>
+
+    <string name="db_node_following">following</string>
+    <string name="db_node_user_photos">user_photos</string>
 
 </resources>
