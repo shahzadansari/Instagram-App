@@ -112,6 +112,45 @@ public class PhotosAdapter extends ListAdapter<Photo, PhotosAdapter.ViewHolder> 
 
             }
         });
+
+        holder.imageViewLike.setOnClickListener(v -> {
+            if (isLiked) {
+
+                holder.imageViewLike.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_heart_unchecked));
+                myRef.child("photos")
+                        .child(currentPhoto.getPhoto_id())
+                        .child("likes")
+                        .child(mAuth.getCurrentUser().getUid())
+                        .removeValue();
+
+                myRef.child("user_photos")
+                        .child(currentPhoto.getUser_id())
+                        .child(currentPhoto.getPhoto_id())
+                        .child("likes")
+                        .child(mAuth.getCurrentUser().getUid())
+                        .removeValue();
+                isLiked = false;
+
+            } else {
+
+                holder.imageViewLike.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_heart_checked));
+
+                myRef.child("photos")
+                        .child(currentPhoto.getPhoto_id())
+                        .child("likes")
+                        .child(mAuth.getCurrentUser().getUid())
+                        .setValue(mAuth.getUid());
+
+                myRef.child("user_photos")
+                        .child(currentPhoto.getUser_id())
+                        .child(currentPhoto.getPhoto_id())
+                        .child("likes")
+                        .child(mAuth.getCurrentUser().getUid())
+                        .setValue(mAuth.getUid());
+                isLiked = true;
+
+            }
+        });
     }
 
     private void getComments(DataSnapshot snapshot, ViewHolder holder) {
