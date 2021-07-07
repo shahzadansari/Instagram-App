@@ -1,5 +1,6 @@
 package com.example.instagram_app.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,8 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.instagram_app.R;
+import com.example.instagram_app.adapters.PhotosAdapter;
 import com.example.instagram_app.model.Photo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,6 +42,10 @@ public class HomeFragment extends Fragment {
     private ArrayList<String> followedUserIds = new ArrayList<>();
     private ArrayList<Photo> mAllPhotos = new ArrayList<>();
 
+    private RecyclerView recyclerViewPhotos;
+    private PhotosAdapter adapter;
+    private Context mContext;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -50,6 +58,8 @@ public class HomeFragment extends Fragment {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
         userId = mAuth.getCurrentUser().getUid();
+
+        mContext = getContext();
     }
 
     @Override
@@ -58,8 +68,10 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         textViewMessage = rootView.findViewById(R.id.text_view_message);
+        recyclerViewPhotos = rootView.findViewById(R.id.recycler_view_photos);
 
         displayStatus();
+        initEmptyRecyclerView();
 
         return rootView;
     }
@@ -81,6 +93,16 @@ public class HomeFragment extends Fragment {
 
             }
         });
+    }
+
+    private void initEmptyRecyclerView() {
+        adapter = new PhotosAdapter(mContext);
+        recyclerViewPhotos.setAdapter(adapter);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager
+                (mContext, LinearLayoutManager.VERTICAL, false);
+
+        recyclerViewPhotos.setLayoutManager(linearLayoutManager);
     }
 
     private void getFollowedUserPhotos(DataSnapshot snapshot) {
@@ -108,6 +130,8 @@ public class HomeFragment extends Fragment {
                 Log.d(TAG, "getFollowedUserPhotos: image url: " + photo.getImage_path());
             }
         }
+
+        adapter.submitList(mAllPhotos);
     }
 
     private void getFollowedUserIds(DataSnapshot snapshot) {

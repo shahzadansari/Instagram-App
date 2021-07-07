@@ -242,7 +242,6 @@ public class ViewPostFragment extends Fragment {
         }
     }
 
-
     private String createLikesString(StringBuilder usersStringBuilder) {
         if (usersStringBuilder == null)
             return "No likes yet";
