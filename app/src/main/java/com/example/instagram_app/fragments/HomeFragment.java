@@ -11,6 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,6 +48,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerViewPhotos;
     private PhotosAdapter adapter;
     private Context mContext;
+    private NavController navController;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -80,6 +84,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view,
                               @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -103,6 +108,21 @@ public class HomeFragment extends Fragment {
                 (mContext, LinearLayoutManager.VERTICAL, false);
 
         recyclerViewPhotos.setLayoutManager(linearLayoutManager);
+
+        adapter.setOnItemClickListener((photo, v,
+                                        authorUsername,
+                                        authorProfilePhotoUrl) -> {
+
+            if (v.getId() == R.id.image_view_comments ||
+                    v.getId() == R.id.text_view_image_comments_link) {
+
+                NavDirections navDirections = HomeFragmentDirections
+                        .actionHomeFragmentToViewCommentsFragment(photo)
+                        .setAuthorUsername(authorUsername)
+                        .setAuthorProfilePhotoUrl(authorProfilePhotoUrl);
+                navController.navigate(navDirections);
+            }
+        });
     }
 
     private void getFollowedUserPhotos(DataSnapshot snapshot) {

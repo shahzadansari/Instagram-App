@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_viewCommentsFragment"
+            app:destination="@id/viewCommentsFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"

@@ -48,6 +48,7 @@ public class PhotosAdapter extends ListAdapter<Photo, PhotosAdapter.ViewHolder> 
     private Photo currentPhoto;
     private Boolean isLiked = false;
     private UserAccountSettings currentUserData;
+    private OnItemClickListener listener;
 
     public PhotosAdapter(Context context) {
         super(DIFF_CALLBACK);
@@ -92,12 +93,27 @@ public class PhotosAdapter extends ListAdapter<Photo, PhotosAdapter.ViewHolder> 
                     String username = userAccountSettings
                             .getUsername();
 
+                    holder.authorUsername = username;
+                    holder.authorProfilePictureUrl = profilePhotoUrl;
+
                     holder.textViewUsername.setText(username);
 
                     Glide.with(mContext)
                             .load(profilePhotoUrl)
                             .into(holder.profilePhoto);
                 });
+
+        holder.imageViewComments.setOnClickListener(v -> {
+            listener.onItemClick(currentPhoto, v,
+                    holder.authorUsername,
+                    holder.authorProfilePictureUrl);
+        });
+
+        holder.textViewCommentsLink.setOnClickListener(v -> {
+            listener.onItemClick(currentPhoto, v,
+                    holder.authorUsername,
+                    holder.authorProfilePictureUrl);
+        });
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -151,6 +167,21 @@ public class PhotosAdapter extends ListAdapter<Photo, PhotosAdapter.ViewHolder> 
 
             }
         });
+    }
+
+    public Photo getPhotoAt(int position) {
+        return getItem(position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Photo photo,
+                         View v,
+                         String authorUsername,
+                         String authorProfilePhotoUrl);
     }
 
     private void getComments(DataSnapshot snapshot, ViewHolder holder) {
@@ -246,6 +277,9 @@ public class PhotosAdapter extends ListAdapter<Photo, PhotosAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        private String authorUsername;
+        private String authorProfilePictureUrl;
+
         private CircleImageView profilePhoto;
         private ImageView postImage, imageViewEllipses,
                 imageViewLike, imageViewComments;
@@ -264,6 +298,24 @@ public class PhotosAdapter extends ListAdapter<Photo, PhotosAdapter.ViewHolder> 
             textViewCaption = itemView.findViewById(R.id.text_view_image_caption);
             textViewCommentsLink = itemView.findViewById(R.id.text_view_image_comments_link);
             textViewTimePosted = itemView.findViewById(R.id.text_view_time_post_created);
+
+//            textViewCommentsLink.setOnClickListener(v -> {
+//                int position = getAdapterPosition();
+//                Photo photo = getItem(position);
+//
+//                if (listener != null && position != RecyclerView.NO_POSITION) {
+//                    listener.onItemClick(photo, v);
+//                }
+//            });
+//
+//            imageViewComments.setOnClickListener(v -> {
+//                int position = getAdapterPosition();
+//                Photo photo = getItem(position);
+//
+//                if (listener != null && position != RecyclerView.NO_POSITION) {
+//                    listener.onItemClick(photo, v);
+//                }
+//            });
         }
     }
 }
