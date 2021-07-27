@@ -23,7 +23,9 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class Utils {
+
     private static final String TAG = "Utils";
+    public static final String DUMMY_IMAGE_URL = "https://firebasestorage.googleapis.com/v0/b/fir-realtimedatabasecloud.appspot.com/o/dummy_image.jpg?alt=media&token=f6172068-a92e-4894-91ab-a3d4184e2642";
 
     // storage/emulated/0/Pictures/Insta Clone
     public static String savingToStorage(Bitmap bitmap) {

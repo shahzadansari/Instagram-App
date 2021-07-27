@@ -1,5 +1,6 @@
 package com.example.instagram_app.fragments;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -45,6 +47,7 @@ public class EditPhotoFragment extends Fragment {
     private DatabaseReference myRef;
     private StorageReference mStorageReference;
     private int imageCount;
+    private ProgressDialog progressDialog;
 
     public EditPhotoFragment() {
         // Required empty public constructor
@@ -54,7 +57,9 @@ public class EditPhotoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_photo, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_edit_photo, container, false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        return rootView;
     }
 
     @Override
@@ -90,11 +95,12 @@ public class EditPhotoFragment extends Fragment {
             navController.popBackStack(R.id.shareFragment, false);
         });
 
-        Glide.with(getActivity())
+        Glide.with(requireActivity())
                 .load(imagePath)
                 .into(imageView);
 
         textViewShare.setOnClickListener(v -> {
+            showProgressDialog();
             String caption = editTextCaption.getText().toString();
             uploadNewPhoto(caption,
                     imageCount,
@@ -142,6 +148,7 @@ public class EditPhotoFragment extends Fragment {
                 myRef.child("photos")
                         .child(newPhotoKey)
                         .setValue(photo).addOnCompleteListener(task -> {
+                    hideProgressDialog();
                     navController.navigate(R.id.action_editPhotoFragment_to_homeFragment);
                 });
 
@@ -166,5 +173,21 @@ public class EditPhotoFragment extends Fragment {
             count++;
         }
         return count;
+    }
+
+    private void showProgressDialog() {
+        progressDialog = new ProgressDialog(requireContext());
+        progressDialog.setMessage("Uploading..");
+        progressDialog.setTitle("Please wait..");
+        progressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        try {
+            if (progressDialog.isShowing())
+                progressDialog.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

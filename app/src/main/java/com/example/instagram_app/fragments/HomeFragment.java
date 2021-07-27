@@ -2,14 +2,15 @@ package com.example.instagram_app.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
@@ -21,7 +22,6 @@ import com.example.instagram_app.R;
 import com.example.instagram_app.adapters.PhotosAdapter;
 import com.example.instagram_app.model.Photo;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +36,6 @@ public class HomeFragment extends Fragment {
 
     private static final String TAG = "HomeFragment";
     private FirebaseAuth mAuth;
-    private TextView textViewMessage;
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
@@ -49,6 +48,8 @@ public class HomeFragment extends Fragment {
     private PhotosAdapter adapter;
     private Context mContext;
     private NavController navController;
+    private TextView textViewNoPosts;
+    private ProgressBar progressBar;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -71,10 +72,12 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        textViewMessage = rootView.findViewById(R.id.text_view_message);
         recyclerViewPhotos = rootView.findViewById(R.id.recycler_view_photos);
+        textViewNoPosts = rootView.findViewById(R.id.text_view_no_posts);
+        progressBar = rootView.findViewById(R.id.progress_bar);
 
-        displayStatus();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+
         initEmptyRecyclerView();
 
         return rootView;
@@ -85,6 +88,7 @@ public class HomeFragment extends Fragment {
                               @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
+        progressBar.setVisibility(View.VISIBLE);
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -129,8 +133,6 @@ public class HomeFragment extends Fragment {
 
         for (String string : followedUserIds) {
 
-            Log.d(TAG, "getFollowedUserPhotos: user: " + string);
-
             for (DataSnapshot dataSnapshot : snapshot
                     .child(getString(R.string.db_node_user_photos))
                     .child(string)
@@ -146,11 +148,15 @@ public class HomeFragment extends Fragment {
                 photo.setTags(objectMap.get("tags").toString());
 
                 mAllPhotos.add(photo);
-
-                Log.d(TAG, "getFollowedUserPhotos: image url: " + photo.getImage_path());
             }
         }
 
+        if (!mAllPhotos.isEmpty()) {
+            textViewNoPosts.setVisibility(View.GONE);
+        } else {
+            textViewNoPosts.setVisibility(View.VISIBLE);
+        }
+        progressBar.setVisibility(View.GONE);
         adapter.submitList(mAllPhotos);
     }
 
@@ -164,21 +170,6 @@ public class HomeFragment extends Fragment {
             followedUserIds.add((String) dataSnapshot
                     .child(getString(R.string.db_field_user_id))
                     .getValue());
-
-            Log.d(TAG, "getFollowedUserIds: " + dataSnapshot
-                    .child(getString(R.string.db_field_user_id))
-                    .getValue());
         }
-    }
-
-    public void displayStatus() {
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        String message;
-        if (firebaseUser != null) {
-            message = firebaseUser.getEmail() + " is signed in";
-        } else {
-            message = "User is not signed in";
-        }
-        textViewMessage.setText(message);
     }
 }

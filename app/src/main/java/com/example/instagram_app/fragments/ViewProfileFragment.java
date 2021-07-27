@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
@@ -82,6 +83,8 @@ public class ViewProfileFragment extends Fragment {
         gridView = rootView.findViewById(R.id.gridView);
         textViewFollow = rootView.findViewById(R.id.text_view_follow);
         textViewUnfollow = rootView.findViewById(R.id.text_view_unfollow);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
         progressBar.setVisibility(View.VISIBLE);
 

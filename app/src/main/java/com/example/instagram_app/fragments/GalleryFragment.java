@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
@@ -92,6 +93,8 @@ public class GalleryFragment extends Fragment {
         spinner = rootView.findViewById(R.id.spinnerDirectory);
         gridView = rootView.findViewById(R.id.gridView);
         imageViewSelected = rootView.findViewById(R.id.image_view_selected);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
         if (requestCode == REQUEST_CODE_PROFILE_PHOTO) {
             textViewNext.setTextSize(16);

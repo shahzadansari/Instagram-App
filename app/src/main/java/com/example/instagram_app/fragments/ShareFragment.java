@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -52,6 +53,8 @@ public class ShareFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_share, container, false);
         tabLayout = rootView.findViewById(R.id.tabs);
 
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+
         initTabs();
         openGalleryFragment();
 
@@ -76,13 +79,13 @@ public class ShareFragment extends Fragment {
 
     private void openPhotoFragment() {
         if (requestCode == REQUEST_CODE_PROFILE_PHOTO) {
-            getActivity().getSupportFragmentManager()
+            requireActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragmentContainer, new PhotoFragment(REQUEST_CODE_PROFILE_PHOTO))
                     .setReorderingAllowed(true)
                     .commit();
         } else {
-            getActivity().getSupportFragmentManager()
+            requireActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragmentContainer, new PhotoFragment())
                     .setReorderingAllowed(true)
@@ -127,13 +130,14 @@ public class ShareFragment extends Fragment {
     }
 
     public boolean checkPermissions(String permission) {
-        int permissionRequest = ActivityCompat.checkSelfPermission(getActivity(), permission);
+        int permissionRequest = ActivityCompat
+                .checkSelfPermission(requireActivity(), permission);
         return permissionRequest == PackageManager.PERMISSION_GRANTED;
     }
 
     public void verifyPermissions(String[] permissions) {
         ActivityCompat.requestPermissions(
-                getActivity(),
+                requireActivity(),
                 permissions,
                 VERIFY_PERMISSIONS_REQUEST
         );

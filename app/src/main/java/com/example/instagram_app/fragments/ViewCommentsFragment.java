@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -77,6 +78,8 @@ public class ViewCommentsFragment extends Fragment {
         recyclerViewComments = rootView.findViewById(R.id.recycler_view_comments);
         imageViewCheck = rootView.findViewById(R.id.image_view_check);
         editTextComment = rootView.findViewById(R.id.edit_text_comment);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
         imageViewCheck.setOnClickListener(v -> {
             Utils.hideKeyboard(getActivity());

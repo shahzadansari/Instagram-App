@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
@@ -50,6 +51,7 @@ public class ProfileFragment extends Fragment {
     private GridView gridView;
 
     private String userId;
+    private TextView textViewNoPosts;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -81,6 +83,9 @@ public class ProfileFragment extends Fragment {
         textViewDescription = rootView.findViewById(R.id.text_view_description);
         imageViewProfilePhoto = rootView.findViewById(R.id.profile_image);
         gridView = rootView.findViewById(R.id.gridView);
+        textViewNoPosts = rootView.findViewById(R.id.text_view_no_posts);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
         progressBar.setVisibility(View.VISIBLE);
         textViewEditProfileBtn.setOnClickListener(v -> openEditProfileFragment());
@@ -113,6 +118,11 @@ public class ProfileFragment extends Fragment {
             photoArrayList.add(photo);
         }
 
+        if (photoArrayList.isEmpty()) {
+            textViewNoPosts.setVisibility(View.VISIBLE);
+        } else {
+            textViewNoPosts.setVisibility(View.INVISIBLE);
+        }
         setupGridView(photoArrayList);
     }
 

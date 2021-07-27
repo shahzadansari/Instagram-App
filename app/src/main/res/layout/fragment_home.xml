@@ -5,29 +5,27 @@
     android:layout_height="match_parent"
     tools:context=".fragments.HomeFragment">
 
-    <TextView
-        android:id="@+id/textViewTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="Home Fragment"
-        android:textSize="36sp" />
-
-    <TextView
-        android:id="@+id/text_view_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewTitle"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
-        android:textSize="14sp"
-        tools:text="shahzadansari03@outlook.com is signed in" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_photos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/text_view_message" />
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/text_view_no_posts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="No photos found.\n Follow some people to see their photos."
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </RelativeLayout>

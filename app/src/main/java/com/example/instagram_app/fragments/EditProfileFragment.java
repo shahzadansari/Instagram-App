@@ -1,5 +1,6 @@
 package com.example.instagram_app.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
@@ -50,6 +52,7 @@ public class EditProfileFragment extends Fragment implements
     private DatabaseReference myRef;
     private UserSettings mUserSettings;
     private String newEmail;
+    private ProgressDialog progressDialog;
 
     public EditProfileFragment() {
         // Required empty public constructor
@@ -78,6 +81,8 @@ public class EditProfileFragment extends Fragment implements
         editTextEmail = rootView.findViewById(R.id.email_edit_text);
         editTextPhoneNumber = rootView.findViewById(R.id.edit_text_phone_number);
         relativeLayoutClickable = rootView.findViewById(R.id.relLayout7);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         return rootView;
     }
@@ -113,6 +118,7 @@ public class EditProfileFragment extends Fragment implements
     }
 
     private void saveChanges() {
+        showProgressDialog();
         updateUsername();
         updateDescription();
         updateDisplayName();
@@ -170,11 +176,14 @@ public class EditProfileFragment extends Fragment implements
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
 
-                        Toast.makeText(getActivity(), "Email address updated", Toast.LENGTH_SHORT).show();
                         myRef.child("users")
                                 .child(mAuth.getUid())
                                 .child(getString(R.string.db_field_email))
-                                .setValue(newEmail);
+                                .setValue(newEmail)
+                                .addOnCompleteListener(task1 -> {
+                                    hideProgressDialog();
+                                    Toast.makeText(getActivity(), "Email address updated", Toast.LENGTH_SHORT).show();
+                                });
                     }
                 });
     }
@@ -185,7 +194,8 @@ public class EditProfileFragment extends Fragment implements
         myRef.child("users")
                 .child(mAuth.getUid())
                 .child(getString(R.string.db_field_phone_number))
-                .setValue(phoneNumber);
+                .setValue(phoneNumber)
+                .addOnCompleteListener(task -> hideProgressDialog());
     }
 
     private void updateDisplayName() {
@@ -194,7 +204,8 @@ public class EditProfileFragment extends Fragment implements
         myRef.child("user_account_settings")
                 .child(mAuth.getUid())
                 .child(getString(R.string.db_field_display_name))
-                .setValue(displayName);
+                .setValue(displayName)
+                .addOnCompleteListener(task -> hideProgressDialog());
     }
 
     private void updateDescription() {
@@ -203,7 +214,8 @@ public class EditProfileFragment extends Fragment implements
         myRef.child("user_account_settings")
                 .child(mAuth.getUid())
                 .child(getString(R.string.db_field_description))
-                .setValue(description);
+                .setValue(description)
+                .addOnCompleteListener(task -> hideProgressDialog());
     }
 
     private void updateUsername() {
@@ -219,7 +231,8 @@ public class EditProfileFragment extends Fragment implements
         myRef.child("user_account_settings")
                 .child(mAuth.getUid())
                 .child(getString(R.string.db_field_username))
-                .setValue(username);
+                .setValue(username)
+                .addOnCompleteListener(task -> hideProgressDialog());
     }
 
     private void updateUI(UserSettings userSettings) {
@@ -255,6 +268,22 @@ public class EditProfileFragment extends Fragment implements
         mAuth.signOut();
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
-        getActivity().finish();
+        requireActivity().finish();
+    }
+
+    private void showProgressDialog() {
+        progressDialog = new ProgressDialog(requireContext());
+        progressDialog.setMessage("Uploading..");
+        progressDialog.setTitle("Please wait..");
+        progressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        try {
+            if (progressDialog.isShowing())
+                progressDialog.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

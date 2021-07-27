@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="SignUp Fragment"
+        android:text="Register User"
         android:textSize="36sp" />
 
     <EditText
@@ -37,7 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/edit_text_username"
         android:layout_margin="12dp"
-        android:hint="Enter password here" />
+        android:hint="Enter password here"
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/button_sign_up"

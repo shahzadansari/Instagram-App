@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
@@ -75,6 +76,8 @@ public class SearchFragment extends Fragment {
         recyclerViewSearchResults = rootView.findViewById(R.id.recycler_view_search_results);
         textViewEmptyState = rootView.findViewById(R.id.text_view_empty_state);
         editText = rootView.findViewById(R.id.edit_text_search);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         initEmptyRecyclerView();
 

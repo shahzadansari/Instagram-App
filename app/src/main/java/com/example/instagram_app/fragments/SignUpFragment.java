@@ -1,5 +1,6 @@
 package com.example.instagram_app.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.instagram_app.R;
 import com.example.instagram_app.model.User;
 import com.example.instagram_app.model.UserAccountSettings;
+import com.example.instagram_app.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +33,7 @@ public class SignUpFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
+    private ProgressDialog progressDialog;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -54,6 +58,8 @@ public class SignUpFragment extends Fragment {
         editTextPassword = rootView.findViewById(R.id.edit_text_password);
         textViewSignIn = rootView.findViewById(R.id.text_view_sign_in_account);
 
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+
         btnSignUp.setOnClickListener(v -> registerUser());
         textViewSignIn.setOnClickListener(v -> openLoginFragment());
 
@@ -61,7 +67,7 @@ public class SignUpFragment extends Fragment {
     }
 
     private void openLoginFragment() {
-        getActivity().getSupportFragmentManager()
+        requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, new LoginFragment())
                 .setReorderingAllowed(true)
@@ -69,6 +75,7 @@ public class SignUpFragment extends Fragment {
     }
 
     private void registerUser() {
+        showProgressDialog();
         String email = editTextEmail.getText().toString();
         String username = editTextUsername.getText().toString();
         String password = editTextPassword.getText().toString();
@@ -79,6 +86,7 @@ public class SignUpFragment extends Fragment {
                 if (isUsernameAvailable(username, snapshot)) {
                     createNewUser(email, username, password);
                 } else {
+                    hideProgressDialog();
                     Toast.makeText(getActivity(), "Username already exists", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -92,13 +100,14 @@ public class SignUpFragment extends Fragment {
 
     private void createNewUser(String email, String username, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(getActivity(), task -> {
+                .addOnCompleteListener(requireActivity(), task -> {
                     if (task.isSuccessful()) {
 
                         addInitialUserData(email, username);
                         Toast.makeText(getContext(), "Sign up successful\nLogin to continue", Toast.LENGTH_SHORT).show();
 
                     } else {
+                        hideProgressDialog();
                         Toast.makeText(getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -111,8 +120,9 @@ public class SignUpFragment extends Fragment {
                 ("",
                         "",
                         0,
-                        0, 0,
-                        "",
+                        0,
+                        0,
+                        Utils.DUMMY_IMAGE_URL,
                         username);
 
         myRef.child("users")
@@ -122,7 +132,10 @@ public class SignUpFragment extends Fragment {
         myRef.child("user_account_settings")
                 .child(userId)
                 .setValue(userAccountSettings)
-                .addOnSuccessListener(aVoid -> openLoginFragment());
+                .addOnSuccessListener(aVoid -> {
+                    hideProgressDialog();
+                    openLoginFragment();
+                });
     }
 
     private boolean isUsernameAvailable(String username, DataSnapshot snapshot) {
@@ -136,5 +149,21 @@ public class SignUpFragment extends Fragment {
             }
         }
         return true;
+    }
+
+    private void showProgressDialog() {
+        progressDialog = new ProgressDialog(requireContext());
+        progressDialog.setMessage("Registering User..");
+        progressDialog.setTitle("Please wait..");
+        progressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        try {
+            if (progressDialog.isShowing())
+                progressDialog.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
