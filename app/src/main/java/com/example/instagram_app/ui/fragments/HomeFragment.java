@@ -1,7 +1,8 @@
-package com.example.instagram_app.fragments;
+package com.example.instagram_app.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,8 +43,8 @@ public class HomeFragment extends Fragment {
     private DatabaseReference myRef;
     private String userId;
 
-    private ArrayList<String> followedUserIds = new ArrayList<>();
-    private ArrayList<Photo> mAllPhotos = new ArrayList<>();
+    private final ArrayList<String> followedUserIds = new ArrayList<>();
+    private final ArrayList<Photo> mAllPhotos = new ArrayList<>();
 
     private RecyclerView recyclerViewPhotos;
     private PhotosAdapter adapter;
@@ -102,6 +104,21 @@ public class HomeFragment extends Fragment {
 
             }
         });
+
+        refreshFCMToken();
+    }
+
+    private void refreshFCMToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    myRef.child("user_account_settings")
+                            .child(userId)
+                            .child("fcmToken")
+                            .setValue(task.getResult())
+                            .addOnCompleteListener(refreshTokenTask -> {
+                                Log.d(TAG, "refreshFCMToken: token refreshed");
+                            });
+                });
     }
 
     private void initEmptyRecyclerView() {

@@ -1,4 +1,4 @@
-package com.example.instagram_app;
+package com.example.instagram_app.ui.activities;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,7 +8,8 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.example.instagram_app.fragments.LoginFragment;
+import com.example.instagram_app.R;
+import com.example.instagram_app.ui.fragments.LoginFragment;
 import com.example.instagram_app.utils.Permissions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

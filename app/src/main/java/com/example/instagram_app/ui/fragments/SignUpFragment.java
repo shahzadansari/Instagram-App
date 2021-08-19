@@ -1,4 +1,4 @@
-package com.example.instagram_app.fragments;
+package com.example.instagram_app.ui.fragments;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class SignUpFragment extends Fragment {
 
@@ -116,26 +117,34 @@ public class SignUpFragment extends Fragment {
     private void addInitialUserData(String email, String username) {
         String userId = mAuth.getCurrentUser().getUid();
         User user = new User(userId, 1, email, username);
-        UserAccountSettings userAccountSettings = new UserAccountSettings
-                ("",
-                        "",
-                        0,
-                        0,
-                        0,
-                        Utils.DUMMY_IMAGE_URL,
-                        username);
 
-        myRef.child("users")
-                .child(userId)
-                .setValue(user);
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                String fcmToken = task.getResult();
 
-        myRef.child("user_account_settings")
-                .child(userId)
-                .setValue(userAccountSettings)
-                .addOnSuccessListener(aVoid -> {
-                    hideProgressDialog();
-                    openLoginFragment();
-                });
+                UserAccountSettings userAccountSettings = new UserAccountSettings
+                        ("",
+                                "",
+                                0,
+                                0,
+                                0,
+                                Utils.DUMMY_IMAGE_URL,
+                                username,
+                                fcmToken);
+
+                myRef.child("users")
+                        .child(userId)
+                        .setValue(user);
+
+                myRef.child("user_account_settings")
+                        .child(userId)
+                        .setValue(userAccountSettings)
+                        .addOnSuccessListener(aVoid -> {
+                            hideProgressDialog();
+                            openLoginFragment();
+                        });
+            }
+        });
     }
 
     private boolean isUsernameAvailable(String username, DataSnapshot snapshot) {

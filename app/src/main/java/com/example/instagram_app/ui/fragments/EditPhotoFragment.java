@@ -1,4 +1,4 @@
-package com.example.instagram_app.fragments;
+package com.example.instagram_app.ui.fragments;
 
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;

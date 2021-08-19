@@ -1,4 +1,4 @@
-package com.example.instagram_app.dialogs;
+package com.example.instagram_app.ui.dialogs;
 
 import android.content.Context;
 import android.os.Bundle;

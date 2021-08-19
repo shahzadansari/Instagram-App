@@ -1,4 +1,4 @@
-package com.example.instagram_app.fragments;
+package com.example.instagram_app.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.instagram_app.R;
 import com.example.instagram_app.adapters.SearchUsersAdapter;
+import com.example.instagram_app.ui.fragments.SearchFragmentDirections;
 import com.example.instagram_app.model.User;
 import com.example.instagram_app.model.UserAccountSettings;
 import com.example.instagram_app.model.UserSettings;

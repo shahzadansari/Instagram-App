@@ -1,4 +1,4 @@
-package com.example.instagram_app.fragments;
+package com.example.instagram_app.ui.fragments;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.instagram_app.R;
+import com.example.instagram_app.ui.fragments.ShareFragmentArgs;
 import com.example.instagram_app.utils.Permissions;
 import com.google.android.material.tabs.TabLayout;
 
