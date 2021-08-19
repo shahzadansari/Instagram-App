@@ -1,4 +1,4 @@
-package com.example.instagram_app.fragments;
+package com.example.instagram_app.ui.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -14,8 +14,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.example.instagram_app.HostActivity;
 import com.example.instagram_app.R;
+import com.example.instagram_app.ui.activities.HostActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginFragment extends Fragment {

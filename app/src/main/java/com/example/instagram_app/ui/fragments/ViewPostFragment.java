@@ -1,6 +1,7 @@
-package com.example.instagram_app.fragments;
+package com.example.instagram_app.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,11 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.instagram_app.R;
+import com.example.instagram_app.api.NotificationAPI;
+import com.example.instagram_app.api.ServiceGenerator;
+import com.example.instagram_app.model.NotificationData;
 import com.example.instagram_app.model.Photo;
+import com.example.instagram_app.model.PushNotification;
 import com.example.instagram_app.model.User;
 import com.example.instagram_app.model.UserAccountSettings;
 import com.example.instagram_app.utils.Utils;
@@ -29,6 +34,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ViewPostFragment extends Fragment {
 
@@ -50,6 +58,9 @@ public class ViewPostFragment extends Fragment {
     private Boolean isLiked = false;
 
     private ValueEventListener valueEventListener;
+
+    private String receiverFCMToken;
+    private String currentUsername;
 
     public ViewPostFragment() {
         // Required empty public constructor
@@ -180,7 +191,36 @@ public class ViewPostFragment extends Fragment {
                         .child(mAuth.getCurrentUser().getUid())
                         .setValue(mAuth.getUid());
                 isLiked = true;
+                sendLikedNotification();
+            }
+        });
+    }
 
+    private void sendLikedNotification() {
+        NotificationData notificationData = new NotificationData(
+                "New Like!",
+                currentUsername + " liked your post: " + currentPhoto.getCaption()
+        );
+
+        PushNotification pushNotification = new PushNotification(
+                notificationData,
+                receiverFCMToken
+        );
+
+        NotificationAPI notificationAPI = ServiceGenerator
+                .createService(NotificationAPI.class);
+        Call call = notificationAPI.postNotification(pushNotification);
+        call.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "onResponse: success");
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Log.d(TAG, "onFailure: error -> " + t.getLocalizedMessage());
             }
         });
     }
@@ -286,6 +326,8 @@ public class ViewPostFragment extends Fragment {
                 .child(currentPhoto.getUser_id()) // user_id
                 .getValue(UserAccountSettings.class); // data from that node
 
+        receiverFCMToken = authorData.getFcmToken();
+
         String authorUsername = authorData.getUsername();
         String authorProfilePhotoUrl = authorData.getProfile_photo();
 
@@ -300,6 +342,8 @@ public class ViewPostFragment extends Fragment {
                 .child("user_account_settings") // user_account_settings node
                 .child(mAuth.getUid()) // user_id
                 .getValue(UserAccountSettings.class); // data from that node
+
+        currentUsername = currentUserData.getUsername();
     }
 
     @Override

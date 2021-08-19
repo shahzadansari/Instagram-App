@@ -1,4 +1,4 @@
-package com.example.instagram_app.fragments;
+package com.example.instagram_app.ui.fragments;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -25,6 +25,7 @@ import androidx.navigation.Navigation;
 import com.bumptech.glide.Glide;
 import com.example.instagram_app.R;
 import com.example.instagram_app.adapters.GridImageAdapter;
+import com.example.instagram_app.ui.fragments.ShareFragmentDirections;
 import com.example.instagram_app.utils.FilePaths;
 import com.example.instagram_app.utils.FileSearch;
 import com.example.instagram_app.utils.Utils;

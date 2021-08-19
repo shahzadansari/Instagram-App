@@ -1,4 +1,4 @@
-package com.example.instagram_app.fragments;
+package com.example.instagram_app.ui.fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,6 +19,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.instagram_app.R;
+import com.example.instagram_app.ui.fragments.ShareFragmentDirections;
 import com.example.instagram_app.utils.FilePaths;
 import com.example.instagram_app.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;

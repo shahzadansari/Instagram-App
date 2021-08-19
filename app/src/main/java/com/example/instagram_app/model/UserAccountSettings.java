@@ -9,12 +9,14 @@ public class UserAccountSettings {
     private long posts;
     private String profile_photo;
     private String username;
+    private String fcmToken;
 
     public UserAccountSettings() {
     }
 
     public UserAccountSettings(String description, String display_name, long followers,
-                               long following, long posts, String profile_photo, String username) {
+                               long following, long posts, String profile_photo,
+                               String username, String fcmToken) {
         this.description = description;
         this.display_name = display_name;
         this.followers = followers;
@@ -22,6 +24,7 @@ public class UserAccountSettings {
         this.posts = posts;
         this.profile_photo = profile_photo;
         this.username = username;
+        this.fcmToken = fcmToken;
     }
 
     public String getDescription() {
@@ -78,6 +81,14 @@ public class UserAccountSettings {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 
     @Override

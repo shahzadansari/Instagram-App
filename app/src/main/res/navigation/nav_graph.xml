@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.instagram_app.fragments.HomeFragment"
+        android:name="com.example.instagram_app.ui.fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.instagram_app.fragments.ProfileFragment"
+        android:name="com.example.instagram_app.ui.fragments.ProfileFragment"
         android:label="ProfileFragment">
         <action
             android:id="@+id/action_profileFragment_to_editProfileFragment"
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.example.instagram_app.fragments.EditProfileFragment"
+        android:name="com.example.instagram_app.ui.fragments.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile">
         <action
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/shareFragment"
-        android:name="com.example.instagram_app.fragments.ShareFragment"
+        android:name="com.example.instagram_app.ui.fragments.ShareFragment"
         android:label="fragment_share"
         tools:layout="@layout/fragment_share">
         <action
@@ -63,15 +63,15 @@
     </fragment>
     <fragment
         android:id="@+id/galleryFragment"
-        android:name="com.example.instagram_app.fragments.GalleryFragment"
+        android:name="com.example.instagram_app.ui.fragments.GalleryFragment"
         android:label="GalleryFragment" />
     <fragment
         android:id="@+id/photoFragment"
-        android:name="com.example.instagram_app.fragments.PhotoFragment"
+        android:name="com.example.instagram_app.ui.fragments.PhotoFragment"
         android:label="PhotoFragment" />
     <fragment
         android:id="@+id/editPhotoFragment"
-        android:name="com.example.instagram_app.fragments.EditPhotoFragment"
+        android:name="com.example.instagram_app.ui.fragments.EditPhotoFragment"
         android:label="fragment_edit_photo"
         tools:layout="@layout/fragment_edit_photo">
         <argument android:name="imagePath" />
@@ -83,7 +83,7 @@
     </fragment>
     <fragment
         android:id="@+id/viewPostFragment"
-        android:name="com.example.instagram_app.fragments.ViewPostFragment"
+        android:name="com.example.instagram_app.ui.fragments.ViewPostFragment"
         android:label="ViewPostFragment">
         <argument
             android:name="photoData"
@@ -94,7 +94,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.instagram_app.fragments.SearchFragment"
+        android:name="com.example.instagram_app.ui.fragments.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search">
         <action
@@ -106,7 +106,7 @@
     </fragment>
     <fragment
         android:id="@+id/viewCommentsFragment"
-        android:name="com.example.instagram_app.fragments.ViewCommentsFragment"
+        android:name="com.example.instagram_app.ui.fragments.ViewCommentsFragment"
         android:label="fragment_view_comments"
         tools:layout="@layout/fragment_view_comments">
         <argument
@@ -122,7 +122,7 @@
     </fragment>
     <fragment
         android:id="@+id/viewProfileFragment"
-        android:name="com.example.instagram_app.fragments.ViewProfileFragment"
+        android:name="com.example.instagram_app.ui.fragments.ViewProfileFragment"
         android:label="ViewProfileFragment">
         <argument
             android:name="userId"

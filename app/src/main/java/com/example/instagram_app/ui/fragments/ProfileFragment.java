@@ -1,4 +1,4 @@
-package com.example.instagram_app.fragments;
+package com.example.instagram_app.ui.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +21,7 @@ import androidx.navigation.Navigation;
 import com.bumptech.glide.Glide;
 import com.example.instagram_app.R;
 import com.example.instagram_app.adapters.ProfileGridImagesAdapter;
+import com.example.instagram_app.ui.fragments.ProfileFragmentDirections;
 import com.example.instagram_app.model.Photo;
 import com.example.instagram_app.model.User;
 import com.example.instagram_app.model.UserAccountSettings;
@@ -36,13 +37,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ViewProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
-    private static final String TAG = "ViewProfileFragment";
+    private static final String TAG = "ProfileFragment";
     private static final int NUM_GRID_COLUMNS = 3;
     private ProgressBar progressBar;
-    private TextView textViewPosts, textViewFollowers, textViewFollowing,
-            textViewDisplayName, textViewDescription, textViewFollow, textViewUnfollow;
+    private TextView textViewEditProfileBtn, textViewPosts, textViewFollowers, textViewFollowing,
+            textViewDisplayName, textViewDescription;
     private ImageView imageViewProfilePhoto;
     private NavController navController;
     private FirebaseAuth mAuth;
@@ -51,8 +52,9 @@ public class ViewProfileFragment extends Fragment {
     private GridView gridView;
 
     private String userId;
+    private TextView textViewNoPosts;
 
-    public ViewProfileFragment() {
+    public ProfileFragment() {
         // Required empty public constructor
     }
 
@@ -64,16 +66,17 @@ public class ViewProfileFragment extends Fragment {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
 
-        userId = ViewProfileFragmentArgs.fromBundle(getArguments()).getUserId();
+        userId = mAuth.getCurrentUser().getUid();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_view_profile, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         rootView.findViewById(R.id.text_view_display_name);
         progressBar = rootView.findViewById(R.id.progress_bar);
+        textViewEditProfileBtn = rootView.findViewById(R.id.text_view_edit_profile);
         textViewPosts = rootView.findViewById(R.id.text_view_posts_number);
         textViewFollowers = rootView.findViewById(R.id.text_view_followers_number);
         textViewFollowing = rootView.findViewById(R.id.text_view_following_numbers);
@@ -81,51 +84,14 @@ public class ViewProfileFragment extends Fragment {
         textViewDescription = rootView.findViewById(R.id.text_view_description);
         imageViewProfilePhoto = rootView.findViewById(R.id.profile_image);
         gridView = rootView.findViewById(R.id.gridView);
-        textViewFollow = rootView.findViewById(R.id.text_view_follow);
-        textViewUnfollow = rootView.findViewById(R.id.text_view_unfollow);
+        textViewNoPosts = rootView.findViewById(R.id.text_view_no_posts);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
         progressBar.setVisibility(View.VISIBLE);
-
-        textViewFollow.setOnClickListener(v -> followUser());
-        textViewUnfollow.setOnClickListener(v -> unfollowUser());
+        textViewEditProfileBtn.setOnClickListener(v -> openEditProfileFragment());
 
         return rootView;
-    }
-
-    private void followUser() {
-        myRef.child("following")
-                .child(mAuth.getCurrentUser().getUid())
-                .child(userId)
-                .child("user_id")
-                .setValue(userId);
-
-        myRef.child("followers")
-                .child(userId)
-                .child(mAuth.getCurrentUser().getUid())
-                .child("user_id")
-                .setValue(userId);
-
-        textViewFollow.setVisibility(View.INVISIBLE);
-        textViewUnfollow.setVisibility(View.VISIBLE);
-    }
-
-
-    private void unfollowUser() {
-        myRef.child("following")
-                .child(mAuth.getCurrentUser().getUid())
-                .child(userId)
-                .removeValue();
-
-        myRef.child("followers")
-                .child(userId)
-                .child(mAuth.getCurrentUser().getUid())
-                .child("user_id")
-                .removeValue();
-
-        textViewFollow.setVisibility(View.VISIBLE);
-        textViewUnfollow.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -142,9 +108,6 @@ public class ViewProfileFragment extends Fragment {
                 .getChildren()) {
 
             Photo photo = new Photo();
-
-            /** You can use try/catch block here. Pt. 88 */
-
             Map<String, Object> objectMap = (HashMap<String, Object>) dataSnapshot.getValue();
             photo.setCaption(objectMap.get("caption").toString());
             photo.setDate_created(objectMap.get("date_created").toString());
@@ -156,6 +119,11 @@ public class ViewProfileFragment extends Fragment {
             photoArrayList.add(photo);
         }
 
+        if (photoArrayList.isEmpty()) {
+            textViewNoPosts.setVisibility(View.VISIBLE);
+        } else {
+            textViewNoPosts.setVisibility(View.INVISIBLE);
+        }
         setupGridView(photoArrayList);
     }
 
@@ -169,11 +137,12 @@ public class ViewProfileFragment extends Fragment {
 
         gridView.setOnItemClickListener((parent, view, position, id) -> {
             Photo photoData = photoArrayList.get(position);
-            NavDirections navDirections = ViewProfileFragmentDirections
-                    .actionViewProfileFragmentToViewPostFragment(photoData);
+            NavDirections navDirections = ProfileFragmentDirections
+                    .actionProfileFragmentToViewPostFragment(photoData);
             navController.navigate(navDirections);
         });
     }
+
 
     private void updateUI(UserSettings userSettings) {
         progressBar.setVisibility(View.INVISIBLE);
@@ -192,10 +161,15 @@ public class ViewProfileFragment extends Fragment {
 
     private UserSettings retrieveData(DataSnapshot snapshot) {
 
+        Log.d(TAG, "retrieveData: called");
+        Log.d(TAG, "retrieveData: userId 1: " + userId);
+
         User user = snapshot
                 .child("users") // users node
                 .child(userId) // user_id
                 .getValue(User.class); // data from that node
+
+        Log.d(TAG, "retrieveData: userId 2: " + userId);
 
         UserAccountSettings userAccountSettings = snapshot
                 .child("user_account_settings") // user_account_settings node
@@ -203,55 +177,6 @@ public class ViewProfileFragment extends Fragment {
                 .getValue(UserAccountSettings.class); // data from that node
 
         return new UserSettings(user, userAccountSettings);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume: called");
-
-        /**
-         * Listener for value event changes can be registered for
-         * myRef.child("followers" & "following) to update
-         * followers and following widgets on runtime
-         */
-
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                UserSettings userSettings = retrieveData(snapshot);
-                updateUI(userSettings);
-                getPostsCount(snapshot);
-                getFollowers(snapshot);
-                getFollowing(snapshot);
-                getFollowStatus(snapshot);
-                getUserPhotos(snapshot);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    public void getFollowStatus(DataSnapshot dataSnapshot) {
-
-        long count = dataSnapshot
-                .child("following")
-                .child(mAuth.getUid())
-                .child(userId)
-                .getChildrenCount();
-
-        if (count > 0) {
-            Log.d(TAG, "getFollowStatus: following");
-            textViewFollow.setVisibility(View.INVISIBLE);
-            textViewUnfollow.setVisibility(View.VISIBLE);
-        } else {
-            Log.d(TAG, "instance initializer: not following");
-            textViewUnfollow.setVisibility(View.INVISIBLE);
-            textViewFollow.setVisibility(View.VISIBLE);
-        }
     }
 
     public void getPostsCount(DataSnapshot dataSnapshot) {
@@ -294,5 +219,32 @@ public class ViewProfileFragment extends Fragment {
         } else {
             textViewFollowing.setText("" + 0);
         }
+    }
+
+    private void openEditProfileFragment() {
+        navController.navigate(R.id.action_profileFragment_to_editProfileFragment);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: called");
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserSettings userSettings = retrieveData(snapshot);
+                updateUI(userSettings);
+                getPostsCount(snapshot);
+                getFollowers(snapshot);
+                getFollowing(snapshot);
+                getUserPhotos(snapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

@@ -1,4 +1,4 @@
-package com.example.instagram_app.fragments;
+package com.example.instagram_app.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.instagram_app.R;
 import com.example.instagram_app.adapters.CommentsAdapter;
+import com.example.instagram_app.ui.fragments.ViewCommentsFragmentArgs;
 import com.example.instagram_app.model.Comment;
 import com.example.instagram_app.model.Photo;
 import com.example.instagram_app.utils.Utils;

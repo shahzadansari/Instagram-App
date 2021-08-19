@@ -1,4 +1,4 @@
-package com.example.instagram_app.fragments;
+package com.example.instagram_app.ui.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -21,12 +21,13 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
-import com.example.instagram_app.MainActivity;
 import com.example.instagram_app.R;
-import com.example.instagram_app.dialogs.ConfirmPasswordDialog;
 import com.example.instagram_app.model.User;
 import com.example.instagram_app.model.UserAccountSettings;
 import com.example.instagram_app.model.UserSettings;
+import com.example.instagram_app.ui.activities.MainActivity;
+import com.example.instagram_app.ui.dialogs.ConfirmPasswordDialog;
+import com.example.instagram_app.ui.fragments.EditProfileFragmentDirections;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;

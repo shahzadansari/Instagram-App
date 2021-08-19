@@ -1,4 +1,4 @@
-package com.example.instagram_app;
+package com.example.instagram_app.ui.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.instagram_app.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HostActivity extends AppCompatActivity {
