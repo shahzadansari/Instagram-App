@@ -27,6 +27,11 @@ https://user-images.githubusercontent.com/43310446/127222235-fb10d4b5-fdb9-44d8-
 ### Uploading - Sharing Post
 https://user-images.githubusercontent.com/43310446/127222431-5d7aa16b-7565-4a00-9c9c-7d2d0a8ac2ff.mp4
 
+### Notifications Support - Firebase Cloud Messaging
+Notifications work even when app is not in foreground or it is killed.
+
+https://user-images.githubusercontent.com/43310446/130051614-46a1af05-63bc-4046-b9a8-b317f144586d.mp4
+
 ## Libraries Used
 * [Glide](https://github.com/bumptech/glide) for image loading
 * [Navigation Components](https://developer.android.com/guide/navigation) for navigating between fragments and using **SafeArgs**
@@ -40,7 +45,7 @@ You can contribute to this project by adding new features. Here's a list of poss
 * Add support for multiple Sign-In options such as (Google, Facebook, Phone OTP)
 * Save posts
 * Delete your comments/posts
-* Add support for Notifications
+* Add support for Notifications (Added :heavy_check_mark: for follows and post likes)
 * Add chat support
 * Add support for uploading/displaying videos as well
 
